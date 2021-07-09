@@ -11,7 +11,7 @@
 
         [Required]
         [MaxLength(MaxCurrencyCodeLength)]
-        public string MaxCurrencyCode { get; set; }
+        public string CurrencyCode { get; set; }
 
         public virtual ICollection<Estate> Estates { get; set; }
     }

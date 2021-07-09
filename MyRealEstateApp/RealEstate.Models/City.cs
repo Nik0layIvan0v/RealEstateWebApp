@@ -7,7 +7,10 @@
     public class City : BaseEntity
     {
         public City()
-            => this.Neighborhoods = new HashSet<Neighborhood>();
+        {
+            this.Neighborhoods = new HashSet<Neighborhood>();
+            this.Estates = new HashSet<Estate>();
+        }
 
         [Required]
         [MaxLength(MaxCityNameLength)]
@@ -19,5 +22,7 @@
         public Area Area { get; set; }
 
         public virtual ICollection<Neighborhood> Neighborhoods { get; set; }
+
+        public virtual ICollection<Estate> Estates { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace RealEstate
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<RealEstateDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -41,6 +42,13 @@ namespace RealEstate
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+
+            using var context = serviceScope.ServiceProvider.GetRequiredService<RealEstateDbContext>();
+
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

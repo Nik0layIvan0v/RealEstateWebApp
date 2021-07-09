@@ -14,6 +14,7 @@
             this.Images = new HashSet<Image>();
             this.Reports = new HashSet<Report>();
             this.UserEstateWishList = new HashSet<UserEstateWishList>();
+            this.Comments = new HashSet<Comment>();
         }
 
         public decimal Squaring { get; set; }
@@ -78,5 +79,7 @@
         public virtual ICollection<Feature> Features { get; set; }
 
         public virtual ICollection<Report> Reports { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
