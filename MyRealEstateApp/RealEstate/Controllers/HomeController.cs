@@ -12,12 +12,7 @@
         public HomeController(ILogger<HomeController> logger)
             => Logger = logger;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult Index() //<= show all properties
         {
             return View();
         }

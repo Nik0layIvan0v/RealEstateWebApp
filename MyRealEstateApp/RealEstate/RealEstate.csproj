@@ -15,10 +15,28 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RealEstate.Models\RealEstate.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Buy\" />
+    <Folder Include="Models\Estate\" />
+    <Folder Include="Models\Home\" />
+    <Folder Include="Models\MyEstates\" />
+    <Folder Include="Models\Rent\" />
+    <Folder Include="Models\Report\" />
+    <Folder Include="Models\Search\" />
+    <Folder Include="Models\Sell\" />
+    <Folder Include="Views\Buy\" />
+    <Folder Include="Views\MyEstates\" />
+    <Folder Include="Views\Search\" />
+    <Folder Include="Views\Report\" />
+    <Folder Include="Views\Sell\" />
+    <Folder Include="Views\Rent\" />
   </ItemGroup>
 
 </Project>
