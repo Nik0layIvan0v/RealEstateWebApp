@@ -22,5 +22,6 @@ namespace RealEstate.Services
         public void GetCurrenciesTypes()
         {
         }
+
     }
 }

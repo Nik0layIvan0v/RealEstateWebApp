@@ -13,8 +13,8 @@ namespace RealEstate.Infrastructure
             using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
 
             var database = scopedServices.ServiceProvider.GetService<RealEstateDbContext>();
-
-            database.Database.Migrate();
+            
+            database.Database.EnsureCreated();
 
             ISeedDatabase seedDatabase = new RealEstateDbContextSeeder(database);
 

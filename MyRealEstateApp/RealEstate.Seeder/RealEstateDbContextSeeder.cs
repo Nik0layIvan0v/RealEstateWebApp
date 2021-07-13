@@ -141,11 +141,13 @@ namespace RealEstate.Seeder
             this.InsertCurrencyTypes();
             this.InsertFutures();
             this.InsertTradeTypes();
-            this.Context.SaveChanges();
+            this.InsertRegions();
+
         }
 
         private void InsertPropertyTypes()
         {
+
             List<EstateType> entityTypes = new List<EstateType>();
 
             foreach (var propertyType in PropertyTypeData)
@@ -157,6 +159,7 @@ namespace RealEstate.Seeder
             }
 
             this.Context.EstateTypes.AddRange(entityTypes);
+            this.Context.SaveChanges();
         }
 
         private void InsertCurrencyTypes()
@@ -168,6 +171,8 @@ namespace RealEstate.Seeder
                     CurrencyCode = currency,
                 });
             }
+
+            this.Context.SaveChanges();
         }
 
         private void InsertFutures()
@@ -179,6 +184,8 @@ namespace RealEstate.Seeder
                     FutureDescription = future,
                 });
             }
+
+            this.Context.SaveChanges();
         }
 
         private void InsertTradeTypes()
@@ -190,6 +197,8 @@ namespace RealEstate.Seeder
                     TypeOfTransaction = tradeType,
                 });
             }
+
+            this.Context.SaveChanges();
         }
 
         private void InsertRegions()
@@ -225,6 +234,8 @@ namespace RealEstate.Seeder
                     }
                 }
             }
+
+            this.Context.SaveChanges();
         }
     }
 }
