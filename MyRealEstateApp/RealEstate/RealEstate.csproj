@@ -19,24 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RealEstate.Models\RealEstate.Models.csproj" />
+    <Folder Include="Models\Home\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Buy\" />
-    <Folder Include="Models\Estate\" />
-    <Folder Include="Models\Home\" />
-    <Folder Include="Models\MyEstates\" />
-    <Folder Include="Models\Rent\" />
-    <Folder Include="Models\Report\" />
-    <Folder Include="Models\Search\" />
-    <Folder Include="Models\Sell\" />
-    <Folder Include="Views\Buy\" />
-    <Folder Include="Views\MyEstates\" />
-    <Folder Include="Views\Search\" />
-    <Folder Include="Views\Report\" />
-    <Folder Include="Views\Sell\" />
-    <Folder Include="Views\Rent\" />
+    <ProjectReference Include="..\RealEstate.Common\RealEstate.Common.csproj" />
+    <ProjectReference Include="..\RealEstate.Services\RealEstate.Services.csproj" />
   </ItemGroup>
 
 </Project>

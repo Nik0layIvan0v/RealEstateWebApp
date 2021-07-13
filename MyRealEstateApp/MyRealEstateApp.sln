@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate", "RealEstate\RealEstate.csproj", "{E12F6B7E-092A-482D-943E-07554C7C18EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate", "RealEstate\RealEstate.csproj", "{E12F6B7E-092A-482D-943E-07554C7C18EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Models", "RealEstate.Models\RealEstate.Models.csproj", "{62573F0C-8544-4D9D-A092-290C1EA5693B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Models", "RealEstate.Models\RealEstate.Models.csproj", "{62573F0C-8544-4D9D-A092-290C1EA5693B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Common", "RealEstate.Common\RealEstate.Common.csproj", "{F4AC3EC9-8AF1-4161-B319-CFE4D2E87258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Common", "RealEstate.Common\RealEstate.Common.csproj", "{F4AC3EC9-8AF1-4161-B319-CFE4D2E87258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Services", "RealEstate.Services\RealEstate.Services.csproj", "{BFF5E48D-1802-442F-8986-2C6C04C33D44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Services", "RealEstate.Services\RealEstate.Services.csproj", "{BFF5E48D-1802-442F-8986-2C6C04C33D44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Data", "RealEstate.Data\RealEstate.Data.csproj", "{6B76F275-D230-4734-97B0-2B0A10E2B7C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BFF5E48D-1802-442F-8986-2C6C04C33D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFF5E48D-1802-442F-8986-2C6C04C33D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFF5E48D-1802-442F-8986-2C6C04C33D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
