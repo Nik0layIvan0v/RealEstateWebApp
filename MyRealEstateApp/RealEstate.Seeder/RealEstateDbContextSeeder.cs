@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using RealEstate.Data;
 using RealEstate.Models;
 
@@ -147,6 +148,10 @@ namespace RealEstate.Seeder
 
         private void InsertPropertyTypes()
         {
+            if (this.Context.EstateTypes.Any())
+            {
+                return;
+            }
 
             List<EstateType> entityTypes = new List<EstateType>();
 
@@ -164,9 +169,14 @@ namespace RealEstate.Seeder
 
         private void InsertCurrencyTypes()
         {
+            if (this.Context.Currencies.Any())
+            {
+                return;
+            }
+
             foreach (var currency in CurrenciesData)
             {
-                this.Context.Add(new Currency
+                this.Context.Currencies.Add(new Currency
                 {
                     CurrencyCode = currency,
                 });
@@ -177,6 +187,11 @@ namespace RealEstate.Seeder
 
         private void InsertFutures()
         {
+            if (Context.Features.Any())
+            {
+                return;
+            }
+
             foreach (var future in FuturesData)
             {
                 this.Context.Features.Add(new Feature
@@ -190,6 +205,11 @@ namespace RealEstate.Seeder
 
         private void InsertTradeTypes()
         {
+            if (this.Context.EstateTypes.Any())
+            {
+                return;
+            }
+
             foreach (var tradeType in TrateTypeData)
             {
                 this.Context.TradeTypes.Add(new TradeType
@@ -203,6 +223,11 @@ namespace RealEstate.Seeder
 
         private void InsertRegions()
         {
+            if (this.Context.Areas.Any() && this.Context.Cities.Any() && this.Context.Neighborhoods.Any())
+            {
+                return;
+            }
+
             foreach (var area in this.AreasAndCities)
             {
                 Area dbArea = new Area

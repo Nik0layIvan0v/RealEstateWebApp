@@ -10,6 +10,7 @@
             : base(options)
         {
         }
+
         public DbSet<Area> Areas { get; set; }
 
         public DbSet<City> Cities { get; set; }
