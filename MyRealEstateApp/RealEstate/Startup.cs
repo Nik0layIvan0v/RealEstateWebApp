@@ -21,7 +21,9 @@ namespace RealEstate
         {
 
             services.AddDbContext<RealEstateDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
