@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Services", "Real
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Data", "RealEstate.Data\RealEstate.Data.csproj", "{6B76F275-D230-4734-97B0-2B0A10E2B7C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Seeder", "RealEstate.Seeder\RealEstate.Seeder.csproj", "{F85552D0-1944-4042-9529-D4DBFD66ED62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B76F275-D230-4734-97B0-2B0A10E2B7C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F85552D0-1944-4042-9529-D4DBFD66ED62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F85552D0-1944-4042-9529-D4DBFD66ED62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F85552D0-1944-4042-9529-D4DBFD66ED62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F85552D0-1944-4042-9529-D4DBFD66ED62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,7 @@ namespace RealEstate
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Infrastructure;
     using Data;
 
     public class Startup
@@ -42,12 +43,7 @@ namespace RealEstate
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            using var serviceScope = app.ApplicationServices.CreateScope();
-
-            using var context = serviceScope.ServiceProvider.GetRequiredService<RealEstateDbContext>();
-
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            app.PrepareDatabase();
 
             if (env.IsDevelopment())
             {

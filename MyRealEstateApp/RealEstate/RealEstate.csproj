@@ -20,10 +20,11 @@
 
   <ItemGroup>
     <Folder Include="Models\Home\" />
+    <Folder Include="Models\Estate\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RealEstate.Common\RealEstate.Common.csproj" />
+    <ProjectReference Include="..\RealEstate.Seeder\RealEstate.Seeder.csproj" />
     <ProjectReference Include="..\RealEstate.Services\RealEstate.Services.csproj" />
   </ItemGroup>
 

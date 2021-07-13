@@ -14,5 +14,13 @@ namespace RealEstate.Services
         public void CreateEstate()
         {
         }
+
+        public void GetPropertyTypes()
+        {
+        }
+
+        public void GetCurrenciesTypes()
+        {
+        }
     }
 }
