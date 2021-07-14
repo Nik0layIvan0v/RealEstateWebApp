@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RealEstate.Data;
 using RealEstate.Seeder;
@@ -12,8 +13,8 @@ namespace RealEstate.Infrastructure
             using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
 
             var database = scopedServices.ServiceProvider.GetService<RealEstateDbContext>();
-            
-            database.Database.EnsureCreated();
+
+            database.Database.Migrate();
 
             ISeedDatabase seedDatabase = new RealEstateDbContextSeeder(database);
 

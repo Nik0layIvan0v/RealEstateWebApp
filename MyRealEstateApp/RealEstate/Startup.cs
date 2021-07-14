@@ -1,3 +1,5 @@
+using RealEstate.Services;
+
 namespace RealEstate
 {
     using Microsoft.AspNetCore.Builder;
@@ -39,6 +41,8 @@ namespace RealEstate
                         options.Password.RequiredLength = 3;
                     })
                 .AddEntityFrameworkStores<RealEstateDbContext>();
+
+            services.AddTransient<IEstateService, EstateService>();
 
             services.AddControllersWithViews();
         }

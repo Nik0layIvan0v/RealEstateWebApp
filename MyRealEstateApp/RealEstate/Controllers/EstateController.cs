@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RealEstate.Models.Estates;
+using RealEstate.Services;
 
 namespace RealEstate.Controllers
 {
     public class EstateController : Controller
     {
-        public EstateController() //<== service
+        private readonly IEstateService EstateService;
+
+        public EstateController(IEstateService estateService) //<== service
         {
+            this.EstateService = estateService;
         }
 
-        public IActionResult Create()
+        public IActionResult Create(CreateEstateViewModel model)
         {
-            return this.View();
+            return this.View(model);
         }
 
         [HttpPost]
@@ -19,14 +24,14 @@ namespace RealEstate.Controllers
             return this.Redirect("/"); //<= redirect to my offers!
         }
 
-        public IActionResult Details()
+        public IActionResult Details(string id)
         {
             return this.View();
         }
 
         public IActionResult Edit(string id)
         {
-            return this.View();
+            return this.Ok();
         }
 
         [HttpPost]
@@ -37,6 +42,11 @@ namespace RealEstate.Controllers
 
         [HttpPost]
         public IActionResult Delete(string estateId)
+        {
+            return this.Ok();
+        }
+
+        public IActionResult All()
         {
             return this.Ok();
         }

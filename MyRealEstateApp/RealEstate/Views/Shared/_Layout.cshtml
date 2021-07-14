@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewData["Title"] - RealEstate</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" sizes="32x32" href="/favicon.ico">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.css">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 pb-3 shadow" style="background-color: #21081a;">
+            <div class="container text-white">
                 <a class="navbar-brand" href="#">
-                    <img src="~/Img/RealEstateLogo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+                    <img src="~/Img/RealEstateLogo.png" width="25" height="25" class="d-inline-block align-top" alt="">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="far fa-caret-square-down text-white"></i>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
@@ -25,7 +26,10 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-plus-circle"></i> Add Property</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Estate" asp-action="Create"><i class="fas fa-plus-circle"></i> Add Property</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Estate" asp-action="All"><i class="fas fa-sitemap"></i> All Properties</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -34,12 +38,16 @@
         </nav>
     </header>
 
-    <main role="main" class="container">
-        @RenderBody()
-    </main>
+    <div class="container">
+        <main role="main" class="pb-6">
+            @RenderBody()
+        </main>
+    </div>
 
-    <footer class="bg-dark text-white border-bottom">
-        <partial name="_FooterPartial" />
+    <footer>
+        <div class="container">
+            <partial name="_FooterPartial" />
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
