@@ -5,6 +5,9 @@
 }
 
 <div class="container-fluid">
+    <div class="row container pb-3">
+        <h1 class="text-left">Create offer: </h1>
+    </div>
     <form method="post" asp-controller="Estate" asp-action="Create">
         <div class="row">
             <div class="form-group col-sm">
@@ -75,7 +78,11 @@
                 <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Save" />
+        <div class="row container">
+            <div class="form-group">
+                <input class="btn btn-primary text-center" type="submit" value="Create"/>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -104,26 +111,28 @@
     </script>
 
     <script>
-        $(document).ready(function () {
-            $("#CityId").on("change",
-                function () {
-                    var selectedVal = $(this).find("option:selected").val();
-                    console.log(selectedVal);
-                    $.ajax({
-                        method: 'GET',
-                        url: 'https://localhost:44356/api/Neighborhoods/Get',
-                        data: { id: selectedVal }
-                    })
-                        .done(function success(result) {
-                            $('#NeighborhoodId').html('');
+        if ($("#CityId") != null) {
+            $(document).ready(function () {
+                $("#CityId").on("change",
+                    function () {
+                        var selectedVal = $(this).find("option:selected").val();
+                        console.log(selectedVal);
+                        $.ajax({
+                            method: 'GET',
+                            url: 'https://localhost:44356/api/Neighborhoods/Get',
+                            data: { id: selectedVal }
+                        })
+                            .done(function success(result) {
+                                $('#NeighborhoodId').html('');
 
-                            for (var i = 0; i < result.length; i++) {
-                                var html = '<option value=' + result[i].Id + '>' + result[i].Neighborhood + '</option>';
-                                console.log(i);
-                                $('#NeighborhoodId').append(html);
-                            }
-                        });
-                });
-        });
+                                for (var i = 0; i < result.length; i++) {
+                                    var html = '<option value=' + result[i].id + '>' + result[i].neighborhood + '</option>';
+                                    console.log(i);
+                                    $('#NeighborhoodId').append(html);
+                                }
+                            });
+                    });
+            });
+        }
     </script>
 }

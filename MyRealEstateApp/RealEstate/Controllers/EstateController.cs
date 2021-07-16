@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Estates;
@@ -15,8 +16,10 @@ namespace RealEstate.Controllers
             this.EstateService = estateService;
         }
 
-        public IActionResult Create(CreateEstateViewModel model)
+        public IActionResult Create()
         {
+            CreateEstateViewModel model = new CreateEstateViewModel();
+
             var dropdownData = this.EstateService.GetDropDownData();
 
             model.EstateTypes = dropdownData.EstateTypeViewModels;
@@ -27,10 +30,17 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string model) //<= model from form!
+        public IActionResult Create(AddEstateInputModel model) //<= model from form!
         {
-            return this.Redirect("/"); //<= redirect to my offers!
+            if (!ModelState.IsValid)
+            {
+                return this.Create();
+            };
+
+            return this.Redirect("/");
         }
+
+
 
         public IActionResult Details(string id)
         {

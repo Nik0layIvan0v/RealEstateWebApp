@@ -9,6 +9,8 @@
 
     [Route("api/[controller]")]
     [ApiController]
+
+
     public class NeighborhoodsController : ControllerBase
     {
         private protected readonly IEstateService Service;
@@ -19,9 +21,9 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<NeighborhoodViewModel>>> GetNeighborhoodByCity(string cityId)
+        public async Task<ActionResult<IEnumerable<NeighborhoodViewModel>>> GetNeighborhoodByCity([FromQuery]string id)
         {
-            IEnumerable<NeighborhoodViewModel> neighborhoods = await this.Service.GetNeighborhoodsByCityIdAsync(cityId);
+            IEnumerable<NeighborhoodViewModel> neighborhoods = await this.Service.GetNeighborhoodsByCityIdAsync(id);
 
             if (neighborhoods == null)
             {
