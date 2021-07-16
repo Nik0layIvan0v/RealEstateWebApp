@@ -5,24 +5,125 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <form method="post" asp-controller="Estate" asp-action="Create">
-            <div class="form-group">
+    <form method="post" asp-controller="Estate" asp-action="Create">
+        <div class="row">
+            <div class="form-group col-sm">
                 <label asp-for="Squaring"></label>
                 <input asp-for="Squaring" class="form-control">
                 <span asp-validation-for="Squaring" class="small text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm">
                 <label asp-for="Floor"></label>
                 <input asp-for="Floor" class="form-control">
                 <span asp-validation-for="Floor" class="small text-danger"></span>
             </div>
-            <div class="form-group">
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
                 <label asp-for="Price"></label>
                 <input asp-for="Price" class="form-control">
                 <span asp-validation-for="Price" class="small text-danger"></span>
             </div>
-
-        </form>
-    </div>
+            <div class="form-group col-sm">
+                <label asp-for="CurrencyId"></label>
+                <select asp-for="CurrencyId" class="form-control">
+                    @foreach (var currency in Model.Currency)
+                    {
+                        <option value="@currency.Id">@currency.CurrencyValue</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="EstateTypeId"></label>
+                <select asp-for="EstateTypeId" class="form-control">
+                    @foreach (var estate in Model.EstateTypes)
+                    {
+                        <option value="@estate.Id">@estate.Type</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="AreaId"></label>
+                <select asp-for="AreaId" class="form-control">
+                    @foreach (var area in Model.Areas)
+                    {
+                        <option value="@area.Id">@area.Area</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="CityId"></label>
+                <select asp-for="CityId" class="form-control">
+                    <option value="">Select City</option>
+                </select>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="NeighborhoodId"></label>
+                <select asp-for="NeighborhoodId" class="form-control">
+                    <option value="">Select Neighborhood</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control">
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Save" />
+    </form>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#AreaId").on("change",
+                function () {
+
+                    var selectedVal = $(this).find("option:selected").val();
+                    $.ajax({
+                        method: 'GET',
+                        url: 'https://localhost:44356/api/Cities/Get',
+                        data: { id: selectedVal }
+                    })
+                        .done(function success(message) {
+                            $('#CityId').html('');
+                            for (var i = 0; i < message.length; i++) {
+                                var html = '<option value=' + message[i].id + '>' + message[i].cityName + '</option>';
+
+                                $('#CityId').append(html);
+                            }
+                        });
+                });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#CityId").on("change",
+                function () {
+                    var selectedVal = $(this).find("option:selected").val();
+                    console.log(selectedVal);
+                    $.ajax({
+                        method: 'GET',
+                        url: 'https://localhost:44356/api/Neighborhoods/Get',
+                        data: { id: selectedVal }
+                    })
+                        .done(function success(result) {
+                            $('#NeighborhoodId').html('');
+
+                            for (var i = 0; i < result.length; i++) {
+                                var html = '<option value=' + result[i].Id + '>' + result[i].Neighborhood + '</option>';
+                                console.log(i);
+                                $('#NeighborhoodId').append(html);
+                            }
+                        });
+                });
+        });
+    </script>
+}

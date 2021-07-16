@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Estates;
 using RealEstate.Services;
 
@@ -15,6 +17,12 @@ namespace RealEstate.Controllers
 
         public IActionResult Create(CreateEstateViewModel model)
         {
+            var dropdownData = this.EstateService.GetDropDownData();
+
+            model.EstateTypes = dropdownData.EstateTypeViewModels;
+            model.Currency = dropdownData.CurrencyViewModels;
+            model.Areas = dropdownData.Areas;
+
             return this.View(model);
         }
 
