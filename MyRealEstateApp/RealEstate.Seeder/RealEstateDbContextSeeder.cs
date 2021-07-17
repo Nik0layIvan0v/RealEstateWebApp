@@ -60,15 +60,15 @@ namespace RealEstate.Seeder
             "Саниран",
         };
 
-        private readonly List<string> TrateTypeData = new List<string>
+        private readonly List<string> TradeTypeData = new List<string>
         {
            "Купувам", "Продавам", "Наемам", "Заменям", "Съквартиранти"
         };
 
         private readonly List<string> RegionsData = new List<string>
         {
-            "Централна част на града", 
-            "Северена част на града", 
+            "Централна част на града",
+            "Северена част на града",
             "Източна част на града",
             "Южна част на града",
             "Западна част на града",
@@ -205,12 +205,12 @@ namespace RealEstate.Seeder
 
         private void InsertTradeTypes()
         {
-            if (this.Context.EstateTypes.Any())
+            if (this.Context.TradeTypes.Any())
             {
                 return;
             }
 
-            foreach (var tradeType in TrateTypeData)
+            foreach (var tradeType in TradeTypeData)
             {
                 this.Context.TradeTypes.Add(new TradeType
                 {

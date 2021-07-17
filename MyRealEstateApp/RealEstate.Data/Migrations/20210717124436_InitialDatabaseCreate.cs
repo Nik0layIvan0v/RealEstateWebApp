@@ -11,7 +11,8 @@ namespace RealEstate.Data.Migrations
                 name: "Areas",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AreaName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -99,9 +100,10 @@ namespace RealEstate.Data.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CityName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AreaId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AreaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,9 +250,10 @@ namespace RealEstate.Data.Migrations
                 name: "Neighborhoods",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CityId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CityId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,12 +282,13 @@ namespace RealEstate.Data.Migrations
                     Floor = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    CurrencyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    CurrencyId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EstateTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TradeTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AreaId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NeighborhoodId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AreaId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    NeighborhoodId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,11 +306,11 @@ namespace RealEstate.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Estates_Currencies_CurrencyId",
-                        column: x => x.CurrencyId,
+                        name: "FK_Estates_Currencies_CurrencyId1",
+                        column: x => x.CurrencyId1,
                         principalTable: "Currencies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Estates_EstateTypes_EstateTypeId",
                         column: x => x.EstateTypeId,
@@ -318,7 +322,7 @@ namespace RealEstate.Data.Migrations
                         column: x => x.NeighborhoodId,
                         principalTable: "Neighborhoods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Estates_TradeTypes_TradeTypeId",
                         column: x => x.TradeTypeId,
@@ -541,9 +545,9 @@ namespace RealEstate.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estates_CurrencyId",
+                name: "IX_Estates_CurrencyId1",
                 table: "Estates",
-                column: "CurrencyId");
+                column: "CurrencyId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Estates_EstateTypeId",

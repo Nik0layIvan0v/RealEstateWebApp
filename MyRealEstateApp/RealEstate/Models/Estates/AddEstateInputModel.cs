@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RealEstate.Services.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Models.Estates
 {
     using static Common.DataBaseAttributesConstants;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class AddEstateInputModel
     {
@@ -25,24 +23,30 @@ namespace RealEstate.Models.Estates
         [Display(Name = "Currency:")]
         public string CurrencyId { get; set; }
 
+        public CurrencyViewModel Currency { get; set; }
+
         [Display(Name = "Estate Type:")]
         public string EstateTypeId { get; set; }
 
-        [Required]
         [Display(Name = "Area:")]
-        public string AreaId { get; set; }
+        public int AreaId { get; set; }
 
-        [Required]
+
         [Display(Name = "CityName:")]
-        public string CityId { get; set; }
+        public int CityId { get; set; }
 
-        [Required]
         [Display(Name = "Neighborhood:")]
-        public string NeighborhoodId { get; set; }
+        public int NeighborhoodId { get; set; }
 
         [Required]
         [MaxLength(MaxDescriptionLength)]
         [Display(Name = "Description:")]
         public string Description { get; set; }
+
+        public IEnumerable<EstateTypeViewModel> EstateTypeViewModels { get; set; }
+
+        public IEnumerable<CurrencyViewModel> CurrencyViewModels { get; set; }
+
+        public IEnumerable<AreaViewModel> AreasViewModels { get; set; }
     }
 }

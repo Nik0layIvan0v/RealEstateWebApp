@@ -41,8 +41,7 @@
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
 
-        [Required]
-        public string CurrencyId { get; set; }
+        public int CurrencyId { get; set; }
 
         public Currency Currency { get; set; }
 
@@ -56,17 +55,15 @@
 
         public TradeType TradeType { get; set; }
 
-        [Required]
-        public string AreaId { get; set; }
+        public int AreaId { get; set; }
 
         public Area Area { get; set; }
 
-        [Required]
-        public string CityId { get; set; }
+        public int CityId { get; set; }
 
         public City City { get; set; }
 
-        public string NeighborhoodId { get; set; }
+        public int NeighborhoodId { get; set; }
 
         public Neighborhood Neighborhood { get; set; }
 

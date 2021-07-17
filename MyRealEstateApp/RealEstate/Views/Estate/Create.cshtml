@@ -1,4 +1,4 @@
-﻿@model CreateEstateViewModel
+﻿@model AddEstateInputModel
 
 @{
     ViewData["Title"] = "Create";
@@ -30,7 +30,7 @@
             <div class="form-group col-sm">
                 <label asp-for="CurrencyId"></label>
                 <select asp-for="CurrencyId" class="form-control">
-                    @foreach (var currency in Model.Currency)
+                    @foreach (var currency in Model.CurrencyViewModels)
                     {
                         <option value="@currency.Id">@currency.CurrencyValue</option>
                     }
@@ -41,7 +41,7 @@
             <div class="form-group col-sm">
                 <label asp-for="EstateTypeId"></label>
                 <select asp-for="EstateTypeId" class="form-control">
-                    @foreach (var estate in Model.EstateTypes)
+                    @foreach (var estate in Model.EstateTypeViewModels)
                     {
                         <option value="@estate.Id">@estate.Type</option>
                     }
@@ -50,7 +50,7 @@
             <div class="form-group col-sm">
                 <label asp-for="AreaId"></label>
                 <select asp-for="AreaId" class="form-control">
-                    @foreach (var area in Model.Areas)
+                    @foreach (var area in Model.AreasViewModels)
                     {
                         <option value="@area.Id">@area.Area</option>
                     }

@@ -4,13 +4,15 @@
     using System.ComponentModel.DataAnnotations;
     using static Common.DataBaseAttributesConstants;
 
-    public class Area : BaseEntity
+    public class Area
     {
         public Area()
         {
             this.Estates = new HashSet<Estate>();
             this.Cities = new HashSet<City>();
         }
+
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(AreaMaxNameLength)]

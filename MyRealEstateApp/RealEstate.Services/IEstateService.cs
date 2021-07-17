@@ -1,28 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using RealEstate.Services.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RealEstate.Services
 {
     public interface IEstateService
     {
-        IEnumerable<string> GetAllEstates();
+        CreateEstateDropDownViewModel GetDropDownData();
 
-        IEnumerable<string> GetByCategory();
+        //IEnumerable<string> GetAllEstates();
 
-        IEnumerable<string> GetByUserIdAsync();
+        //IEnumerable<string> GetByCategory();
 
-        IEnumerable<string> GetBySearchAsync();
+        //IEnumerable<string> GetByUserIdAsync();
 
-        IEnumerable<string> GetByCategoryIdAsync();
+        //IEnumerable<string> GetBySearchAsync();
 
         void CreateEstate();
 
-        void EstateDetails(string id); //<= return model
+        //void EstateDetails(string id); //<= return model
 
-        void DeleteEstate(string id);
+        //void DeleteEstate(string id);
 
-        void EditEstate(string ids);
+        //void EditEstate(string ids);
 
-        void ArchiveEstate(string id);
+        //void ArchiveEstate(string id);
+        Task<IEnumerable<CityViewModel>> GetCitiesByAreaIdAsync(int id);
 
+        Task<IEnumerable<NeighborhoodViewModel>> GetNeighborhoodsByCityIdAsync(int id);
     }
 }

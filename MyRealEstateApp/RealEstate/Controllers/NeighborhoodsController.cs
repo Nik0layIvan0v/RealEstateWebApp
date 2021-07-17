@@ -21,7 +21,7 @@
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<NeighborhoodViewModel>>> GetNeighborhoodByCity([FromQuery]string id)
+        public async Task<ActionResult<IEnumerable<NeighborhoodViewModel>>> GetNeighborhoodByCity([FromQuery]int id)
         {
             IEnumerable<NeighborhoodViewModel> neighborhoods = await this.Service.GetNeighborhoodsByCityIdAsync(id);
 

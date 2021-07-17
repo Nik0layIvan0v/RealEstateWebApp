@@ -10,7 +10,7 @@ using RealEstate.Data;
 namespace RealEstate.Data.Migrations
 {
     [DbContext(typeof(RealEstateDbContext))]
-    [Migration("20210713141715_InitialDatabaseCreate")]
+    [Migration("20210717124436_InitialDatabaseCreate")]
     partial class InitialDatabaseCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -225,8 +225,10 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("RealEstate.Models.Area", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AreaName")
                         .IsRequired()
@@ -240,12 +242,13 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("RealEstate.Models.City", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AreaId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AreaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CityName")
                         .IsRequired()
@@ -303,22 +306,22 @@ namespace RealEstate.Data.Migrations
                     b.Property<DateTime?>("ArchivedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("AreaId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AreaId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("BannedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CityId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrencyId")
-                        .IsRequired()
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrencyId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -342,8 +345,8 @@ namespace RealEstate.Data.Migrations
                     b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
 
-                    b.Property<string>("NeighborhoodId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NeighborhoodId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -364,7 +367,7 @@ namespace RealEstate.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("CurrencyId");
+                    b.HasIndex("CurrencyId1");
 
                     b.HasIndex("EstateTypeId");
 
@@ -446,12 +449,13 @@ namespace RealEstate.Data.Migrations
 
             modelBuilder.Entity("RealEstate.Models.Neighborhood", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CityId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -662,9 +666,7 @@ namespace RealEstate.Data.Migrations
 
                     b.HasOne("RealEstate.Models.Currency", "Currency")
                         .WithMany("Estates")
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CurrencyId1");
 
                     b.HasOne("RealEstate.Models.EstateType", "EstateType")
                         .WithMany("Estates")
@@ -674,7 +676,9 @@ namespace RealEstate.Data.Migrations
 
                     b.HasOne("RealEstate.Models.Neighborhood", "Neighborhood")
                         .WithMany()
-                        .HasForeignKey("NeighborhoodId");
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RealEstate.Models.TradeType", "TradeType")
                         .WithMany("Estates")

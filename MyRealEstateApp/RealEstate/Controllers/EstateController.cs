@@ -18,13 +18,13 @@ namespace RealEstate.Controllers
 
         public IActionResult Create()
         {
-            CreateEstateViewModel model = new CreateEstateViewModel();
-
             var dropdownData = this.EstateService.GetDropDownData();
 
-            model.EstateTypes = dropdownData.EstateTypeViewModels;
-            model.Currency = dropdownData.CurrencyViewModels;
-            model.Areas = dropdownData.Areas;
+            AddEstateInputModel model = new AddEstateInputModel();;
+
+            model.EstateTypeViewModels = dropdownData.EstateTypeViewModels;
+            model.CurrencyViewModels = dropdownData.CurrencyViewModels;
+            model.AreasViewModels = dropdownData.Areas;
 
             return this.View(model);
         }
@@ -34,13 +34,16 @@ namespace RealEstate.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var dropdownData = this.EstateService.GetDropDownData();
+                model.EstateTypeViewModels = dropdownData.EstateTypeViewModels;
+                model.CurrencyViewModels = dropdownData.CurrencyViewModels;
+                model.AreasViewModels = dropdownData.Areas;
+
                 return this.Create();
             };
 
             return this.Redirect("/");
         }
-
-
 
         public IActionResult Details(string id)
         {
