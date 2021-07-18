@@ -8,7 +8,7 @@ namespace RealEstate.Services
     {
         CreateEstateDropDownModel GetDropDownData();
 
-        int CreateEstate(EstateModel model);
+        string CreateEstate(EstateModel model);
 
         Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id);
 

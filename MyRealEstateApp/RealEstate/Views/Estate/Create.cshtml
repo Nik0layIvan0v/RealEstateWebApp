@@ -10,6 +10,17 @@
     </div>
     <form method="post" asp-controller="Estate" asp-action="Create">
         <div class="row">
+            <div class="form-group col-md-4">
+                <label asp-for="TypeOfTradeId"></label>
+                <select asp-for="TypeOfTradeId" class="form-control">
+                    @foreach (var trade in Model.TypeOfDeals)
+                    {
+                        <option value="@trade.Id">@trade.TypeOfTrade</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
             <div class="form-group col-sm">
                 <label asp-for="Squaring"></label>
                 <input asp-for="Squaring" class="form-control">
@@ -78,28 +89,22 @@
                 <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col">
-                <label asp-for="TypeOfTradeId"></label>
-                <select asp-for="TypeOfTradeId" class="form-control">
-                    @foreach (var trade in Model.TypeOfDeals)
-                    {
-                        <option value="@trade.Id">@trade.TypeOfTrade</option>
-                    }
-                </select>
-            </div>
-        </div>
-        <div class="row">
+        <div class="container">
             <div class="form-group">
-                @for (int i = 0; i < Model.FutureModels.Count(); i++)
-                {
-                    <input type="hidden" asp-for="@Model.FutureModels[i].Id"/>
-                    <p>@Model.FutureModels[i].FutureDescription</p>
-                    <input asp-for="@Model.FutureModels[i].IsChecked"/>
-                }
+                <h3>Add Futures:</h3>
+                <div class="row">
+                    @for (int i = 0; i < Model.FutureModels.Count(); i++)
+                    {
+                        <div class="form-check col-sm-3">
+                            <input class="form-check-input" type="checkbox" asp-for="@Model.FutureModels[i].IsChecked" />
+                            <label class="form-check-label">@Model.FutureModels[i].FutureDescription</label>
+                            <input type="hidden" asp-for="@Model.FutureModels[i].Id" />
+                        </div>
+                    }
+                </div>
             </div>
         </div>
-        <div class="row container">
+        <div class="row container pt-2">
             <div class="form-group">
                 <input class="btn btn-primary text-center" type="submit" value="Create" />
             </div>

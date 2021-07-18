@@ -73,7 +73,7 @@ namespace RealEstate.Services
             return dropDownElements;
         }
 
-        public int CreateEstate(EstateModel model)
+        public string CreateEstate(EstateModel model)
         {
             Estate estate = new Estate
             {
@@ -93,6 +93,7 @@ namespace RealEstate.Services
                 Area = Context.Areas.FirstOrDefault(x=>x.Id == model.AreaId),
                 City = Context.Cities.FirstOrDefault(x=> x.Id == model.CityId),
                 Neighborhood = Context.Neighborhoods.FirstOrDefault(x=>x.Id== model.NeighborhoodId),
+                Currency = Context.Currencies.FirstOrDefault(x=>x.Id == model.CurrencyId)
 
             };
 
@@ -108,7 +109,9 @@ namespace RealEstate.Services
 
             this.Context.Estates.Add(estate);
 
-            return this.Context.SaveChanges();
+            this.Context.SaveChanges();
+
+            return estate.Id;
         }
 
         public async Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id)

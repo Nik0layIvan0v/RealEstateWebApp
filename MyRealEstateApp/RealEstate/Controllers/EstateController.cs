@@ -49,7 +49,7 @@ namespace RealEstate.Controllers
             };
 
 
-            this.EstateService.CreateEstate(new EstateModel
+            string estateId = this.EstateService.CreateEstate(new EstateModel
             {
                 Squaring = model.Squaring,
                 Floor = model.Floor,
@@ -64,7 +64,7 @@ namespace RealEstate.Controllers
                 SelectedFutures = model.FutureModels
             });
 
-            return this.Redirect("/Estate/Details{}");
+            return this.Redirect($"/Estate/Details?id={estateId}");
         }
 
         public IActionResult Details(string id)
@@ -78,7 +78,7 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit() //<= model!
+        public IActionResult Edit()
         {
             return this.Redirect("Estate/Details");
         }
@@ -91,7 +91,7 @@ namespace RealEstate.Controllers
 
         public IActionResult All()
         {
-            return this.Ok();
+            return this.View();
         }
     }
 }
