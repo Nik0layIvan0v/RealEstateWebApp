@@ -1,17 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Services.Models
 {
     public class EstateModel
     {
+       
         public decimal Squaring { get; set; }
 
         public int Floor { get; set; }
 
         public decimal Price { get; set; }
 
+        [Required]
         public string CurrencyId { get; set; }
 
+        [Required]
         public string EstateTypeId { get; set; }
 
         public int AreaId { get; set; }
@@ -20,8 +24,10 @@ namespace RealEstate.Services.Models
 
         public int NeighborhoodId { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string TypeOfTradeId { get; set; }   
 
         public List<FutureModel> SelectedFutures { get; set; }

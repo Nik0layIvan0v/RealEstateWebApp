@@ -2,15 +2,48 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["title"] = "My Properties";
 }
 
-<div class="card-group">
-    <div class="card">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+<div class="container">
+    <h3 class="pb-3">My Properties: </h3>
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="card-group">
+                <div class="card">
+                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
+                    <div class="card-body">
+                        <h5 class="card-title">Продава</h5> @*Title*@
+                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
+                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-group">
+                <div class="card">
+                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
+                    <div class="card-body">
+                        <h5 class="card-title">Продава</h5> @*Title*@
+                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
+                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-group">
+                <div class="card">
+                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
+                    <div class="card-body">
+                        <h5 class="card-title">Продава</h5> @*Title*@
+                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
+                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
