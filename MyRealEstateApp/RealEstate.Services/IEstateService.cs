@@ -6,7 +6,13 @@ namespace RealEstate.Services
 {
     public interface IEstateService
     {
-        CreateEstateDropDownViewModel GetDropDownData();
+        CreateEstateDropDownModel GetDropDownData();
+
+        int CreateEstate(EstateModel model);
+
+        Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id);
+
+        Task<IEnumerable<NeighborhoodModel>> GetNeighborhoodsByCityIdAsync(int id);
 
         //IEnumerable<string> GetAllEstates();
 
@@ -16,8 +22,6 @@ namespace RealEstate.Services
 
         //IEnumerable<string> GetBySearchAsync();
 
-        void CreateEstate();
-
         //void EstateDetails(string id); //<= return model
 
         //void DeleteEstate(string id);
@@ -25,8 +29,5 @@ namespace RealEstate.Services
         //void EditEstate(string ids);
 
         //void ArchiveEstate(string id);
-        Task<IEnumerable<CityViewModel>> GetCitiesByAreaIdAsync(int id);
-
-        Task<IEnumerable<NeighborhoodViewModel>> GetNeighborhoodsByCityIdAsync(int id);
     }
 }

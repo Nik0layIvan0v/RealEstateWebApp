@@ -282,8 +282,7 @@ namespace RealEstate.Data.Migrations
                     Floor = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    CurrencyId = table.Column<int>(type: "int", nullable: false),
-                    CurrencyId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CurrencyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EstateTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TradeTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AreaId = table.Column<int>(type: "int", nullable: false),
@@ -306,8 +305,8 @@ namespace RealEstate.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Estates_Currencies_CurrencyId1",
-                        column: x => x.CurrencyId1,
+                        name: "FK_Estates_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -545,9 +544,9 @@ namespace RealEstate.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Estates_CurrencyId1",
+                name: "IX_Estates_CurrencyId",
                 table: "Estates",
-                column: "CurrencyId1");
+                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Estates_EstateTypeId",

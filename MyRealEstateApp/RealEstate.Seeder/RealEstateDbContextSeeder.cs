@@ -143,7 +143,6 @@ namespace RealEstate.Seeder
             this.InsertFutures();
             this.InsertTradeTypes();
             this.InsertRegions();
-
         }
 
         private void InsertPropertyTypes()

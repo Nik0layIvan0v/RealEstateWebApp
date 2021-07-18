@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Estates;
 using RealEstate.Services;
+using RealEstate.Services.Models;
 
 namespace RealEstate.Controllers
 {
@@ -11,7 +11,7 @@ namespace RealEstate.Controllers
     {
         private readonly IEstateService EstateService;
 
-        public EstateController(IEstateService estateService) //<== service
+        public EstateController(IEstateService estateService)
         {
             this.EstateService = estateService;
         }
@@ -22,27 +22,49 @@ namespace RealEstate.Controllers
 
             AddEstateInputModel model = new AddEstateInputModel();;
 
-            model.EstateTypeViewModels = dropdownData.EstateTypeViewModels;
-            model.CurrencyViewModels = dropdownData.CurrencyViewModels;
+            model.EstateTypeViewModels = dropdownData.EstateTypeModels;
+            model.CurrencyViewModels = dropdownData.CurrencyModels;
             model.AreasViewModels = dropdownData.Areas;
+            model.TypeOfDeals = dropdownData.TradeTypeModels;
+            model.FutureModels = dropdownData.FutureModels.ToList();
 
             return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(AddEstateInputModel model) //<= model from form!
+        public IActionResult Create(AddEstateInputModel model)
         {
+            model.FutureModels.RemoveAll(x => x.IsChecked == false);
+
             if (!ModelState.IsValid)
             {
                 var dropdownData = this.EstateService.GetDropDownData();
-                model.EstateTypeViewModels = dropdownData.EstateTypeViewModels;
-                model.CurrencyViewModels = dropdownData.CurrencyViewModels;
+                model.EstateTypeViewModels = dropdownData.EstateTypeModels;
+                model.CurrencyViewModels = dropdownData.CurrencyModels;
                 model.AreasViewModels = dropdownData.Areas;
+                model.TypeOfDeals = dropdownData.TradeTypeModels;
+                model.FutureModels = dropdownData.FutureModels.ToList();
 
                 return this.Create();
             };
 
-            return this.Redirect("/");
+
+            this.EstateService.CreateEstate(new EstateModel
+            {
+                Squaring = model.Squaring,
+                Floor = model.Floor,
+                Price = model.Price,
+                CurrencyId = model.CurrencyId,
+                EstateTypeId = model.EstateTypeId,
+                AreaId = model.AreaId,
+                CityId = model.CityId,
+                NeighborhoodId = model.NeighborhoodId,
+                Description = model.Description,
+                TypeOfTradeId = model.TypeOfTradeId,
+                SelectedFutures = model.FutureModels
+            });
+
+            return this.Redirect("/Estate/Details{}");
         }
 
         public IActionResult Details(string id)

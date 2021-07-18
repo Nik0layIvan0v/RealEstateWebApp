@@ -1,6 +1,7 @@
 ﻿using RealEstate.Services.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RealEstate.Models.Estates
 {
@@ -23,7 +24,7 @@ namespace RealEstate.Models.Estates
         [Display(Name = "Currency:")]
         public string CurrencyId { get; set; }
 
-        public CurrencyViewModel Currency { get; set; }
+        public CurrencyModel Currency { get; set; }
 
         [Display(Name = "Estate Type:")]
         public string EstateTypeId { get; set; }
@@ -43,10 +44,20 @@ namespace RealEstate.Models.Estates
         [Display(Name = "Description:")]
         public string Description { get; set; }
 
-        public IEnumerable<EstateTypeViewModel> EstateTypeViewModels { get; set; }
+        [Required]
+        [Display(Name = "Type Of trade:")]
+        public string TypeOfTradeId { get; set; }
 
-        public IEnumerable<CurrencyViewModel> CurrencyViewModels { get; set; }
+        //public List<FutureModel> FuturesId { get; set; }
 
-        public IEnumerable<AreaViewModel> AreasViewModels { get; set; }
+        public IEnumerable<EstateTypeModel> EstateTypeViewModels { get; set; }
+
+        public IEnumerable<TradeTypeModel> TypeOfDeals { get; set; }
+
+        public IEnumerable<CurrencyModel> CurrencyViewModels { get; set; }
+
+        public IEnumerable<AreaModel> AreasViewModels { get; set; }
+
+        public List<FutureModel> FutureModels { get; set; }
     }
 }

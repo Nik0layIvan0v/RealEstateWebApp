@@ -2,11 +2,11 @@
 
 namespace RealEstate.Services.Models
 {
-    public class CityViewModel
+    public class EstateTypeModel
     {
-        public int Id { get; set; }
-
         [Required]
-        public string CityName { get; set; }
+        public string Id { get; set; }
+
+        public string Type { get; set; }
     }
 }

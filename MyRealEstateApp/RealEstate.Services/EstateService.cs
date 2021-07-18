@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
+using RealEstate.Models;
 using RealEstate.Services.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,77 +19,104 @@ namespace RealEstate.Services
             this.Context = context;
         }
 
-        public CreateEstateDropDownViewModel GetDropDownData()
+        public CreateEstateDropDownModel GetDropDownData()
         {
-            ICollection<AreaViewModel> areasViewModels = this.Context.Areas
-                .Select(x => new AreaViewModel
+            ICollection<AreaModel> areaModels = this.Context.Areas
+                .Select(x => new AreaModel
                 {
                     Id = x.Id,
                     Area = x.AreaName
                 })
                 .ToArray();
 
-            ICollection<EstateTypeViewModel> estateTypeViewModels = this.Context.EstateTypes
-                .Select(x => new EstateTypeViewModel
+            ICollection<EstateTypeModel> estateTypeModels = this.Context.EstateTypes
+                .Select(x => new EstateTypeModel
                 {
                     Id = x.Id,
                     Type = x.TypeOfProperty
                 })
                 .ToArray();
 
-            IEnumerable<CurrencyViewModel> currencyViewModels = this.Context.Currencies
-                .Select(x => new CurrencyViewModel
+            IEnumerable<CurrencyModel> currencyModels = this.Context.Currencies
+                .Select(x => new CurrencyModel
                 {
                     Id = x.Id,
                     CurrencyValue = x.CurrencyCode
                 })
                 .ToArray();
 
-            CreateEstateDropDownViewModel dropDownElements = new CreateEstateDropDownViewModel
+            IEnumerable<TradeTypeModel> tradeTypes = this.Context.TradeTypes
+                .Select(x => new TradeTypeModel
+                {
+                    Id = x.Id,
+                   TypeOfTrade = x.TypeOfTransaction
+                })
+                .ToList();
+
+            IEnumerable<FutureModel> futureModels = this.Context.Features
+                .Select(f => new FutureModel
+                {
+                    Id = f.Id,
+                    FutureDescription = f.FutureDescription
+                })
+                .ToList();
+
+            CreateEstateDropDownModel dropDownElements = new CreateEstateDropDownModel
             {
-                Areas = areasViewModels,
-                EstateTypeViewModels = estateTypeViewModels,
-                CurrencyViewModels = currencyViewModels,
+                Areas = areaModels,
+                EstateTypeModels = estateTypeModels,
+                CurrencyModels = currencyModels,
+                TradeTypeModels = tradeTypes,
+                FutureModels = futureModels
             };
 
             return dropDownElements;
         }
 
-        public IEnumerable<string> GetAllEstates()
+        public int CreateEstate(EstateModel model)
         {
-            throw new NotImplementedException();
+            Estate estate = new Estate
+            {
+                Squaring = model.Squaring,
+                CreatedOn = DateTime.UtcNow,
+                EditedOn = null,
+                IsArchived = false,
+                ArchivedOn = null,
+                ReportedOn = null,
+                IsBanned = false,
+                BannedOn = null,
+                Floor = model.Floor,
+                Price = model.Price,
+                Description = model.Description,
+                EstateType = Context.EstateTypes.FirstOrDefault(x=> x.Id == model.EstateTypeId),
+                TradeType = Context.TradeTypes.FirstOrDefault(x=> x.Id == model.TypeOfTradeId),
+                Area = Context.Areas.FirstOrDefault(x=>x.Id == model.AreaId),
+                City = Context.Cities.FirstOrDefault(x=> x.Id == model.CityId),
+                Neighborhood = Context.Neighborhoods.FirstOrDefault(x=>x.Id== model.NeighborhoodId),
+
+            };
+
+            foreach (var selectedFuture in model.SelectedFutures)
+            {
+                Feature feature = Context.Features.FirstOrDefault(x => x.Id == selectedFuture.Id);
+
+                if (feature != null)
+                {
+                    estate.Features.Add(feature);
+                }
+            }
+
+            this.Context.Estates.Add(estate);
+
+            return this.Context.SaveChanges();
         }
 
-        public IEnumerable<string> GetByCategory()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetByUserIdAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetBySearchAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> GetByCategoryIdAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateEstate()
-        {
-        }
-
-        public async Task<IEnumerable<CityViewModel>> GetCitiesByAreaIdAsync(int id)
+        public async Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id)
         {
             return await this.Context
                 .Cities
                 .Where(x => x.AreaId == id)
-                .Select(c => new CityViewModel
+                .Select(c => new CityModel
                 {
                     Id = c.Id,
                     CityName = c.CityName
@@ -95,45 +124,17 @@ namespace RealEstate.Services
                 .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<NeighborhoodViewModel>> GetNeighborhoodsByCityIdAsync(int id)
+        public async Task<IEnumerable<NeighborhoodModel>> GetNeighborhoodsByCityIdAsync(int id)
         {
-           return await this.Context
-                .Neighborhoods
-                .Where(c => c.City.Id == id )
-                .Select(n => new NeighborhoodViewModel
-                {
-                    Id = n.Id,
-                    Neighborhood = n.Name
-                })
-                .ToArrayAsync();
-        }
-
-        public void EstateDetails(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteEstate(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditEstate(string ids)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ArchiveEstate(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GetPropertyTypes()
-        {
-        }
-
-        public void GetCurrenciesTypes()
-        {
+            return await this.Context
+                 .Neighborhoods
+                 .Where(c => c.City.Id == id)
+                 .Select(n => new NeighborhoodModel
+                 {
+                     Id = n.Id,
+                     Neighborhood = n.Name
+                 })
+                 .ToArrayAsync();
         }
 
     }

@@ -316,10 +316,7 @@ namespace RealEstate.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CurrencyId1")
+                    b.Property<string>("CurrencyId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -365,7 +362,7 @@ namespace RealEstate.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.HasIndex("CurrencyId1");
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("EstateTypeId");
 
@@ -664,7 +661,7 @@ namespace RealEstate.Data.Migrations
 
                     b.HasOne("RealEstate.Models.Currency", "Currency")
                         .WithMany("Estates")
-                        .HasForeignKey("CurrencyId1");
+                        .HasForeignKey("CurrencyId");
 
                     b.HasOne("RealEstate.Models.EstateType", "EstateType")
                         .WithMany("Estates")

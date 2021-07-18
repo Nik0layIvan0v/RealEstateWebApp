@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using RealEstate.Data;
-using RealEstate.Seeder;
-
-namespace RealEstate.Infrastructure
+﻿namespace RealEstate.Infrastructure
 {
+    using Data;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+    using Seeder;
+
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
@@ -14,7 +14,6 @@ namespace RealEstate.Infrastructure
 
             var database = scopedServices.ServiceProvider.GetService<RealEstateDbContext>();
 
-            database.Database.EnsureDeleted();
             database.Database.Migrate();
 
             ISeedDatabase seedDatabase = new RealEstateDbContextSeeder(database);

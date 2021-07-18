@@ -41,7 +41,7 @@
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
 
-        public int CurrencyId { get; set; }
+        public string CurrencyId { get; set; }
 
         public Currency Currency { get; set; }
 
