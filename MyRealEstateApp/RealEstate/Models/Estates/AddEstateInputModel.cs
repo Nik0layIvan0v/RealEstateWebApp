@@ -1,6 +1,7 @@
 ﻿using RealEstate.Services.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace RealEstate.Models.Estates
 {
@@ -59,5 +60,7 @@ namespace RealEstate.Models.Estates
         public IEnumerable<AreaModel> AreasViewModels { get; set; }
 
         public List<FutureModel> FutureModels { get; set; }
+
+        public List<IFormFile> ImageFiles { get; set; }
     }
 }

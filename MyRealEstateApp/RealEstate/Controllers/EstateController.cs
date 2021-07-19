@@ -1,9 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models.Estates;
 using RealEstate.Services;
 using RealEstate.Services.Models;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RealEstate.Controllers
 {
@@ -32,7 +34,7 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AddEstateInputModel model)
+        public async Task<IActionResult> Create(AddEstateInputModel model)
         {
             model.FutureModels.RemoveAll(x => x.IsChecked == false);
 
@@ -48,8 +50,7 @@ namespace RealEstate.Controllers
                 return this.Create();
             };
 
-
-            string estateId = this.EstateService.CreateEstate(new EstateModel
+            EstateModel estate = new EstateModel
             {
                 Squaring = model.Squaring,
                 Floor = model.Floor,
@@ -62,10 +63,28 @@ namespace RealEstate.Controllers
                 Description = model.Description,
                 TypeOfTradeId = model.TypeOfTradeId,
                 SelectedFutures = model.FutureModels
-            });
+            };
+
+            estate.Images = new List<byte[]>();
+
+            foreach (var imageFile in model.ImageFiles)
+            {
+                await using var temp = imageFile.OpenReadStream();
+
+                await using var ms = new MemoryStream();
+
+                await temp.CopyToAsync(ms);
+
+                byte[] readedBytes = ms.ToArray();
+
+                estate.Images.Add(readedBytes);
+            }
+
+            string estateId = await this.EstateService.CreateEstate(estate);
 
             return this.Redirect($"/Estate/Details?id={estateId}");
         }
+
         public async Task<IActionResult> All([FromQuery] AllEstateQueryModel queryEstateModel)
         {
             queryEstateModel.EstateListingViewModels = await EstateService.GetAllEstatesAsync(queryEstateModel.CurrentPage, queryEstateModel.EstatesPerPage);

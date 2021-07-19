@@ -14,6 +14,7 @@
 
             var database = scopedServices.ServiceProvider.GetService<RealEstateDbContext>();
 
+            database.Database.EnsureDeleted();
             database.Database.Migrate();
 
             ISeedDatabase seedDatabase = new RealEstateDbContextSeeder(database);
