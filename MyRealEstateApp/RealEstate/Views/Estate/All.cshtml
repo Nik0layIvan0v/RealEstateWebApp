@@ -1,49 +1,55 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AllEstateQueryModel
 @{
-    ViewData["title"] = "My Properties";
+    ViewData["title"] = "All Properties";
+
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalEstates / Model.EstatesPerPage);
 }
 
-<div class="container">
-    <h3 class="pb-3">My Properties: </h3>
-    <div class="row align-items-center">
-        <div class="col">
-            <div class="card-group">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
-                    <div class="card-body">
-                        <h5 class="card-title">Продава</h5> @*Title*@
-                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
-                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
+@if (!Model.EstateListingViewModels.Any())
+{
+    <h2 class="text-center">Currently there is no estates in out database. Register as broker and add one.</h2>
+}
+else
+{
+    <div class="container">
+        <h3 class="pb-3">All Properties: </h3>
+        <div class="row align-items-center">
+            @foreach (var estate in Model.EstateListingViewModels)
+            {
+                <div class="col">
+                    <div class="card-group">
+                        <div class="card">
+                            <img class="card-img-top" src=@estate.Image alt="Card image cap"> @*Picture*@
+                            <div class="card-body">
+                                <h5 class="card-title">@estate.Title</h5> @*Title*@
+                                <p class="card-text">@estate.Description</p> @*Description*@
+                                <a asp-controller="Estate" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card-group">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
-                    <div class="card-body">
-                        <h5 class="card-title">Продава</h5> @*Title*@
-                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
-                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card-group">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1053&q=80" alt="Card image cap"> @*Picture*@
-                    <div class="card-body">
-                        <h5 class="card-title">Продава</h5> @*Title*@
-                        <p class="card-text">Страхотен имот в центъра на...</p> @*Description*@
-                        <a asp-controller="Estate" asp-action="Details" asp-route-id="" class="btn btn-primary">Details for property</a>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
-</div>
 
+    <div class="row pt-3">
+        <div class="col-md-6">
+            <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+               asp-controller="Estate"
+               asp-action="All"
+               asp-route-currentPage="@previousPage">Previous</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-primary float-right @(Model.CurrentPage >= maxPage ? "disabled" : string.Empty)"
+               asp-controller="Estate"
+               asp-action="All"
+               asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+        </div>
+    </div>
+}

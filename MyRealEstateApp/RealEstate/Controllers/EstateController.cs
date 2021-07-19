@@ -20,7 +20,7 @@ namespace RealEstate.Controllers
         {
             var dropdownData = this.EstateService.GetDropDownData();
 
-            AddEstateInputModel model = new AddEstateInputModel();;
+            AddEstateInputModel model = new AddEstateInputModel(); ;
 
             model.EstateTypeViewModels = dropdownData.EstateTypeModels;
             model.CurrencyViewModels = dropdownData.CurrencyModels;
@@ -66,6 +66,14 @@ namespace RealEstate.Controllers
 
             return this.Redirect($"/Estate/Details?id={estateId}");
         }
+        public async Task<IActionResult> All([FromQuery] AllEstateQueryModel queryEstateModel)
+        {
+            queryEstateModel.EstateListingViewModels = await EstateService.GetAllEstatesAsync(queryEstateModel.CurrentPage, queryEstateModel.EstatesPerPage);
+
+            queryEstateModel.TotalEstates = await this.EstateService.GetCountOfAllEstatesAsync();
+
+            return this.View(queryEstateModel);
+        }
 
         public IActionResult Details(string id)
         {
@@ -89,9 +97,5 @@ namespace RealEstate.Controllers
             return this.Ok();
         }
 
-        public IActionResult All()
-        {
-            return this.View();
-        }
     }
 }

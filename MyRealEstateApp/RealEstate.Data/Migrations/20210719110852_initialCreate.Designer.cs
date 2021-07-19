@@ -10,8 +10,8 @@ using RealEstate.Data;
 namespace RealEstate.Data.Migrations
 {
     [DbContext(typeof(RealEstateDbContext))]
-    [Migration("20210718110916_InitialDatabaseCreate")]
-    partial class InitialDatabaseCreate
+    [Migration("20210719110852_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

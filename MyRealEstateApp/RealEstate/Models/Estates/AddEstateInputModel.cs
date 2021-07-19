@@ -50,8 +50,6 @@ namespace RealEstate.Models.Estates
         [Display(Name = "Type Of trade:")]
         public string TypeOfTradeId { get; set; }
 
-        //public List<FutureModel> FuturesId { get; set; }
-
         public IEnumerable<EstateTypeModel> EstateTypeViewModels { get; set; }
 
         public IEnumerable<TradeTypeModel> TypeOfDeals { get; set; }

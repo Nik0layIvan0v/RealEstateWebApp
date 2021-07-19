@@ -3,7 +3,6 @@ using RealEstate.Data;
 using RealEstate.Models;
 using RealEstate.Services.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +48,7 @@ namespace RealEstate.Services
                 .Select(x => new TradeTypeModel
                 {
                     Id = x.Id,
-                   TypeOfTrade = x.TypeOfTransaction
+                    TypeOfTrade = x.TypeOfTransaction
                 })
                 .ToList();
 
@@ -88,12 +87,12 @@ namespace RealEstate.Services
                 Floor = model.Floor,
                 Price = model.Price,
                 Description = model.Description,
-                EstateType = Context.EstateTypes.FirstOrDefault(x=> x.Id == model.EstateTypeId),
-                TradeType = Context.TradeTypes.FirstOrDefault(x=> x.Id == model.TypeOfTradeId),
-                Area = Context.Areas.FirstOrDefault(x=>x.Id == model.AreaId),
-                City = Context.Cities.FirstOrDefault(x=> x.Id == model.CityId),
-                Neighborhood = Context.Neighborhoods.FirstOrDefault(x=>x.Id== model.NeighborhoodId),
-                Currency = Context.Currencies.FirstOrDefault(x=>x.Id == model.CurrencyId)
+                EstateType = Context.EstateTypes.FirstOrDefault(x => x.Id == model.EstateTypeId),
+                TradeType = Context.TradeTypes.FirstOrDefault(x => x.Id == model.TypeOfTradeId),
+                Area = Context.Areas.FirstOrDefault(x => x.Id == model.AreaId),
+                City = Context.Cities.FirstOrDefault(x => x.Id == model.CityId),
+                Neighborhood = Context.Neighborhoods.FirstOrDefault(x => x.Id == model.NeighborhoodId),
+                Currency = Context.Currencies.FirstOrDefault(x => x.Id == model.CurrencyId)
 
             };
 
@@ -140,5 +139,29 @@ namespace RealEstate.Services
                  .ToArrayAsync();
         }
 
+        public async Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage)
+        {
+            if (!this.Context.Estates.Any())
+            {
+                return new EstateListingViewModel[0];
+            }
+
+            return await this.Context.Estates
+                .Skip((currentPage - 1) * estatesPerPage)
+                .Take(estatesPerPage)
+                .Select(x => new EstateListingViewModel
+                {
+                    Id = x.Id,
+                    Image = "Implement insert estate image!",
+                    Title = x.TradeType.TypeOfTransaction,
+                    Description = x.Description.Length < 30 ? x.Description : x.Description.Substring(0, 30) + "..."
+                })
+                .ToArrayAsync();
+        }
+
+        public async Task<int> GetCountOfAllEstatesAsync()
+        {
+            return await this.Context.Estates.CountAsync();
+        }
     }
 }
