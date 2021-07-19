@@ -31,5 +31,7 @@ namespace RealEstate.Services.Models
         public string TypeOfTradeId { get; set; }   
 
         public List<FutureModel> SelectedFutures { get; set; }
+
+        public List<byte[]> Images { get; set; }
     }
 }

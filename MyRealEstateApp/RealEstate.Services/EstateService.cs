@@ -72,7 +72,7 @@ namespace RealEstate.Services
             return dropDownElements;
         }
 
-        public string CreateEstate(EstateModel model)
+        public async Task<string> CreateEstate(EstateModel model)
         {
             Estate estate = new Estate
             {
@@ -87,14 +87,22 @@ namespace RealEstate.Services
                 Floor = model.Floor,
                 Price = model.Price,
                 Description = model.Description,
-                EstateType = Context.EstateTypes.FirstOrDefault(x => x.Id == model.EstateTypeId),
-                TradeType = Context.TradeTypes.FirstOrDefault(x => x.Id == model.TypeOfTradeId),
-                Area = Context.Areas.FirstOrDefault(x => x.Id == model.AreaId),
-                City = Context.Cities.FirstOrDefault(x => x.Id == model.CityId),
-                Neighborhood = Context.Neighborhoods.FirstOrDefault(x => x.Id == model.NeighborhoodId),
-                Currency = Context.Currencies.FirstOrDefault(x => x.Id == model.CurrencyId)
-
+                EstateType = await Context.EstateTypes.FirstOrDefaultAsync(x => x.Id == model.EstateTypeId),
+                TradeType = await Context.TradeTypes.FirstOrDefaultAsync(x => x.Id == model.TypeOfTradeId),
+                Area = await Context.Areas.FirstOrDefaultAsync(x => x.Id == model.AreaId),
+                City = await Context.Cities.FirstOrDefaultAsync(x => x.Id == model.CityId),
+                Neighborhood = await Context.Neighborhoods.FirstOrDefaultAsync(x => x.Id == model.NeighborhoodId),
+                Currency = await Context.Currencies.FirstOrDefaultAsync(x => x.Id == model.CurrencyId)
             };
+
+            foreach (var image in model.Images)
+            {
+                estate.Images.Add(new Image
+                {
+                    ImageContentBytes = image,
+                    EstateId = estate.Id,
+                });
+            }
 
             foreach (var selectedFuture in model.SelectedFutures)
             {
@@ -106,9 +114,9 @@ namespace RealEstate.Services
                 }
             }
 
-            this.Context.Estates.Add(estate);
+            await this.Context.Estates.AddAsync(estate);
 
-            this.Context.SaveChanges();
+            await this.Context.SaveChangesAsync();
 
             return estate.Id;
         }
@@ -152,7 +160,7 @@ namespace RealEstate.Services
                 .Select(x => new EstateListingViewModel
                 {
                     Id = x.Id,
-                    Image = "Implement insert estate image!",
+                    Image = x.Images.FirstOrDefault(),
                     Title = x.TradeType.TypeOfTransaction,
                     Description = x.Description.Length < 30 ? x.Description : x.Description.Substring(0, 30) + "..."
                 })
