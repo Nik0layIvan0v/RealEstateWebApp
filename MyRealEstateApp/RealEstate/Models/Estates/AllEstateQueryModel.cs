@@ -5,7 +5,7 @@ namespace RealEstate.Models.Estates
 {
     public class AllEstateQueryModel
     {
-        public int EstatesPerPage { get; set; }= 3;
+        public int EstatesPerPage { get; set; } = 6;
 
         public int CurrentPage { get; set; } = 1;
 

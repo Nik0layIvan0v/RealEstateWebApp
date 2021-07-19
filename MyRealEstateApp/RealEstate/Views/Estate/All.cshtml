@@ -19,12 +19,12 @@ else
 {
     <div class="container">
         <h3 class="pb-3">All Properties: </h3>
-        <div class="row align-items-center">
+        <div class="row">
             @foreach (var estate in Model.EstateListingViewModels)
             {
-                <div class="col">
+                <div class="col-md-4 col-sm-6">
                     <div class="card-group">
-                        <div class="card">
+                        <div class="card mb-3 ">
                             <img class="card-img-top" src=@estate.Image alt="Card image cap"> @*Picture*@
                             <div class="card-body">
                                 <h5 class="card-title">@estate.Title</h5> @*Title*@
@@ -38,18 +38,20 @@ else
         </div>
     </div>
 
-    <div class="row pt-3">
-        <div class="col-md-6">
-            <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-               asp-controller="Estate"
-               asp-action="All"
-               asp-route-currentPage="@previousPage">Previous</a>
-        </div>
-        <div class="col-md-6">
-            <a class="btn btn-primary float-right @(Model.CurrentPage >= maxPage ? "disabled" : string.Empty)"
-               asp-controller="Estate"
-               asp-action="All"
-               asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+    <div class="container">
+        <div class="row pt-3 pb-2">
+            <div class="col text-left">
+                <a class="btn btn-primary btn-sm @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+                   asp-controller="Estate"
+                   asp-action="All"
+                   asp-route-currentPage="@previousPage">Previous</a>
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-primary btn-sm @(Model.CurrentPage >= maxPage ? "disabled" : string.Empty)"
+                   asp-controller="Estate"
+                   asp-action="All"
+                   asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+            </div>
         </div>
     </div>
 }
