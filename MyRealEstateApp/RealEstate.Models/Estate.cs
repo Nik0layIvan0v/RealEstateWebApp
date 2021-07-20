@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using static Common.DataBaseAttributesConstants;
+    using static Common.GlobalConstants;
 
     public class Estate : BaseEntity
     {

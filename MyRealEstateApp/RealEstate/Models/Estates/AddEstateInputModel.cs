@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace RealEstate.Models.Estates
 {
-    using static Common.DataBaseAttributesConstants;
+    using static Common.GlobalConstants;
 
     public class AddEstateInputModel
     {

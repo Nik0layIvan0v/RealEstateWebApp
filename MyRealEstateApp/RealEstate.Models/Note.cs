@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using static Common.DataBaseAttributesConstants;
+    using static Common.GlobalConstants;
 
     /// <summary>
     /// This entity is when user want to write some notes for property

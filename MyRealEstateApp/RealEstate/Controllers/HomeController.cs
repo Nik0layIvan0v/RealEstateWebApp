@@ -12,7 +12,7 @@
         public HomeController(ILogger<HomeController> logger)
             => Logger = logger;
 
-        public IActionResult Index() //<= show all properties
+        public IActionResult Index() //<= show show last 3 added properties in carousel
         {
             
             return View();

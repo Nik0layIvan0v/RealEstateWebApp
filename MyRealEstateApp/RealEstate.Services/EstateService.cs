@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static RealEstate.Common.DataBaseAttributesConstants;
+using static RealEstate.Common.GlobalConstants;
 
 namespace RealEstate.Services
 {

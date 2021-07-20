@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using static Common.DataBaseAttributesConstants;
+    using static Common.GlobalConstants;
 
     public class Report : BaseEntity
     {
@@ -21,7 +21,7 @@
 
         public Estate ReportedEstate { get; set; }
 
-        [MaxLength(ReportDescriptionMaxLength)]
+        [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
 
         [Required]

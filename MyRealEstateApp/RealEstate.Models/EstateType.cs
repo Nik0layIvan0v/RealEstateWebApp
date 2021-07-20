@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
-    using static Common.DataBaseAttributesConstants;
+    using static Common.GlobalConstants;
 
     public class EstateType : BaseEntity
     {
