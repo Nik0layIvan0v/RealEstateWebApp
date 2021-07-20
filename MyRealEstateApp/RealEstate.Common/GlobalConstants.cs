@@ -8,8 +8,8 @@ namespace RealEstate.Common
     {
         #region Area
 
-        public const int AreaMaxNameLength = 50;
-        public const int AreaMinNameLength = 10;
+        public const int MaxAreaNameLength = 50;
+        public const int MinAreaNameLegth = 10;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace RealEstate.Common
         #region EstateType
 
         public const int MaxEstateTypeLength = 50;
-
+        public const int MinEstateTypeLength = 20;
         #endregion
 
         #region Future
@@ -57,7 +57,7 @@ namespace RealEstate.Common
         #region Note
 
         public const int MaxNoteLength = 100;
-        public const int MinNoteLength = 100;
+        public const int MinNoteLength = 1;
 
         #endregion
 
@@ -73,5 +73,10 @@ namespace RealEstate.Common
         public static byte[] DefaultEstateImage = File.ReadAllBytes(@"..\RealEstate\wwwroot\Img\RealEstateLogo.png");
 
         #endregion
-    }   
+
+        #region TradeType
+        public const int MaxTradeTypeLength = 100;
+        public const int MinTradeTypeLength = 100;
+        #endregion
+    }
 }

@@ -40,7 +40,7 @@
         [Required]
         [MaxLength(MaxDescriptionLength)]
         public string Description { get; set; }
-
+        //[requeired]
         public string CurrencyId { get; set; }
 
         public Currency Currency { get; set; }

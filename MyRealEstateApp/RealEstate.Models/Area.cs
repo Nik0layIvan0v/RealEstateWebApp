@@ -15,7 +15,7 @@
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(AreaMaxNameLength)]
+        [MaxLength(MaxAreaNameLength)]
         public string AreaName { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }

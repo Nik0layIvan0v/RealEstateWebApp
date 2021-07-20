@@ -18,13 +18,14 @@ namespace RealEstate.Services
 
         Task<int> GetCountOfAllEstatesAsync();
 
+        Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetByUserIdAsync();
 
         //IEnumerable<string> GetBySearchAsync();
 
-        //void EstateDetails(string id); //<= return model
 
         //void DeleteEstate(string id);
 

@@ -88,7 +88,7 @@ namespace RealEstate.Controllers
             return this.Redirect($"/Estate/Details?id={estateId}");
         }
 
-        public async Task<IActionResult> All([FromQuery] AllEstateQueryModel queryEstateModel)
+        public async Task<IActionResult> All(AllEstateQueryModel queryEstateModel)
         {
             queryEstateModel.EstateListingViewModels = await EstateService.GetAllEstatesAsync(queryEstateModel.CurrentPage, queryEstateModel.EstatesPerPage);
 
@@ -97,9 +97,11 @@ namespace RealEstate.Controllers
             return this.View(queryEstateModel);
         }
 
-        public IActionResult Details(string id)
+        public async Task<ActionResult<EstateDetailsModel>> Details(string id)
         {
-            return this.View();
+            EstateDetailsModel estateInfo = await this.EstateService.GetEstateDetailsAsync(id);
+
+            return this.View(estateInfo);
         }
 
         public IActionResult Edit(string id)

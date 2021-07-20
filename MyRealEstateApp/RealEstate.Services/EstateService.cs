@@ -183,5 +183,29 @@ namespace RealEstate.Services
         {
             return await this.Context.Estates.CountAsync();
         }
+
+        public async Task<EstateDetailsModel> GetEstateDetailsAsync(string id)
+        {
+            return await this.Context.Estates
+                .Where(x => x.Id == id)
+                .Select(x => new EstateDetailsModel
+                {
+                    Id = x.Id,
+                    Squaring = x.Squaring,
+                    CreatedOn = x.CreatedOn,
+                    Floor = x.Floor,
+                    Price = x.Price,
+                    CurrencyCode = x.Currency.CurrencyCode,
+                    EstateType = x.EstateType.TypeOfProperty,
+                    TradeType = x.TradeType.TypeOfTransaction,
+                    Area = x.Area.AreaName,
+                    City = x.City.CityName,
+                    Neighborhood = x.Neighborhood.Name,
+                    Description = x.Description,
+                    FutureModels = x.Features.Select(feature => feature.FutureDescription).ToList(),
+                    ImageFiles = x.Images
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }
