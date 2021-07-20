@@ -67,17 +67,20 @@ namespace RealEstate.Controllers
 
             estate.Images = new List<byte[]>();
 
-            foreach (var imageFile in model.ImageFiles)
+            if (model.ImageFiles != null)
             {
-                await using var temp = imageFile.OpenReadStream();
+                foreach (var imageFile in model.ImageFiles)
+                {
+                    await using var temp = imageFile.OpenReadStream();
 
-                await using var ms = new MemoryStream();
+                    await using var ms = new MemoryStream();
 
-                await temp.CopyToAsync(ms);
+                    await temp.CopyToAsync(ms);
 
-                byte[] readedBytes = ms.ToArray();
+                    byte[] readedBytes = ms.ToArray();
 
-                estate.Images.Add(readedBytes);
+                    estate.Images.Add(readedBytes);
+                }
             }
 
             string estateId = await this.EstateService.CreateEstate(estate);

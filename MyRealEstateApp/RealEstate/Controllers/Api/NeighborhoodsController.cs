@@ -1,12 +1,11 @@
-﻿namespace RealEstate.Controllers
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using RealEstate.Services;
+using RealEstate.Services.Models;
+
+namespace RealEstate.Controllers.Api
 {
-    using Services;
-    using Services.Models;
-
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-
     [Route("api/[controller]")]
     [ApiController]
 

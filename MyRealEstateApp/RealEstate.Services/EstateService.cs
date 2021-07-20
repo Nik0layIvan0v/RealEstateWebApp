@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static RealEstate.Common.DataBaseAttributesConstants;
 
 namespace RealEstate.Services
 {
@@ -92,16 +93,27 @@ namespace RealEstate.Services
                 Area = await Context.Areas.FirstOrDefaultAsync(x => x.Id == model.AreaId),
                 City = await Context.Cities.FirstOrDefaultAsync(x => x.Id == model.CityId),
                 Neighborhood = await Context.Neighborhoods.FirstOrDefaultAsync(x => x.Id == model.NeighborhoodId),
-                Currency = await Context.Currencies.FirstOrDefaultAsync(x => x.Id == model.CurrencyId)
+                Currency = await Context.Currencies.FirstOrDefaultAsync(x => x.Id == model.CurrencyId),
             };
 
-            foreach (var image in model.Images)
+            if (!model.Images.Any())
             {
                 estate.Images.Add(new Image
                 {
-                    ImageContentBytes = image,
+                    ImageContentBytes = DefaultEstateImage,
                     EstateId = estate.Id,
                 });
+            }
+            else
+            {
+                foreach (var image in model.Images)
+                {
+                    estate.Images.Add(new Image
+                    {
+                        ImageContentBytes = image,
+                        EstateId = estate.Id,
+                    });
+                }
             }
 
             foreach (var selectedFuture in model.SelectedFutures)

@@ -1,4 +1,6 @@
-﻿namespace RealEstate.Common
+﻿using System.IO;
+
+namespace RealEstate.Common
 {
     using System;
 
@@ -55,6 +57,12 @@
         #region Report
 
         public const int ReportDescriptionMaxLength = 255;
+
+        #endregion
+
+        #region Image
+
+        public static byte[] DefaultEstateImage = File.ReadAllBytes(@"..\RealEstate\wwwroot\Img\RealEstateLogo.png");
 
         #endregion
     }   

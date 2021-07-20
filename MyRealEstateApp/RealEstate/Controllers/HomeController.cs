@@ -1,9 +1,9 @@
 ﻿namespace RealEstate.Controllers
 {
-    using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Models;
+    using System.Diagnostics;
 
     public class HomeController : Controller
     {
@@ -14,6 +14,7 @@
 
         public IActionResult Index() //<= show all properties
         {
+            
             return View();
         }
 
