@@ -39,8 +39,25 @@
 
         public DbSet<Note> Notes { get; set; }
 
+        public DbSet<EstateFeature> EstateFeatures { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<EstateFeature>()
+                .HasKey(x => new {x.EstateId, x.FeatureId});
+
+            builder.Entity<EstateFeature>()
+                .HasOne(x => x.Feature)
+                .WithMany(x => x.Estates)
+                .HasForeignKey(x => x.FeatureId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<EstateFeature>()
+                .HasOne(x => x.Estate)
+                .WithMany(x => x.Features)
+                .HasForeignKey(x => x.EstateId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<FollowerFollowing>()
                 .HasKey(x => new { x.FollowerId, x.FollowingId });
 

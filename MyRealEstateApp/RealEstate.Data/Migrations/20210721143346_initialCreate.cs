@@ -85,6 +85,18 @@ namespace RealEstate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Features",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FutureDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Features", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TradeTypes",
                 columns: table => new
                 {
@@ -356,6 +368,30 @@ namespace RealEstate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EstateFeatures",
+                columns: table => new
+                {
+                    EstateId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FeatureId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EstateFeatures", x => new { x.EstateId, x.FeatureId });
+                    table.ForeignKey(
+                        name: "FK_EstateFeatures_Estates_EstateId",
+                        column: x => x.EstateId,
+                        principalTable: "Estates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EstateFeatures_Features_FeatureId",
+                        column: x => x.FeatureId,
+                        principalTable: "Features",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EstateWishLists",
                 columns: table => new
                 {
@@ -374,25 +410,6 @@ namespace RealEstate.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EstateWishLists_Estates_EstateId",
-                        column: x => x.EstateId,
-                        principalTable: "Estates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Features",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FutureDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    EstateId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Features", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Features_Estates_EstateId",
                         column: x => x.EstateId,
                         principalTable: "Estates",
                         principalColumn: "Id",
@@ -452,7 +469,7 @@ namespace RealEstate.Data.Migrations
                     ReportingUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReportedUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReportedEstateId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ReportedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -534,6 +551,11 @@ namespace RealEstate.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EstateFeatures_FeatureId",
+                table: "EstateFeatures",
+                column: "FeatureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Estates_AreaId",
                 table: "Estates",
                 column: "AreaId");
@@ -572,11 +594,6 @@ namespace RealEstate.Data.Migrations
                 name: "IX_EstateWishLists_UserId",
                 table: "EstateWishLists",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Features_EstateId",
-                table: "Features",
-                column: "EstateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FollowerFollowings_FollowingId",
@@ -635,10 +652,10 @@ namespace RealEstate.Data.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "EstateWishLists");
+                name: "EstateFeatures");
 
             migrationBuilder.DropTable(
-                name: "Features");
+                name: "EstateWishLists");
 
             migrationBuilder.DropTable(
                 name: "FollowerFollowings");
@@ -654,6 +671,9 @@ namespace RealEstate.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

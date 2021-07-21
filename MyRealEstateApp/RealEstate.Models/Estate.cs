@@ -10,7 +10,7 @@
         public Estate()
         {
             this.Notes = new HashSet<Note>();
-            this.Features = new HashSet<Feature>();
+            this.Features = new HashSet<EstateFeature>();
             this.Images = new HashSet<Image>();
             this.Reports = new HashSet<Report>();
             this.UserEstateWishList = new HashSet<UserEstateWishList>();
@@ -73,7 +73,7 @@
 
         public virtual ICollection<Note> Notes { get; set; }
 
-        public virtual ICollection<Feature> Features { get; set; }
+        public virtual ICollection<EstateFeature> Features { get; set; }
 
         public virtual ICollection<Report> Reports { get; set; }
 

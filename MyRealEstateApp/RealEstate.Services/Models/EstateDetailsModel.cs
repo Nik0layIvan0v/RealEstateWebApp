@@ -61,14 +61,13 @@ namespace RealEstate.Services.Models
         [Display(Name = "Neighborhood:")]
         public string Neighborhood { get; set; }
 
-
         [Required(ErrorMessage = "Description cannot be empty")]
         [Display(Name = "Description:")]
         [StringLength(MaxDescriptionLength, MinimumLength = MinDescriptionLength, ErrorMessage = "Description must be with minimum 5 characters long")]
         public string Description { get; set; }
 
-        public ICollection<string> FutureModels { get; set; }
+        public IEnumerable<string> FutureModels { get; set; }
 
-        public ICollection<Image> ImageFiles { get; set; }
+        public IEnumerable<Image> ImageFiles { get; set; }
     }
 }

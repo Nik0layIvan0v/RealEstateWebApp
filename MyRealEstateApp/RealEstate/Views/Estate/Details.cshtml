@@ -3,24 +3,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h1 class="text-dark">Details for offer number: @Model.Id!</h1>
+@*Property Address*@
+@*Property price*@
+@*Deal type*@
+<div class="container pt-3 pb-3">
+    <div class="row">
+        <h3 class="text-dark text-center">
+            Детайли за обява: @Model.Id
+        </h3>
+    </div>
+</div>
 
+@*Property images*@
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        @for (int i = 1; i < Model.ImageFiles.Count; i++)
+        @for (int i = 1; i < Model.ImageFiles.Count(); i++)
         {
             <li data-target="#carouselExampleIndicators" data-slide-to="@i"></li>
         }
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImageFiles.First().ImageContentBytes)" alt="First slide">
+            <img class="d-block w-100 h-25 rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImageFiles.First().ImageContentBytes)" alt="First slide">
         </div>
         @foreach (var img in Model.ImageFiles.Skip(1))
         {
             <div class="carousel-item">
-                <img class="d-block w-100" src="data:image/jpeg;base64,@Convert.ToBase64String(img.ImageContentBytes)" alt="Second slide">
+                <img class="d-block w-100 h-50 rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(img.ImageContentBytes)" alt="Second slide">
             </div>
         }
     </div>
@@ -33,3 +43,86 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+
+@*Property Description*@
+<div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
+    <h3 class="text-left">
+        Property Description:
+        <hr class="mt-2 mb-3" />
+    </h3>
+    <p>@Model.Description</p>
+</div>
+
+@*Property Features*@
+<div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
+    <h3 class="text-left">
+        Property Features:
+        <hr class="mt-2 mb-3" />
+    </h3>
+    <ul>
+        @foreach (var detail in Model.FutureModels)
+        {
+            <li>@detail</li>
+        }
+    </ul>
+</div>
+
+@*Property Details*@
+<div class="container rounded bg-secondary pt-3 pb-4 mt-3 mb-3 text-white">
+    <h3 class="text-left">
+        Property Details:
+        <hr class="mt-2 mb-3 text-white-50" />
+    </h3>
+    <p>Тип на имота: @Model.EstateType</p>
+    <p>Квадратура: @Model.Squaring кв/м</p>
+    <p>Етаж: @Model.Floor</p>
+    <p>Дата на добавяне: @Model.CreatedOn</p>
+    <p>Цена: @Model.Price</p>
+    <p>Валута: @Model.CurrencyCode</p>
+    <p>Местоположение:</p>
+    <ul>
+        <li>Област: @Model.Area</li>
+        <li>Град/Село: @Model.City</li>
+        <li>Квартал: @Model.Neighborhood</li>
+    </ul>
+    <p>Тип на сделката: @Model.TradeType</p>
+</div>
+
+@*Comments*@
+<div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
+    <h3 class="text-left">
+        Property Comments:
+        <hr class="mt-2 mb-3" />
+    </h3>
+    <ul class="list-unstyled">
+        <li class="media">
+            <img class="mr-3" alt="Generic placeholder image">
+            <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            </div>
+        </li>
+        <li class="media my-4">
+            <img class="mr-3" alt="Generic placeholder image">
+            <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            </div>
+        </li>
+        <li class="media">
+            <img class="mr-3" alt="Generic placeholder image">
+            <div class="media-body">
+                <h5 class="mt-0 mb-1">List-based media object</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+            </div>
+        </li>
+    </ul>
+    
+    <div class="container">
+        <h3>Add Comment:</h3>
+        TODO: Add Form
+    </div>
+</div>
+
+
+@*contact form*@

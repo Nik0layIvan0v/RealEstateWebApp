@@ -373,6 +373,21 @@ namespace RealEstate.Data.Migrations
                     b.ToTable("Estates");
                 });
 
+            modelBuilder.Entity("RealEstate.Models.EstateFeature", b =>
+                {
+                    b.Property<string>("EstateId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FeatureId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("EstateId", "FeatureId");
+
+                    b.HasIndex("FeatureId");
+
+                    b.ToTable("EstateFeatures");
+                });
+
             modelBuilder.Entity("RealEstate.Models.EstateType", b =>
                 {
                     b.Property<string>("Id")
@@ -393,17 +408,12 @@ namespace RealEstate.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EstateId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("FutureDescription")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EstateId");
 
                     b.ToTable("Features");
                 });
@@ -493,8 +503,8 @@ namespace RealEstate.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
@@ -694,13 +704,23 @@ namespace RealEstate.Data.Migrations
                     b.Navigation("TradeType");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.Feature", b =>
+            modelBuilder.Entity("RealEstate.Models.EstateFeature", b =>
                 {
                     b.HasOne("RealEstate.Models.Estate", "Estate")
                         .WithMany("Features")
-                        .HasForeignKey("EstateId");
+                        .HasForeignKey("EstateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RealEstate.Models.Feature", "Feature")
+                        .WithMany("Estates")
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Estate");
+
+                    b.Navigation("Feature");
                 });
 
             modelBuilder.Entity("RealEstate.Models.FollowerFollowing", b =>
@@ -840,6 +860,11 @@ namespace RealEstate.Data.Migrations
                 });
 
             modelBuilder.Entity("RealEstate.Models.EstateType", b =>
+                {
+                    b.Navigation("Estates");
+                });
+
+            modelBuilder.Entity("RealEstate.Models.Feature", b =>
                 {
                     b.Navigation("Estates");
                 });

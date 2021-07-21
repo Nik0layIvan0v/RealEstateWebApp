@@ -116,14 +116,15 @@ namespace RealEstate.Services
                 }
             }
 
-            foreach (var selectedFuture in model.SelectedFutures)
+            foreach (var selectedFeature in model.SelectedFutures)
             {
-                Feature feature = Context.Features.FirstOrDefault(x => x.Id == selectedFuture.Id);
-
-                if (feature != null)
+                var estateFeature = new EstateFeature
                 {
-                    estate.Features.Add(feature);
-                }
+                    EstateId = estate.Id,
+                    FeatureId = selectedFeature.Id,
+                };
+
+                estate.Features.Add(estateFeature);
             }
 
             await this.Context.Estates.AddAsync(estate);
@@ -202,7 +203,7 @@ namespace RealEstate.Services
                     City = x.City.CityName,
                     Neighborhood = x.Neighborhood.Name,
                     Description = x.Description,
-                    FutureModels = x.Features.Select(feature => feature.FutureDescription).ToList(),
+                    FutureModels = x.Features.Where(ef=> ef.EstateId == x.Id).Select(f=>f.Feature.FutureDescription).ToList(),
                     ImageFiles = x.Images
                 })
                 .FirstOrDefaultAsync();
