@@ -1,6 +1,6 @@
 ﻿namespace RealEstate.Services
 {
-    public interface IDealerService
+    public interface IBrokerService
     {
         
     }

@@ -5,11 +5,11 @@ using RealEstate.Services;
 namespace RealEstate.Controllers
 {
     [Authorize]
-    public class DealerController : Controller
+    public class BrokerController : Controller
     {
-        private readonly IDealerService Service;
+        private readonly IBrokerService Service;
 
-        public DealerController(IDealerService service)
+        public BrokerController(IBrokerService service)
         {
             Service = service;
         }
