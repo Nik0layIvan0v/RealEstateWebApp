@@ -61,6 +61,7 @@
             builder.Entity<FollowerFollowing>()
                 .HasKey(x => new { x.FollowerId, x.FollowingId });
 
+
             builder.Entity<FollowerFollowing>()
                 .HasOne(x => x.Follower)
                 .WithMany(x => x.Followers)

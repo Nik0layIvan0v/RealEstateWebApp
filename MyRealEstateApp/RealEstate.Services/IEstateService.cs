@@ -20,6 +20,8 @@ namespace RealEstate.Services
 
         Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
 
+        Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstates(int count);
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetByUserIdAsync();

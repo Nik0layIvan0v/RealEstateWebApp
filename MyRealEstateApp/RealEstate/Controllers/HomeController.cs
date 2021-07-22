@@ -1,21 +1,30 @@
-﻿namespace RealEstate.Controllers
+﻿using System.Threading.Tasks;
+using RealEstate.Models.Home;
+using RealEstate.Services;
+
+namespace RealEstate.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using Models;
     using System.Diagnostics;
+    using static Common.GlobalConstants;
 
     public class HomeController : Controller
     {
-        private protected readonly ILogger<HomeController> Logger;
+        private readonly IEstateService Service;
 
-        public HomeController(ILogger<HomeController> logger)
-            => Logger = logger;
-
-        public IActionResult Index() //<= show show last 3 added properties in carousel
+        public HomeController(IEstateService service)
         {
-            
-            return View();
+            this.Service = service;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            NewestEstatesViewModel estates = new NewestEstatesViewModel();
+
+            estates.AddEstates(await this.Service.GetLastAddedEstates(DefaultLastEstatesCount));
+
+            return View(estates);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

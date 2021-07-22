@@ -1,5 +1,113 @@
-﻿@{
+﻿@using System.Linq
+@model RealEstate.Models.Home.NewestEstatesViewModel
+
+@{
     ViewData["Title"] = "Welcome";
 }
 
-<div class="h1 text-center pb-1 pt-1">Welcome to my RealEstate App</div>
+<div class="h1 text-center pb-1 pt-1">Newly Added Property</div>
+
+<div class="container">
+    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count -1; i++)
+    {
+        <div class="jumbotron">
+            @if (i % 2 == 0)
+            {
+            <div class="row text-left">
+                <div class="col-sm-8">
+                    <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                </div>
+                <div class="col-sm-4">
+                    <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
+                    <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
+                </div>
+            </div>
+                <div class="row pt-3">
+                    <div class="col-sm text-left pt-3">
+                        <a class="btn btn-info" asp-controller="Estate" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
+                    </div>
+                    <div class="col-sm">
+                    </div>
+                    <div class="col-sm text-right float-right">
+                        <h3 class="text-left pt-3"><i class="fas fa-tags"></i> @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row text-left">
+                    <div class="col-sm-4">
+                        <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
+                        <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
+                    </div>
+                    <div class="col-sm-8">
+                        <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <h3 class="text-left pt-3">Price: @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm text-right pt-3">
+                        <a class="btn btn-info" asp-controller="Estate" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
+                    </div>
+                </div>
+
+            }
+        </div>
+    }
+</div>
+
+
+
+<i class="fas fa-home"></i>
+<i class="fas fa-store"></i>
+<i class="fas fa-warehouse"></i>
+<i class="fas fa-industry"></i>
+<i class="fas fa-hotel"></i>
+<i class="fas fa-city"></i>
+<i class="far fa-building"></i>
+<i class="fas fa-camera"></i>
+
+<i class="fas fa-images">Count of estate images</i>
+
+<i class="fas fa-map-signs">Estate location</i>
+
+<i class="fas fa-calendar-plus">Date added</i>
+
+<i class="fad fa-sign-out-alt">Sign out</i>
+
+<i class="fas fa-user-circle">Profile</i>
+
+<i class="far fa-copyright"></i>
+
+<i class="fas fa-laptop-house">Home</i>
+
+
+
+<i class="fas fa-phone">Agency Phone</i>
+
+<i class="fas fa-fax">Agency Fax</i>
+
+<i class="far fa-envelope">Send Email</i>
+
+<i class="fas fa-money-check-alt">Estate Price</i>
+
+<i class="fas fa-archive">Archive estate offer</i>
+
+<i class="fas fa-eraser">Delete estate offer</i>
+
+<i class="fas fa-trash">Delete estate offer</i>
+
+<i class="fas fa-edit">Edit estate offer</i>
+
+<i class="fas fa-ban">Ban Estate Offer</i>
+
+<i class="fas fa-user-slash">Ban User</i>
+
+
+<i class="fas fa-heart">Like offer/Agency</i>
+<i class="fas fa-heart-broken">DisLike offer/Agency</i>

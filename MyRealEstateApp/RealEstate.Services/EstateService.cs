@@ -203,10 +203,30 @@ namespace RealEstate.Services
                     City = x.City.CityName,
                     Neighborhood = x.Neighborhood.Name,
                     Description = x.Description,
-                    FutureModels = x.Features.Where(ef=> ef.EstateId == x.Id).Select(f=>f.Feature.FutureDescription).ToList(),
+                    FutureModels = x.Features.Where(ef => ef.EstateId == x.Id).Select(f => f.Feature.FutureDescription).ToList(),
                     ImageFiles = x.Images
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstates(int count)
+        {
+            return await this.Context.Estates
+                .OrderByDescending(x => x.CreatedOn)
+                .Select(x => new LastAddedEstateModel
+                {
+                    Id = x.Id,
+                    Squaring = x.Squaring,
+                    Floor = x.Floor,
+                    Description = x.Description,
+                    Image = x.Images.Select(image => image.ImageContentBytes).FirstOrDefault(),
+                    Price = x.Price,
+                    Currency = x.Currency.CurrencyCode,
+                    TradeType = x.TradeType.TypeOfTransaction,
+                    Location = x.City.CityName
+                })
+                .Take(count)
+                .ToArrayAsync();
         }
     }
 }

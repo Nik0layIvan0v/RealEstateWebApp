@@ -78,5 +78,11 @@ namespace RealEstate.Common
         public const int MaxTradeTypeLength = 100;
         public const int MinTradeTypeLength = 100;
         #endregion
+
+        #region EstateService
+
+        public const int DefaultLastEstatesCount = 3;
+
+        #endregion
     }
 }

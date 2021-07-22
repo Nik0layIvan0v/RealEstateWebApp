@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Services.Models
 {
@@ -8,5 +9,6 @@ namespace RealEstate.Services.Models
 
         [Required]
         public string Area { get; set; }
+
     }
 }
