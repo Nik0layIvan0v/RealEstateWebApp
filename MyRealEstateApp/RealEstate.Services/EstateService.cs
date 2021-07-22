@@ -228,5 +228,10 @@ namespace RealEstate.Services
                 .Take(count)
                 .ToArrayAsync();
         }
+
+        public async Task<bool> IsUserIsBrokerAsync(string id)
+        {
+            return await this.Context.Brokers.AnyAsync(x => x.UserId == id);
+        }
     }
 }

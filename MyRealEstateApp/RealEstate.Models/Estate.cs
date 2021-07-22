@@ -19,6 +19,10 @@
 
         public decimal Squaring { get; set; }
 
+        public int BrokerId { get; set; }
+
+        public Broker Broker { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? EditedOn { get; set; }

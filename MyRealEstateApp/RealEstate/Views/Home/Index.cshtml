@@ -5,23 +5,35 @@
     ViewData["Title"] = "Welcome";
 }
 
+@if (!Model.LastAddedEstatesViewModels.Any())
+{
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to the best Real estate market place</h1>
+        <p class="lead">Currently there is no estates in out database. Register as broker and add one.</p>
+        <hr class="my-4">
+        <p class="lead">
+            <a asp-controller="Estate" asp-action="Create" class="btn btn-primary btn-lg" role="button">Add Estate</a>
+        </p>
+    </div>
+}
+
 <div class="h1 text-center pb-1 pt-1">Newly Added Property</div>
 
 <div class="container">
-    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count -1; i++)
+    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count - 1; i++)
     {
         <div class="jumbotron">
             @if (i % 2 == 0)
             {
-            <div class="row text-left">
-                <div class="col-sm-8">
-                    <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                <div class="row text-left">
+                    <div class="col-sm-8">
+                        <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                    </div>
+                    <div class="col-sm-4">
+                        <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
+                        <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
+                    </div>
                 </div>
-                <div class="col-sm-4">
-                    <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
-                    <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
-                </div>
-            </div>
                 <div class="row pt-3">
                     <div class="col-sm text-left pt-3">
                         <a class="btn btn-info" asp-controller="Estate" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>

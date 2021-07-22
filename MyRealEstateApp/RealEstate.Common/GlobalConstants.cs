@@ -9,7 +9,7 @@ namespace RealEstate.Common
         #region Area
 
         public const int MaxAreaNameLength = 50;
-        public const int MinAreaNameLegth = 10;
+        public const int MinAreaNameLength = 10;
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace RealEstate.Common
         #region Neighborhood
 
         public const int MaxNeighborhoodNameLength = 100;
-        public const int MixNeighborhoodNameLength = 10;
+        public const int MinNeighborhoodNameLength = 10;
 
         #endregion
 
@@ -82,6 +82,17 @@ namespace RealEstate.Common
         #region EstateService
 
         public const int DefaultLastEstatesCount = 3;
+
+        #endregion
+
+        #region Broker
+
+        public const int MaxBrokerNameLength = 30;
+        public const int MinBrokerNameLength = 5;
+
+        public const int MaxDealerPhoneNumberLength = 18;
+        public const int MinDealerPhoneNumberLength = 5;
+        public const string DealerPhoneNumberRegex = @"[0-9]+";
 
         #endregion
     }

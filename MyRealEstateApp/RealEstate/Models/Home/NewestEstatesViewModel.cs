@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RealEstate.Services.Models;
+﻿using RealEstate.Services.Models;
+using System.Collections.Generic;
 
 namespace RealEstate.Models.Home
 {

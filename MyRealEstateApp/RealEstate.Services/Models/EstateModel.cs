@@ -5,7 +5,8 @@ namespace RealEstate.Services.Models
 {
     public class EstateModel
     {
-       
+        public string BrokerId { get; set; }
+
         public decimal Squaring { get; set; }
 
         public int Floor { get; set; }

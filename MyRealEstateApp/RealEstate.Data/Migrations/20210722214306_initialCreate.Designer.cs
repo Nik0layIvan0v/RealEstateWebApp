@@ -10,7 +10,7 @@ using RealEstate.Data;
 namespace RealEstate.Data.Migrations
 {
     [DbContext(typeof(RealEstateDbContext))]
-    [Migration("20210721143346_initialCreate")]
+    [Migration("20210722214306_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -240,6 +240,35 @@ namespace RealEstate.Data.Migrations
                     b.ToTable("Areas");
                 });
 
+            modelBuilder.Entity("RealEstate.Models.Broker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Brokers");
+                });
+
             modelBuilder.Entity("RealEstate.Models.City", b =>
                 {
                     b.Property<int>("Id")
@@ -312,6 +341,9 @@ namespace RealEstate.Data.Migrations
                     b.Property<DateTime?>("BannedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("BrokerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
@@ -361,6 +393,8 @@ namespace RealEstate.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
+
+                    b.HasIndex("BrokerId");
 
                     b.HasIndex("CityId");
 
@@ -629,6 +663,15 @@ namespace RealEstate.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RealEstate.Models.Broker", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("RealEstate.Models.Broker", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RealEstate.Models.City", b =>
                 {
                     b.HasOne("RealEstate.Models.Area", "Area")
@@ -665,6 +708,12 @@ namespace RealEstate.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("RealEstate.Models.Broker", "Broker")
+                        .WithMany("Estates")
+                        .HasForeignKey("BrokerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("RealEstate.Models.City", "City")
                         .WithMany("Estates")
                         .HasForeignKey("CityId")
@@ -694,6 +743,8 @@ namespace RealEstate.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Area");
+
+                    b.Navigation("Broker");
 
                     b.Navigation("City");
 
@@ -831,6 +882,11 @@ namespace RealEstate.Data.Migrations
                 {
                     b.Navigation("Cities");
 
+                    b.Navigation("Estates");
+                });
+
+            modelBuilder.Entity("RealEstate.Models.Broker", b =>
+                {
                     b.Navigation("Estates");
                 });
 

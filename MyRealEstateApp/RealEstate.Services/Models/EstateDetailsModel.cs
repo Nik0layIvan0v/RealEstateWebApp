@@ -49,7 +49,7 @@ namespace RealEstate.Services.Models
 
         [Display(Name = "Area:")]
         [Required(ErrorMessage = "Area cannot be empty")]
-        [StringLength(MaxAreaNameLength, MinimumLength = MinAreaNameLegth)]
+        [StringLength(MaxAreaNameLength, MinimumLength = MinAreaNameLength)]
         public string Area { get; set; }
 
         [Display(Name = "City Name:")]

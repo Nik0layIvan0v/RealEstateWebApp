@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Common", "RealEs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Services", "RealEstate.Services\RealEstate.Services.csproj", "{BFF5E48D-1802-442F-8986-2C6C04C33D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Data", "RealEstate.Data\RealEstate.Data.csproj", "{6B76F275-D230-4734-97B0-2B0A10E2B7C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Data", "RealEstate.Data\RealEstate.Data.csproj", "{6B76F275-D230-4734-97B0-2B0A10E2B7C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Seeder", "RealEstate.Seeder\RealEstate.Seeder.csproj", "{F85552D0-1944-4042-9529-D4DBFD66ED62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealEstate.Seeder", "RealEstate.Seeder\RealEstate.Seeder.csproj", "{F85552D0-1944-4042-9529-D4DBFD66ED62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -235,6 +235,27 @@ namespace RealEstate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Brokers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brokers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Brokers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FollowerFollowings",
                 columns: table => new
                 {
@@ -284,6 +305,7 @@ namespace RealEstate.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Squaring = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BrokerId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsArchived = table.Column<bool>(type: "bit", nullable: false),
@@ -308,6 +330,12 @@ namespace RealEstate.Data.Migrations
                         name: "FK_Estates_Areas_AreaId",
                         column: x => x.AreaId,
                         principalTable: "Areas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Estates_Brokers_BrokerId",
+                        column: x => x.BrokerId,
+                        principalTable: "Brokers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -536,6 +564,12 @@ namespace RealEstate.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Brokers_UserId",
+                table: "Brokers",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cities_AreaId",
                 table: "Cities",
                 column: "AreaId");
@@ -559,6 +593,11 @@ namespace RealEstate.Data.Migrations
                 name: "IX_Estates_AreaId",
                 table: "Estates",
                 column: "AreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estates_BrokerId",
+                table: "Estates",
+                column: "BrokerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Estates_CityId",
@@ -676,10 +715,10 @@ namespace RealEstate.Data.Migrations
                 name: "Features");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Estates");
 
             migrationBuilder.DropTable(
-                name: "Estates");
+                name: "Brokers");
 
             migrationBuilder.DropTable(
                 name: "Currencies");
@@ -692,6 +731,9 @@ namespace RealEstate.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "TradeTypes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Cities");

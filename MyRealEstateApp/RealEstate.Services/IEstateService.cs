@@ -22,6 +22,9 @@ namespace RealEstate.Services
 
         Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstates(int count);
 
+        Task<bool> IsUserIsBrokerAsync(string id);
+
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetByUserIdAsync();

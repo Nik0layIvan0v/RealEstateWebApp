@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using RealEstate.Services;
 
 namespace RealEstate
@@ -44,7 +45,7 @@ namespace RealEstate
 
             services.AddTransient<IEstateService, EstateService>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

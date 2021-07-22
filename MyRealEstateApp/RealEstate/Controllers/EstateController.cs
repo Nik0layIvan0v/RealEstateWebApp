@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealEstate.Infrastructure;
 using RealEstate.Models.Estates;
 using RealEstate.Services;
 using RealEstate.Services.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace RealEstate.Controllers
 {
+
+    [Authorize]
     public class EstateController : Controller
     {
         private readonly IEstateService EstateService;
@@ -18,8 +22,14 @@ namespace RealEstate.Controllers
             this.EstateService = estateService;
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            
+            if (await this.IsBroker() == false)
+            {
+                return RedirectToAction(nameof(DealerController.Create), "Dealer");
+            }
+
             var dropdownData = this.EstateService.GetDropDownData();
 
             AddEstateInputModel model = new AddEstateInputModel(); ;
@@ -36,6 +46,11 @@ namespace RealEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddEstateInputModel model)
         {
+            if (await this.IsBroker() == false)
+            {
+                return RedirectToAction(nameof(DealerController.Create), "Dealer");
+            }
+
             model.FutureModels.RemoveAll(x => x.IsChecked == false);
 
             if (!ModelState.IsValid)
@@ -47,7 +62,7 @@ namespace RealEstate.Controllers
                 model.TypeOfDeals = dropdownData.TradeTypeModels;
                 model.FutureModels = dropdownData.FutureModels.ToList();
 
-                return this.Create();
+                return await this.Create();
             };
 
             EstateModel estate = new EstateModel
@@ -62,10 +77,11 @@ namespace RealEstate.Controllers
                 NeighborhoodId = model.NeighborhoodId,
                 Description = model.Description,
                 TypeOfTradeId = model.TypeOfTradeId,
-                SelectedFutures = model.FutureModels
+                SelectedFutures = model.FutureModels,
+                Images = new List<byte[]>(),
+                BrokerId = User.GetLoggedInUserId(),
             };
 
-            estate.Images = new List<byte[]>();
 
             if (model.ImageFiles != null)
             {
@@ -88,6 +104,7 @@ namespace RealEstate.Controllers
             return this.Redirect($"/Estate/Details?id={estateId}");
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> All(AllEstateQueryModel queryEstateModel)
         {
             queryEstateModel.EstateListingViewModels = await EstateService.GetAllEstatesAsync(queryEstateModel.CurrentPage, queryEstateModel.EstatesPerPage);
@@ -104,8 +121,13 @@ namespace RealEstate.Controllers
             return this.View(estateInfo);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
+            if (await this.IsBroker() == false)
+            {
+                //OR USER DON'T OWN ESTATE OFFER!
+            }
+
             return this.Ok();
         }
 
@@ -119,6 +141,13 @@ namespace RealEstate.Controllers
         public IActionResult Delete(string estateId)
         {
             return this.Ok();
+        }
+
+        private async Task<bool> IsBroker()
+        {
+            string userId = User.GetLoggedInUserId();
+
+            return await this.EstateService.IsUserIsBrokerAsync(userId);
         }
 
     }

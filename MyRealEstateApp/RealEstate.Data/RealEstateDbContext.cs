@@ -1,4 +1,6 @@
-﻿namespace RealEstate.Data
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace RealEstate.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -41,8 +43,22 @@
 
         public DbSet<EstateFeature> EstateFeatures { get; set; }
 
+        public DbSet<Broker> Brokers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Broker>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Broker>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Estate>()
+                .HasOne(x => x.Broker)
+                .WithMany(x => x.Estates)
+                .HasForeignKey(x => x.BrokerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<EstateFeature>()
                 .HasKey(x => new {x.EstateId, x.FeatureId});
 
