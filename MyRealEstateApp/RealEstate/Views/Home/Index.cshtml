@@ -20,7 +20,7 @@
 <div class="h1 text-center pb-1 pt-1">Newly Added Property</div>
 
 <div class="container">
-    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count - 1; i++)
+    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count; i++)
     {
         <div class="jumbotron">
             @if (i % 2 == 0)

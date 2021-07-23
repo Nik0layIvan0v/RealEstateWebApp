@@ -22,7 +22,7 @@ namespace RealEstate.Controllers
         {
             NewestEstatesViewModel estates = new NewestEstatesViewModel();
 
-            estates.AddEstates(await this.Service.GetLastAddedEstates(DefaultLastEstatesCount));
+            estates.AddEstates(await this.Service.GetLastAddedEstatesAsync(DefaultLastEstatesCount));
 
             return View(estates);
         }

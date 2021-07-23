@@ -24,10 +24,9 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Create()
         {
-            
-            if (await this.IsBroker() == false)
+            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
             {
-                return RedirectToAction(nameof(BrokersController.Create), "Brokers");
+                return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
             var dropdownData = this.EstateService.GetDropDownData();
@@ -46,10 +45,12 @@ namespace RealEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddEstateInputModel model)
         {
-            if (await this.IsBroker() == false)
-            {
-                return RedirectToAction(nameof(BrokersController.Create), "Brokers");
-            }
+            //if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
+            //{
+            //    return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
+            //}
+
+            int brokerId = await this.EstateService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
 
             model.FutureModels.RemoveAll(x => x.IsChecked == false);
 
@@ -79,7 +80,7 @@ namespace RealEstate.Controllers
                 TypeOfTradeId = model.TypeOfTradeId,
                 SelectedFutures = model.FutureModels,
                 Images = new List<byte[]>(),
-                BrokerId = User.GetLoggedInUserId(),
+                BrokerId = brokerId,
             };
 
 
@@ -99,7 +100,7 @@ namespace RealEstate.Controllers
                 }
             }
 
-            string estateId = await this.EstateService.CreateEstate(estate);
+            string estateId = await this.EstateService.CreateEstateAsync(estate);
 
             return this.Redirect($"/Estate/Details?id={estateId}");
         }
@@ -123,7 +124,7 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            if (await this.IsBroker() == false)
+            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
             {
                 //OR USER DON'T OWN ESTATE OFFER!
             }
@@ -143,12 +144,11 @@ namespace RealEstate.Controllers
             return this.Ok();
         }
 
-        private async Task<bool> IsBroker()
+        private async Task<bool> IsCurrentLoggedUserIsBrokerAsync()
         {
             string userId = User.GetLoggedInUserId();
 
             return await this.EstateService.IsUserIsBrokerAsync(userId);
         }
-
     }
 }

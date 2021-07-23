@@ -5,9 +5,9 @@ namespace RealEstate.Services
 {
     public interface IBrokerService
     {
-        Task<bool> IsUserAlreadyBroker(string id);
+        Task<bool> IsUserAlreadyBrokerAsync(string id);
 
-        Task AddBroker(Broker broker);
+        Task AddBrokerAsync(Broker broker);
 
     }
 }

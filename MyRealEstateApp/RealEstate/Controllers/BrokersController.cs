@@ -18,17 +18,26 @@ namespace RealEstate.Controllers
             Service = service;
         }
 
-        public IActionResult Create()
-        {
-            return this.View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Create(BecomeBrokerFormModel model)
+        public async Task<IActionResult> CreateBroker()
         {
             string userId = this.User.GetLoggedInUserId();
 
-            bool userIsAlreadyBroker = await this.Service.IsUserAlreadyBroker(userId);
+            bool userIsAlreadyBroker = await this.Service.IsUserAlreadyBrokerAsync(userId);
+
+            if (userIsAlreadyBroker)
+            {
+                return this.BadRequest();
+            }
+
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBroker(BecomeBrokerFormModel model)
+        {
+            string userId = this.User.GetLoggedInUserId();
+
+            bool userIsAlreadyBroker = await this.Service.IsUserAlreadyBrokerAsync(userId);
 
             if (userIsAlreadyBroker)
             {
@@ -37,7 +46,7 @@ namespace RealEstate.Controllers
 
             if (!ModelState.IsValid)
             {
-                return await Create(model);
+                return await CreateBroker(model);
             }
 
             Broker broker = new Broker
@@ -47,7 +56,7 @@ namespace RealEstate.Controllers
                 UserId = userId,
             };
 
-            await this.Service.AddBroker(broker);
+            await this.Service.AddBrokerAsync(broker);
 
             return this.RedirectToAction(nameof(EstatesController.Create), "Estates");
         }

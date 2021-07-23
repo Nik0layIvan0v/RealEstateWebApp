@@ -1,0 +1,27 @@
+﻿@model BecomeBrokerFormModel
+@{
+    ViewData["Title"] = "Become Broker";
+}
+
+<div class="container-fluid">
+    <div class="row container pb-3">
+        <h1 class="text-left">@ViewData["Title"]: </h1>
+    </div>
+    <form method="post" asp-controller="Brokers" asp-action="CreateBroker" enctype="multipart/form-data">
+        <div class="form-group col-sm">
+            <label asp-for="BrokerName"></label>
+            <input asp-for="BrokerName" class="form-control">
+            <span asp-validation-for="BrokerName" class="small text-danger"></span>
+        </div>
+        <div class="form-group col-sm">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control">
+            <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+        </div>
+        <div class="container-fluid text-center pb-4">
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Create Offer" />
+            </div>
+        </div>
+    </form>
+</div>

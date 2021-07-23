@@ -14,12 +14,12 @@ namespace RealEstate.Services
             Context = context;
         }
 
-        public async Task<bool> IsUserAlreadyBroker(string id)
+        public async Task<bool> IsUserAlreadyBrokerAsync(string loggedUserId)
         {
-            return await this.Context.Brokers.AnyAsync(x => x.UserId == id);
+            return await this.Context.Brokers.AnyAsync(x => x.UserId == loggedUserId);
         }
 
-        public async Task AddBroker(Broker broker)
+        public async Task AddBrokerAsync(Broker broker)
         {
             await this.Context.Brokers.AddAsync(broker);
 

@@ -73,7 +73,7 @@ namespace RealEstate.Services
             return dropDownElements;
         }
 
-        public async Task<string> CreateEstate(EstateModel model)
+        public async Task<string> CreateEstateAsync(EstateModel model)
         {
             Estate estate = new Estate
             {
@@ -94,6 +94,7 @@ namespace RealEstate.Services
                 City = await Context.Cities.FirstOrDefaultAsync(x => x.Id == model.CityId),
                 Neighborhood = await Context.Neighborhoods.FirstOrDefaultAsync(x => x.Id == model.NeighborhoodId),
                 Currency = await Context.Currencies.FirstOrDefaultAsync(x => x.Id == model.CurrencyId),
+                BrokerId = model.BrokerId
             };
 
             if (!model.Images.Any())
@@ -209,7 +210,7 @@ namespace RealEstate.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstates(int count)
+        public async Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstatesAsync(int count)
         {
             return await this.Context.Estates
                 .OrderByDescending(x => x.CreatedOn)
@@ -232,6 +233,15 @@ namespace RealEstate.Services
         public async Task<bool> IsUserIsBrokerAsync(string id)
         {
             return await this.Context.Brokers.AnyAsync(x => x.UserId == id);
+        }
+
+        public async Task<int> GetBrokerIdAsync(string loggedUserId)
+        {
+            return await this.Context
+                .Brokers
+                .Where(broker => broker.UserId == loggedUserId)
+                .Select(broker => broker.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }
