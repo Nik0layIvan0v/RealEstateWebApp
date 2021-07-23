@@ -19,7 +19,7 @@ namespace RealEstate.Models
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(MaxDealerPhoneNumberLength)]
+        [MaxLength(MaxBrokerPhoneNumberLength)]
         public string PhoneNumber { get; set; }
 
         [Required]

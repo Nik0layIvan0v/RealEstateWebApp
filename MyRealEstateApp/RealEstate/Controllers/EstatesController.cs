@@ -13,11 +13,11 @@ namespace RealEstate.Controllers
 {
 
     [Authorize]
-    public class EstateController : Controller
+    public class EstatesController : Controller
     {
         private readonly IEstateService EstateService;
 
-        public EstateController(IEstateService estateService)
+        public EstatesController(IEstateService estateService)
         {
             this.EstateService = estateService;
         }
@@ -27,7 +27,7 @@ namespace RealEstate.Controllers
             
             if (await this.IsBroker() == false)
             {
-                return RedirectToAction(nameof(DealerController.Create), "Dealer");
+                return RedirectToAction(nameof(BrokersController.Create), "Brokers");
             }
 
             var dropdownData = this.EstateService.GetDropDownData();
@@ -48,7 +48,7 @@ namespace RealEstate.Controllers
         {
             if (await this.IsBroker() == false)
             {
-                return RedirectToAction(nameof(DealerController.Create), "Dealer");
+                return RedirectToAction(nameof(BrokersController.Create), "Brokers");
             }
 
             model.FutureModels.RemoveAll(x => x.IsChecked == false);

@@ -17,7 +17,7 @@ namespace RealEstate.Models.Estates
         [Display(Name = "Floor:")]
         public int Floor { get; set; }
 
-        [Range(1, 99999.999, ErrorMessage = "Price cannot be negative number or more than 999999999.999")]
+        [Range(1, 99999999, ErrorMessage = "Price cannot be negative number or more than 999999999")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Currency cannot be empty")]

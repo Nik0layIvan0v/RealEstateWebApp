@@ -27,8 +27,6 @@ namespace RealEstate.Services
 
         //IEnumerable<string> GetByCategory();
 
-        //IEnumerable<string> GetByUserIdAsync();
-
         //IEnumerable<string> GetBySearchAsync();
 
 
