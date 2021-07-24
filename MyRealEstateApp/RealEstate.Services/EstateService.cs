@@ -19,47 +19,47 @@ namespace RealEstate.Services
             this.Context = context;
         }
 
-        public CreateEstateDropDownModel GetDropDownData()
+        public async Task<CreateEstateDropDownModel> GetDropDownDataAsync()
         {
-            ICollection<AreaModel> areaModels = this.Context.Areas
+          IEnumerable<AreaModel> areaModels =  await this.Context.Areas
                 .Select(x => new AreaModel
                 {
                     Id = x.Id,
                     Area = x.AreaName
                 })
-                .ToArray();
+                .ToArrayAsync();
 
-            ICollection<EstateTypeModel> estateTypeModels = this.Context.EstateTypes
+            IEnumerable<EstateTypeModel> estateTypeModels = await this.Context.EstateTypes
                 .Select(x => new EstateTypeModel
                 {
                     Id = x.Id,
                     Type = x.TypeOfProperty
                 })
-                .ToArray();
+                .ToArrayAsync();
 
-            IEnumerable<CurrencyModel> currencyModels = this.Context.Currencies
+            IEnumerable<CurrencyModel> currencyModels = await this.Context.Currencies
                 .Select(x => new CurrencyModel
                 {
                     Id = x.Id,
                     CurrencyValue = x.CurrencyCode
                 })
-                .ToArray();
+                .ToArrayAsync();
 
-            IEnumerable<TradeTypeModel> tradeTypes = this.Context.TradeTypes
+            IEnumerable<TradeTypeModel> tradeTypes = await this.Context.TradeTypes
                 .Select(x => new TradeTypeModel
                 {
                     Id = x.Id,
                     TypeOfTrade = x.TypeOfTransaction
                 })
-                .ToList();
+                .ToArrayAsync();
 
-            IEnumerable<FutureModel> futureModels = this.Context.Features
+            IEnumerable<FutureModel> futureModels = await this.Context.Features
                 .Select(f => new FutureModel
                 {
                     Id = f.Id,
                     FutureDescription = f.FutureDescription
                 })
-                .ToList();
+                .ToArrayAsync();
 
             CreateEstateDropDownModel dropDownElements = new CreateEstateDropDownModel
             {
@@ -208,26 +208,6 @@ namespace RealEstate.Services
                     ImageFiles = x.Images
                 })
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstatesAsync(int count)
-        {
-            return await this.Context.Estates
-                .OrderByDescending(x => x.CreatedOn)
-                .Select(x => new LastAddedEstateModel
-                {
-                    Id = x.Id,
-                    Squaring = x.Squaring,
-                    Floor = x.Floor,
-                    Description = x.Description,
-                    Image = x.Images.Select(image => image.ImageContentBytes).FirstOrDefault(),
-                    Price = x.Price,
-                    Currency = x.Currency.CurrencyCode,
-                    TradeType = x.TradeType.TypeOfTransaction,
-                    Location = x.City.CityName
-                })
-                .Take(count)
-                .ToArrayAsync();
         }
 
         public async Task<bool> IsUserIsBrokerAsync(string id)

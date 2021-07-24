@@ -6,7 +6,7 @@ namespace RealEstate.Services
 {
     public interface IEstateService
     {
-        CreateEstateDropDownModel GetDropDownData();
+        Task<CreateEstateDropDownModel> GetDropDownDataAsync();
 
         Task<string> CreateEstateAsync(EstateModel model);
 
@@ -20,17 +20,13 @@ namespace RealEstate.Services
 
         Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
 
-        Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstatesAsync(int count);
-
         Task<bool> IsUserIsBrokerAsync(string id);
 
         Task<int> GetBrokerIdAsync(string loggedUserId);
 
-
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetBySearchAsync();
-
 
         //void DeleteEstate(string id);
 

@@ -11,9 +11,9 @@ namespace RealEstate.Controllers
 
     public class HomeController : Controller
     {
-        private readonly IEstateService Service;
+        private readonly IHomeService Service;
 
-        public HomeController(IEstateService service)
+        public HomeController(IHomeService service)
         {
             this.Service = service;
         }

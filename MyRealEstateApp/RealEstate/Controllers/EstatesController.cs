@@ -29,7 +29,7 @@ namespace RealEstate.Controllers
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            var dropdownData = this.EstateService.GetDropDownData();
+            var dropdownData =  await this.EstateService.GetDropDownDataAsync();
 
             AddEstateInputModel model = new AddEstateInputModel(); ;
 
@@ -45,10 +45,10 @@ namespace RealEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddEstateInputModel model)
         {
-            //if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
-            //{
-            //    return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
-            //}
+            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
+            {
+                return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
+            }
 
             int brokerId = await this.EstateService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
 
@@ -56,7 +56,7 @@ namespace RealEstate.Controllers
 
             if (!ModelState.IsValid)
             {
-                var dropdownData = this.EstateService.GetDropDownData();
+                var dropdownData = await this.EstateService.GetDropDownDataAsync();
                 model.EstateTypeViewModels = dropdownData.EstateTypeModels;
                 model.CurrencyViewModels = dropdownData.CurrencyModels;
                 model.AreasViewModels = dropdownData.Areas;
