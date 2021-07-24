@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Infrastructure;
 using RealEstate.Models;
 using RealEstate.Models.Brokers;
 using RealEstate.Services;
+using RealEstate.Services.Models;
 
 namespace RealEstate.Controllers
 {
@@ -50,6 +52,15 @@ namespace RealEstate.Controllers
             await this.Service.AddBrokerAsync(broker);
 
             return this.RedirectToAction(nameof(EstatesController.Create), "Estates");
+        }
+
+        public async Task<IActionResult> MyEstateOffers()
+        {
+            string userId = this.User.GetLoggedInUserId();
+
+            IEnumerable<MyEstateServiceModel> myEstates = await this.Service.GetMyEstatesAsync(userId);
+
+            return this.View(myEstates);
         }
     }
 }

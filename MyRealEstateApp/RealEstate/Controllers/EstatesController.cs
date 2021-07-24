@@ -102,7 +102,7 @@ namespace RealEstate.Controllers
 
             string estateId = await this.EstateService.CreateEstateAsync(estate);
 
-            return this.Redirect($"/Estate/Details?id={estateId}");
+            return this.RedirectToAction(nameof(Details),"Estates",new {Id = estateId});
         }
 
         [AllowAnonymous]
@@ -135,7 +135,7 @@ namespace RealEstate.Controllers
         [HttpPost]
         public IActionResult Edit()
         {
-            return this.Redirect("Estate/Details");
+            return this.RedirectToAction(nameof(Details),"Estates");
         }
 
         [HttpPost]

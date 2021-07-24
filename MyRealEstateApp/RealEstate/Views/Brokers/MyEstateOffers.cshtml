@@ -1,0 +1,33 @@
+﻿@{
+    this.ViewData["Title"] = "My Estates";
+}
+
+@using RealEstate.Infrastructure
+
+@model IEnumerable<MyEstateServiceModel>
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any cars yet!</h2>
+}
+
+<div class="row">
+    @foreach (var myEstate in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(myEstate.FirstImage)" alt="@myEstate.TradeType @myEstate.EstateType - @myEstate.Price (@myEstate.CurrencyCode)">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">@myEstate.TradeType @myEstate.EstateType - @myEstate.Price (@myEstate.CurrencyCode)</h5>
+                    <h5 class="card-body"> Created on: @myEstate.CreatedOn - @myEstate.City (Area: @myEstate.Area)</h5>
+                    <a asp-controller="Estates" asp-action="Details" asp-route-id="@myEstate.Id" class="btn btn-primary">View</a>
+                    <a asp-controller="Estates" asp-action="Edit" asp-route-id="@myEstate.Id" class="btn btn-warning">Edit</a>
+                    @if (ViewBag.AllowCarEdit == true || User.IsAdmin())
+                    {
+                        <a asp-controller="Estates" asp-action="Delete" asp-route-id="@myEstate.Id" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

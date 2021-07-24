@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using RealEstate.Models;
+using RealEstate.Services.Models;
 
 namespace RealEstate.Services
 {
@@ -9,5 +11,6 @@ namespace RealEstate.Services
 
         Task AddBrokerAsync(Broker broker);
 
+        Task<IEnumerable<MyEstateServiceModel>> GetMyEstatesAsync(string userId);
     }
 }
