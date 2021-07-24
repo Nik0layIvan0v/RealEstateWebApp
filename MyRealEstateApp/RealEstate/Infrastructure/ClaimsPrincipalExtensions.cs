@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using static RealEstate.Common.WebConstants;
 
 namespace RealEstate.Infrastructure
 {
@@ -14,5 +15,14 @@ namespace RealEstate.Infrastructure
 
             return user.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
+        public static bool IsAdmin(this ClaimsPrincipal user)
+            => user.IsInRole(AdministratorRoleName);
+
+        public static bool IsBroker(this ClaimsPrincipal user)
+            => user.IsInRole(BrokerRoleName);
+
+        public static bool IsClient(this ClaimsPrincipal user)
+            => user.IsInRole(ClientRoleName);
     }
 }

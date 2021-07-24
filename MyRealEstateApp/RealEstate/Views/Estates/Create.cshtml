@@ -134,6 +134,7 @@
     </form>
 </div>
 
+
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -166,10 +167,10 @@
                         var selectedVal = $(this).find("option:selected").val();
                         console.log(selectedVal);
                         $.ajax({
-                            method: 'GET',
-                            url: 'https://localhost:44356/api/Neighborhoods/Get',
-                            data: { id: selectedVal }
-                        })
+                                method: 'GET',
+                                url: 'https://localhost:44356/api/Neighborhoods/Get',
+                                data: { id: selectedVal }
+                            })
                             .done(function success(result) {
                                 $('#NeighborhoodId').html('');
 
@@ -183,4 +184,6 @@
             });
         }
     </script>
+    
+    <partial name="_ValidationScriptsPartial" />
 }

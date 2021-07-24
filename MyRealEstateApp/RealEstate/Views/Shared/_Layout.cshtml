@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using RealEstate.Infrastructure
+@using RealEstate.Services
+@inject IBrokerService BrokerService
+@{
+    string userId = User.GetLoggedInUserId();
+    bool isUserBroker = await BrokerService.IsUserAlreadyBrokerAsync(userId);
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,21 +20,21 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 pb-3 shadow" style="background-color: #21081a;">
             <div class="container text-white">
-                <a class="navbar-brand" href="#">
-                    <img src="~/Img/RealEstateLogo.png" width="25" height="25" class="d-inline-block align-top" alt="">
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home" width="30" height="30"></i> RealEstate
                 </a>
-                <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="far fa-caret-square-down text-white"></i>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Estates" asp-action="Create"><i class="fas fa-plus-circle"></i> Add Property</a>
-                        </li>
+                        @if (isUserBroker)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Estates" asp-action="Create"><i class="fas fa-plus-circle"></i> Add Property</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Estates" asp-action="All"><i class="fas fa-sitemap"></i> All Properties</a>
                         </li>
@@ -44,12 +51,7 @@
         </main>
     </div>
 
-    <footer>
-        <div class="container">
-            <partial name="_FooterPartial" />
-        </div>
-    </footer>
-
+    <partial name="_FooterPartial" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/fontawesome/js/all.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

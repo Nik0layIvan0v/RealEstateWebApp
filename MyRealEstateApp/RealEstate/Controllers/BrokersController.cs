@@ -18,17 +18,8 @@ namespace RealEstate.Controllers
             Service = service;
         }
 
-        public async Task<IActionResult> CreateBroker()
+        public IActionResult CreateBroker()
         {
-            string userId = this.User.GetLoggedInUserId();
-
-            bool userIsAlreadyBroker = await this.Service.IsUserAlreadyBrokerAsync(userId);
-
-            if (userIsAlreadyBroker)
-            {
-                return this.BadRequest();
-            }
-
             return this.View();
         }
 
