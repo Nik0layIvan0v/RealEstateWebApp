@@ -7,10 +7,12 @@ namespace RealEstate.Services
 {
     public interface IBrokerService
     {
-        Task<bool> IsUserAlreadyBrokerAsync(string id);
+        Task<int> GetBrokerIdAsync(string loggedUserId);
 
-        Task AddBrokerAsync(Broker broker);
+        Task<bool> IsUserAlreadyBrokerAsync(string loggedUserId);
 
-        Task<IEnumerable<MyEstateServiceModel>> GetMyEstatesAsync(string userId);
+        Task CreateBrokerAsync(Broker broker);
+
+        Task<IEnumerable<MyEstateServiceModel>> GetBrokerEstatesAsync(string loggedUserId);
     }
 }

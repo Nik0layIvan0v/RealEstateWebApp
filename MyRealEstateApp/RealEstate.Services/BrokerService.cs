@@ -14,25 +14,34 @@ namespace RealEstate.Services
 
         public BrokerService(RealEstateDbContext context)
         {
-            Context = context;
+            this.Context = context;
         }
 
         public async Task<bool> IsUserAlreadyBrokerAsync(string loggedUserId)
         {
-            return await this.Context.Brokers.AnyAsync(x => x.UserId == loggedUserId);
+            return await this.Context.Brokers.AnyAsync(broker => broker.UserId == loggedUserId);
         }
 
-        public async Task AddBrokerAsync(Broker broker)
+        public async Task CreateBrokerAsync(Broker broker)
         {
             await this.Context.Brokers.AddAsync(broker);
 
             await this.Context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MyEstateServiceModel>> GetMyEstatesAsync(string userId)
+        public async Task<int> GetBrokerIdAsync(string loggedUserId)
+        {
+            return await this.Context
+                .Brokers
+                .Where(broker => broker.UserId == loggedUserId)
+                .Select(broker => broker.Id)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<MyEstateServiceModel>> GetBrokerEstatesAsync(string loggedUserId)
         {
             return await this.Context.Estates
-                .Where(e => e.Broker.UserId == userId)
+                .Where(e => e.Broker.UserId == loggedUserId)
                 .Select(estate => new MyEstateServiceModel
                 {
                     Id = estate.Id,

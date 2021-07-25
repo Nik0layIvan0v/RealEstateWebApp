@@ -20,10 +20,6 @@ namespace RealEstate.Services
 
         Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
 
-        Task<bool> IsUserIsBrokerAsync(string id);
-
-        Task<int> GetBrokerIdAsync(string loggedUserId);
-
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetBySearchAsync();

@@ -209,19 +209,5 @@ namespace RealEstate.Services
                 })
                 .FirstOrDefaultAsync();
         }
-
-        public async Task<bool> IsUserIsBrokerAsync(string id)
-        {
-            return await this.Context.Brokers.AnyAsync(x => x.UserId == id);
-        }
-
-        public async Task<int> GetBrokerIdAsync(string loggedUserId)
-        {
-            return await this.Context
-                .Brokers
-                .Where(broker => broker.UserId == loggedUserId)
-                .Select(broker => broker.Id)
-                .FirstOrDefaultAsync();
-        }
     }
 }

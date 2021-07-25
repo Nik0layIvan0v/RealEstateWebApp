@@ -1,45 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using RealEstate.Infrastructure
 @using RealEstate.Services
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IBrokerService BrokerService
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    string userId = User.GetLoggedInUserId();
-    bool isUserBroker = await BrokerService.IsUserAlreadyBrokerAsync(userId);
-    bool isUserAdmin = User.IsAdmin();
+    @if (SignInManager.IsSignedIn(User))
+    {
+        string userId = User.GetLoggedInUserId();
+        bool isUserBroker = await BrokerService.IsUserAlreadyBrokerAsync(userId);
+        bool isUserAdmin = User.IsAdmin();
 
-    @if (isUserBroker && !isUserAdmin)
-    {
+        @if (isUserBroker && !isUserAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-area="" asp-controller="Brokers" asp-action="MyEstateOffers">My Estates</a>
+            </li>
+        }
+        else if (!isUserAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-area="" asp-controller="Brokers" asp-action="CreateBroker">Become Broker</a>
+            </li>
+        }
         <li class="nav-item">
-            <a  class="nav-link text-white" asp-area="" asp-controller="Brokers" asp-action="MyEstateOffers">My Estates</a>
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account management"><i class="fas fa-user-cog"></i> Account</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-white"><i class="fas fa-door-open"></i> Logout</button>
+            </form>
         </li>
     }
-    else if (!isUserAdmin)
+    else
     {
         <li class="nav-item">
-            <a  class="nav-link text-white" asp-area="" asp-controller="Brokers" asp-action="CreateBroker">Become Broker</a>
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-user"></i> Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
         </li>
     }
-    <li class="nav-item">
-        <a  class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Account management"><i class="fas fa-user-cog"></i> Account</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-white"><i class="fas fa-door-open"></i> Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-user"></i> Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
-    </li>
-}
 </ul>

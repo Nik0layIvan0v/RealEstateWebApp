@@ -16,15 +16,19 @@ namespace RealEstate.Controllers
     public class EstatesController : Controller
     {
         private readonly IEstateService EstateService;
+        private readonly IBrokerService BrokerService;
 
-        public EstatesController(IEstateService estateService)
+        public EstatesController(IEstateService estateService, IBrokerService brokerService)
         {
             this.EstateService = estateService;
+            this.BrokerService = brokerService;
         }
 
         public async Task<IActionResult> Create()
         {
-            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
+            string userId = User.GetLoggedInUserId();
+
+            if (await this.BrokerService.IsUserAlreadyBrokerAsync(userId) == false)
             {
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
@@ -45,12 +49,14 @@ namespace RealEstate.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddEstateInputModel model)
         {
-            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
+            string loggedUserId = User.GetLoggedInUserId();
+
+            if (await this.BrokerService.IsUserAlreadyBrokerAsync(loggedUserId) == false)
             {
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            int brokerId = await this.EstateService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
+            int brokerId = await this.BrokerService.GetBrokerIdAsync(loggedUserId);
 
             model.FutureModels.RemoveAll(x => x.IsChecked == false);
 
@@ -83,18 +89,17 @@ namespace RealEstate.Controllers
                 BrokerId = brokerId,
             };
 
-
             if (model.ImageFiles != null)
             {
                 foreach (var imageFile in model.ImageFiles)
                 {
-                    await using var temp = imageFile.OpenReadStream();
+                    await using Stream temp = imageFile.OpenReadStream();
 
-                    await using var ms = new MemoryStream();
+                    await using MemoryStream memoryStream = new MemoryStream();
 
-                    await temp.CopyToAsync(ms);
+                    await temp.CopyToAsync(memoryStream);
 
-                    byte[] readedBytes = ms.ToArray();
+                    byte[] readedBytes = memoryStream.ToArray();
 
                     estate.Images.Add(readedBytes);
                 }
@@ -124,7 +129,9 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            if (await this.IsCurrentLoggedUserIsBrokerAsync() == false)
+            string loggedUserId = User.GetLoggedInUserId();
+
+            if (await this.BrokerService.IsUserAlreadyBrokerAsync(loggedUserId) == false)
             {
                 //OR USER DON'T OWN ESTATE OFFER!
             }
@@ -142,13 +149,6 @@ namespace RealEstate.Controllers
         public IActionResult Delete(string estateId)
         {
             return this.Ok();
-        }
-
-        private async Task<bool> IsCurrentLoggedUserIsBrokerAsync()
-        {
-            string userId = User.GetLoggedInUserId();
-
-            return await this.EstateService.IsUserIsBrokerAsync(userId);
         }
     }
 }

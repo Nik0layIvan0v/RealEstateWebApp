@@ -49,7 +49,7 @@ namespace RealEstate.Controllers
                 UserId = userId,
             };
 
-            await this.Service.AddBrokerAsync(broker);
+            await this.Service.CreateBrokerAsync(broker);
 
             return this.RedirectToAction(nameof(EstatesController.Create), "Estates");
         }
@@ -58,7 +58,7 @@ namespace RealEstate.Controllers
         {
             string userId = this.User.GetLoggedInUserId();
 
-            IEnumerable<MyEstateServiceModel> myEstates = await this.Service.GetMyEstatesAsync(userId);
+            IEnumerable<MyEstateServiceModel> myEstates = await this.Service.GetBrokerEstatesAsync(userId);
 
             return this.View(myEstates);
         }
