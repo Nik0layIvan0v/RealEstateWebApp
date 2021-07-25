@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace RealEstate.Models.Home
 {
-    public class NewestEstatesViewModel
+    public class IndexViewModel
     {
-        public NewestEstatesViewModel()
+        public IndexViewModel()
         {
             this.LastAddedEstatesViewModels = new List<LastAddedEstateModel>();
         }
+
+        public StatisticModel Statistics { get; set; }
 
         public ICollection<LastAddedEstateModel> LastAddedEstatesViewModels { get; private set; }
 

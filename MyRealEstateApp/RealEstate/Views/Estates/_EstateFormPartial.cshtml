@@ -1,0 +1,131 @@
+﻿@model EstateFormModel
+
+<div class="container-fluid">
+    <div class="row container pb-3">
+        <h1 class="text-left">@ViewData["Title"]: </h1>
+    </div>
+    <form method="post" asp-controller="Estates" asp-action="Create" enctype="multipart/form-data">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label asp-for="TypeOfTradeId"></label>
+                <select asp-for="TypeOfTradeId" class="form-control">
+                    @foreach (var trade in Model.TypeOfDeals)
+                    {
+                        <option value="@trade.Id">@trade.TypeOfTrade</option>
+                    }
+                </select>
+                <span asp-validation-for="TypeOfTradeId"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="Floor"></label>
+                <input asp-for="Floor" class="form-control">
+                <span asp-validation-for="Floor" class="small text-danger"></span>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="Squaring"></label>
+                <input asp-for="Squaring" type="number" class="form-control">
+                <span asp-validation-for="Squaring" class="small text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" type="number">
+                <span asp-validation-for="Price" class="small text-danger"></span>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="CurrencyId"></label>
+                <select asp-for="CurrencyId" class="form-control">
+                    @foreach (var currency in Model.CurrencyViewModels)
+                    {
+                        <option value="@currency.Id">@currency.CurrencyValue</option>
+                    }
+                </select>
+                <span asp-validation-for="CurrencyId" class="small text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="EstateTypeId"></label>
+                <select asp-for="EstateTypeId" class="form-control">
+                    @foreach (var estate in Model.EstateTypeViewModels)
+                    {
+                        <option value="@estate.Id">@estate.Type</option>
+                    }
+                </select>
+                <span asp-validation-for="EstateTypeId" class="small text-danger"></span>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="AreaId"></label>
+                <select asp-for="AreaId" class="form-control">
+                    @foreach (var area in Model.AreasViewModels)
+                    {
+                        <option value="@area.Id">@area.Area</option>
+                    }
+                </select>
+                <span asp-validation-for="AreaId" class="small text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm">
+                <label asp-for="CityId"></label>
+                <select asp-for="CityId" class="form-control">
+                    <option value="">Select City</option>
+                </select>
+                <span asp-validation-for="CityId" class="small text-danger"></span>
+            </div>
+            <div class="form-group col-sm">
+                <label asp-for="NeighborhoodId"></label>
+                <select asp-for="NeighborhoodId" class="form-control">
+                    <option value="">Select Neighborhood</option>
+                </select>
+                <span asp-validation-for="NeighborhoodId" class="small text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-group">
+                <h3>Add Futures:</h3>
+                <div class="row">
+                    @for (int i = 0; i < Model.FutureModels.Count(); i++)
+                    {
+                        <div class="form-check col-sm-3">
+                            <input class="form-check-input" type="checkbox" asp-for="@Model.FutureModels[i].IsChecked" />
+                            <label class="form-check-label">@Model.FutureModels[i].FutureDescription</label>
+                            <input type="hidden" asp-for="@Model.FutureModels[i].Id" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-group">
+                <h3>Add Pictures:</h3>
+                <div class="row">
+                    <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" asp-for="ImageFiles" multiple="" />
+                            <label class="custom-file-label" asp-for="ImageFiles">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary">Upload</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid text-center pb-4">
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Create Offer" />
+            </div>
+        </div>
+    </form>
+</div>

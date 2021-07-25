@@ -7,7 +7,7 @@ namespace RealEstate.Models.Estates
 {
     using static Common.GlobalConstants;
 
-    public class AddEstateInputModel
+    public class EstateFormModel
     {
         [Range(1, 9999.999, ErrorMessage = "Squaring must be between 1 and 9999.999")]
         [Display(Name = "Squaring:")]

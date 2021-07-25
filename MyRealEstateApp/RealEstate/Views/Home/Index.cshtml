@@ -1,5 +1,5 @@
 ﻿@using System.Linq
-@model RealEstate.Models.Home.NewestEstatesViewModel
+@model RealEstate.Models.Home.IndexViewModel
 
 @{
     ViewData["Title"] = "Welcome";
@@ -16,59 +16,73 @@
         </p>
     </div>
 }
-
-<div class="h1 text-center pb-1 pt-1">Newly Added Property</div>
-
-<div class="container">
-    @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count; i++)
-    {
-        <div class="jumbotron">
-            @if (i % 2 == 0)
-            {
-                <div class="row text-left">
-                    <div class="col-sm-8">
-                        <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
-                    </div>
-                    <div class="col-sm-4">
-                        <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
-                        <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
-                    </div>
-                </div>
-                <div class="row pt-3">
-                    <div class="col-sm text-left pt-3">
-                        <a class="btn btn-info" asp-controller="Estates" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
-                    </div>
-                    <div class="col-sm">
-                    </div>
-                    <div class="col-sm text-right float-right">
-                        <h3 class="text-left pt-3"><i class="fas fa-tags"></i> @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row text-left">
-                    <div class="col-sm-4">
-                        <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
-                        <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
-                    </div>
-                    <div class="col-sm-8">
-                        <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <h3 class="text-left pt-3">Price: @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
-                    </div>
-                    <div class="col-sm">
-
-                    </div>
-                    <div class="col-sm text-right pt-3">
-                        <a class="btn btn-info" asp-controller="Estates" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
-                    </div>
-                </div>
-
-            }
+else
+{
+    <div class="jumbotron" id="statistics">
+        <div class="row text-center pb-4">
+            <h1 class="display-4">Welcome to the best Real estate market place</h1>
         </div>
-    }
-</div>
+        <div class="row">
+            <h2 class="col-md-4 text-center">Total Brokers: @Model.Statistics.TotalBrokers</h2>
+            <h2 class="col-md-4 text-center">Total Estates: @Model.Statistics.TotalEstates</h2>
+            <h2 class="col-md-4 text-center">Total Clients: @Model.Statistics.TotalUsers</h2>
+        </div>
+    </div>
+
+    <div class="h1 text-center pb-3 pt-3">Newly Added Property</div>
+
+    <div class="container">
+        @for (int i = 0; i < @Model.LastAddedEstatesViewModels.Count; i++)
+        {
+            <div class="jumbotron">
+                @if (i % 2 == 0)
+                {
+                    <div class="row text-left">
+                        <div class="col-sm-8">
+                            <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                        </div>
+                        <div class="col-sm-4">
+                            <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
+                            <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm text-left pt-3">
+                            <a class="btn btn-info" asp-controller="Estates" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
+                        </div>
+                        <div class="col-sm">
+                        </div>
+                        <div class="col-sm text-right float-right">
+                            <h3 class="text-left pt-3"><i class="fas fa-tags"></i> @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row text-left">
+                        <div class="col-sm-4">
+                            <h2>@Model.LastAddedEstatesViewModels.ElementAt(i).TradeType</h2>
+                            <p>@Model.LastAddedEstatesViewModels.ElementAt(i).Description</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <img style="max-width: 650px; max-height: 400px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LastAddedEstatesViewModels.ElementAt(i).Image)" class="border border-5 rounded embed-responsive" alt="Card image cap">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <h3 class="text-left pt-3"><i class="fas fa-tags"></i> @Model.LastAddedEstatesViewModels.ElementAt(i).Price @Model.LastAddedEstatesViewModels.ElementAt(i).Currency</h3>
+                        </div>
+                        <div class="col-sm">
+
+                        </div>
+                        <div class="col-sm text-right pt-3">
+                            <a class="btn btn-info" asp-controller="Estates" asp-action="Details" asp-route-id="@Model.LastAddedEstatesViewModels.ElementAt(i).Id">Details</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+

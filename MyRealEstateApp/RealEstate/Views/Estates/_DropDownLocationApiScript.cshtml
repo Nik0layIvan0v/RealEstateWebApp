@@ -1,0 +1,48 @@
+﻿<script>
+    $(document).ready(function () {
+        $("#AreaId").on("change",
+            function () {
+
+                var selectedVal = $(this).find("option:selected").val();
+                $.ajax({
+                    method: 'GET',
+                    url: 'https://localhost:44356/api/Cities/Get',
+                    data: { id: selectedVal }
+                })
+                    .done(function success(message) {
+                        $('#CityId').html('');
+                        for (var i = 0; i < message.length; i++) {
+                            var html = '<option value=' + message[i].id + '>' + message[i].cityName + '</option>';
+
+                            $('#CityId').append(html);
+                        }
+                    });
+            });
+    });
+</script>
+
+<script>
+    if ($("#CityId") != null) {
+        $(document).ready(function () {
+            $("#CityId").on("change",
+                function () {
+                    var selectedVal = $(this).find("option:selected").val();
+                    console.log(selectedVal);
+                    $.ajax({
+                        method: 'GET',
+                        url: 'https://localhost:44356/api/Neighborhoods/Get',
+                        data: { id: selectedVal }
+                    })
+                        .done(function success(result) {
+                            $('#NeighborhoodId').html('');
+
+                            for (var i = 0; i < result.length; i++) {
+                                var html = '<option value=' + result[i].id + '>' + result[i].neighborhood + '</option>';
+                                console.log(i);
+                                $('#NeighborhoodId').append(html);
+                            }
+                        });
+                });
+        });
+    }
+</script>

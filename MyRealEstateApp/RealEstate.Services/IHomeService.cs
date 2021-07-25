@@ -7,5 +7,7 @@ namespace RealEstate.Services
     public interface IHomeService
     {
         Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstatesAsync(int count);
+
+        Task<StatisticModel> GetStatistics();
     }
 }

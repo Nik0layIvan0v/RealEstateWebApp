@@ -35,5 +35,15 @@ namespace RealEstate.Services
                 .Take(count)
                 .ToArrayAsync();
         }
+
+        public async Task<StatisticModel> GetStatistics()
+        {
+            return new StatisticModel
+            {
+                TotalBrokers = await this.Context.Brokers.CountAsync(),
+                TotalEstates = await this.Context.Estates.CountAsync(),
+                TotalUsers = await this.Context.Users.CountAsync()
+            };
+        }
     }
 }

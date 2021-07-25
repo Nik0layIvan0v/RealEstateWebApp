@@ -20,7 +20,9 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Index()
         {
-            NewestEstatesViewModel estates = new NewestEstatesViewModel();
+            IndexViewModel estates = new IndexViewModel();
+
+            estates.Statistics = await this.Service.GetStatistics();
 
             estates.AddEstates(await this.Service.GetLastAddedEstatesAsync(DefaultLastEstatesCount));
 

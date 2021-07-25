@@ -33,21 +33,15 @@ namespace RealEstate.Controllers
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            var dropdownData =  await this.EstateService.GetDropDownDataAsync();
+            var dropdownData = await this.EstateService.GetDropDownDataAsync();
 
-            AddEstateInputModel model = new AddEstateInputModel(); ;
-
-            model.EstateTypeViewModels = dropdownData.EstateTypeModels;
-            model.CurrencyViewModels = dropdownData.CurrencyModels;
-            model.AreasViewModels = dropdownData.Areas;
-            model.TypeOfDeals = dropdownData.TradeTypeModels;
-            model.FutureModels = dropdownData.FutureModels.ToList();
+            EstateFormModel model = await this.LoadEstateFormModel();
 
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddEstateInputModel model)
+        public async Task<IActionResult> Create(EstateFormModel model)
         {
             string loggedUserId = User.GetLoggedInUserId();
 
@@ -62,12 +56,7 @@ namespace RealEstate.Controllers
 
             if (!ModelState.IsValid)
             {
-                var dropdownData = await this.EstateService.GetDropDownDataAsync();
-                model.EstateTypeViewModels = dropdownData.EstateTypeModels;
-                model.CurrencyViewModels = dropdownData.CurrencyModels;
-                model.AreasViewModels = dropdownData.Areas;
-                model.TypeOfDeals = dropdownData.TradeTypeModels;
-                model.FutureModels = dropdownData.FutureModels.ToList();
+                model = await this.LoadEstateFormModel();
 
                 return await this.Create();
             };
@@ -107,7 +96,7 @@ namespace RealEstate.Controllers
 
             string estateId = await this.EstateService.CreateEstateAsync(estate);
 
-            return this.RedirectToAction(nameof(Details),"Estates",new {Id = estateId});
+            return this.RedirectToAction(nameof(Details), "Estates", new { Id = estateId });
         }
 
         [AllowAnonymous]
@@ -129,26 +118,37 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            string loggedUserId = User.GetLoggedInUserId();
+            var model = this.LoadEstateFormModel();
 
-            if (await this.BrokerService.IsUserAlreadyBrokerAsync(loggedUserId) == false)
-            {
-                //OR USER DON'T OWN ESTATE OFFER!
-            }
-
-            return this.Ok();
+            return this.View(model);
         }
 
         [HttpPost]
         public IActionResult Edit()
         {
-            return this.RedirectToAction(nameof(Details),"Estates");
+            return this.RedirectToAction(nameof(Details), "Estates");
         }
 
         [HttpPost]
         public IActionResult Delete(string estateId)
         {
             return this.Ok();
+        }
+
+        private async Task<EstateFormModel> LoadEstateFormModel()
+        {
+            var dropdownData = await this.EstateService.GetDropDownDataAsync();
+
+            EstateFormModel model = new EstateFormModel
+            {
+                EstateTypeViewModels = dropdownData.EstateTypeModels,
+                CurrencyViewModels = dropdownData.CurrencyModels,
+                AreasViewModels = dropdownData.Areas,
+                TypeOfDeals = dropdownData.TradeTypeModels,
+                FutureModels = dropdownData.FutureModels.ToList(),
+            };
+
+            return model;
         }
     }
 }
