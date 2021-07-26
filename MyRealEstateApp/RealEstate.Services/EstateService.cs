@@ -210,56 +210,64 @@ namespace RealEstate.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> EditEstateAsync(string estateId, EstateModel model)
+        public async Task<bool> EditEstateAsync(string estateId, EstateModel formModel)
         {
-            Estate estate = await this.Context.Estates.FindAsync(model);
+            Estate estate = await this.Context.Estates.FirstOrDefaultAsync(x => x.Id == estateId);
 
             if (estate == null)
             {
                 return false;
             }
 
-            if (estate.BrokerId != model.BrokerId)
+            if (estate.BrokerId != formModel.BrokerId)
             {
                 return false;
             }
 
-            if (model.Images != null && model.Images.Count != 0)
+            if (formModel.Images.Count != 0)
             {
-                List<Image> estateImages = new List<Image>();
+                var estateImages = await this.Context.Images.Where(image => image.EstateId == estateId).ToListAsync();
 
-                foreach (var image in model.Images)
+                this.Context.Images.RemoveRange(estateImages);
+
+                foreach (var formImage in formModel.Images)
                 {
-                    estateImages.Add(new Image
+                    Image image = new Image
                     {
                         EstateId = estateId,
-                        ImageContentBytes = image
-                    });
-                }
+                        ImageContentBytes = formImage
+                    };
 
-                estate.Images = estateImages;
+                    estate.Images.Add(image);
+                }
             }
 
-            if (model.SelectedFutures != null && model.SelectedFutures.Count != 0)
+            if (formModel.SelectedFutures != null && formModel.SelectedFutures.Count != 0)
             {
-                estate.Features = model.SelectedFutures.Select(x => new EstateFeature
+                var features = this.Context.EstateFeatures.Where(ef => ef.EstateId == estateId).ToList();
+
+                this.Context.EstateFeatures.RemoveRange(features);
+
+                await this.Context.SaveChangesAsync();
+
+                estate.Features = formModel.SelectedFutures.Select(x => new EstateFeature
                 {
                     EstateId = estateId,
                     FeatureId = x.Id,
                 }).ToList();
             }
 
-            estate.Squaring = model.Squaring;
+            estate.Squaring = formModel.Squaring;
             estate.EditedOn = DateTime.UtcNow;
-            estate.Floor = model.Floor;
-            estate.Price = model.Price;
-            estate.Description = model.Description;
-            estate.CurrencyId = model.CurrencyId;
-            estate.EstateTypeId = model.EstateTypeId;
-            estate.TradeTypeId = model.TypeOfTradeId;
-            estate.AreaId = model.AreaId;
-            estate.CityId = model.CityId;
-            estate.NeighborhoodId = model.NeighborhoodId;
+            estate.Floor = formModel.Floor;
+            estate.Price = formModel.Price;
+            estate.Description = formModel.Description;
+            estate.CurrencyId = formModel.CurrencyId;
+            estate.EstateTypeId = formModel.EstateTypeId;
+            estate.TradeTypeId = formModel.TypeOfTradeId;
+            estate.AreaId = formModel.AreaId;
+            estate.CityId = formModel.CityId;
+            estate.NeighborhoodId = formModel.NeighborhoodId;
 
             await this.Context.SaveChangesAsync();
 
@@ -269,7 +277,7 @@ namespace RealEstate.Services
         public async Task<EstateModel> GetEstateFormModelById(string id)
         {
             return await this.Context.Estates
-                .Where(x=> x.Id == id)
+                .Where(x => x.Id == id)
                 .Select(x => new EstateModel
                 {
                     BrokerId = x.BrokerId,
@@ -283,14 +291,14 @@ namespace RealEstate.Services
                     NeighborhoodId = x.NeighborhoodId,
                     Description = x.Description,
                     TypeOfTradeId = x.EstateTypeId,
-                    SelectedFutures = x.Features.Select(x=> new FutureModel
+                    SelectedFutures = x.Features.Select(x => new FutureModel
                     {
                         Id = x.FeatureId,
                         FutureDescription = x.Feature.FutureDescription,
                         IsChecked = true
 
                     }).ToList(),
-                    Images = x.Images.Select(x => x.ImageContentBytes).ToList(),
+                    Images = x.Images.Select(image => image.ImageContentBytes).ToList(),
                 })
                 .FirstOrDefaultAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Infrastructure;
 using RealEstate.Models.Estates;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using RealEstate.Models;
 
 namespace RealEstate.Controllers
 {
@@ -131,52 +131,50 @@ namespace RealEstate.Controllers
                 return Unauthorized();
             }
 
-            var dropdownData = await this.LoadEstateFormModel();
-
-            EstateFormModel formModel = new EstateFormModel
-            {
-                Squaring = estateDb.Squaring,
-                Floor = estateDb.Floor,
-                Price = estateDb.Price,
-                CurrencyId = estateDb.CurrencyId,
-                EstateTypeId = estateDb.EstateTypeId,
-                AreaId = estateDb.AreaId,
-                CityId = estateDb.CityId,
-                NeighborhoodId = estateDb.NeighborhoodId,
-                Description = estateDb.Description,
-                TypeOfTradeId = estateDb.TypeOfTradeId,
-                EstateTypeViewModels = dropdownData.EstateTypeViewModels,
-                TypeOfDeals = dropdownData.TypeOfDeals,
-                CurrencyViewModels = dropdownData.CurrencyViewModels,
-                AreasViewModels = dropdownData.AreasViewModels,
-                FutureModels = dropdownData.FutureModels,
-                ImageFiles = dropdownData.ImageFiles
-            };
+            EstateFormModel formModel = await this.LoadEstateFormModel(estateDb);
 
             return this.View(formModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, EstateFormModel model)
+        public async Task<IActionResult> Edit(string id, EstateFormModel formModel)
         {
             int brokerId = await BrokerService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
+
+            formModel.FutureModels.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 
             EstateModel estateModel = new EstateModel
             {
                 BrokerId = brokerId,
-                Squaring = 0,
-                Floor = 0,
-                Price = 0,
-                CurrencyId = null,
-                EstateTypeId = null,
-                AreaId = 0,
-                CityId = 0,
-                NeighborhoodId = 0,
-                Description = null,
-                TypeOfTradeId = null,
-                SelectedFutures = null,
-                Images = null
+                Squaring = formModel.Squaring,
+                Floor = formModel.Floor,
+                Price = formModel.Price,
+                CurrencyId = formModel.CurrencyId,
+                EstateTypeId = formModel.EstateTypeId,
+                AreaId = formModel.AreaId,
+                CityId = formModel.CityId,
+                NeighborhoodId = formModel.NeighborhoodId,
+                Description = formModel.Description,
+                TypeOfTradeId = formModel.TypeOfTradeId,
+                SelectedFutures = formModel.FutureModels,
+                Images = new List<byte[]>()
             };
+
+            if (formModel.ImageFiles != null)
+            {
+                foreach (var imageFile in formModel.ImageFiles)
+                {
+                    await using Stream temp = imageFile.OpenReadStream();
+
+                    await using MemoryStream memoryStream = new MemoryStream();
+
+                    await temp.CopyToAsync(memoryStream);
+
+                    byte[] readedBytes = memoryStream.ToArray();
+
+                    estateModel.Images.Add(readedBytes);
+                }
+            }
 
             bool isEdited = await this.EstateService.EditEstateAsync(id, estateModel);
 
@@ -194,7 +192,7 @@ namespace RealEstate.Controllers
             return this.Ok();
         }
 
-        private async Task<EstateFormModel> LoadEstateFormModel()
+        private async Task<EstateFormModel> LoadEstateFormModel(EstateModel estateModel = null)
         {
             var dropdownData = await this.EstateService.GetDropDownDataAsync();
 
@@ -206,6 +204,31 @@ namespace RealEstate.Controllers
                 TypeOfDeals = dropdownData.TradeTypeModels,
                 FutureModels = dropdownData.FutureModels.ToList(),
             };
+
+            if (estateModel != null)
+            {
+                foreach (var feture in dropdownData.FutureModels)
+                {
+                    var populatedCheckbox = estateModel.SelectedFutures.FirstOrDefault(x => x.Id == feture.Id);
+
+                    if (populatedCheckbox != null)
+                    {
+                        feture.IsChecked = populatedCheckbox.IsChecked;
+                    }
+                }
+
+                model.Squaring = estateModel.Squaring;
+                model.Floor = estateModel.Floor;
+                model.Price = estateModel.Price;
+                model.CurrencyId = estateModel.CurrencyId;
+                model.EstateTypeId = estateModel.EstateTypeId;
+                model.AreaId = estateModel.AreaId;
+                model.CityId = estateModel.CityId;
+                model.NeighborhoodId = estateModel.NeighborhoodId;
+                model.Description = estateModel.Description;
+                model.TypeOfTradeId = estateModel.TypeOfTradeId;
+                model.ImageFiles = new List<IFormFile>();
+            }
 
             return model;
         }
