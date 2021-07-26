@@ -46,6 +46,8 @@ namespace RealEstate
             services.AddTransient<IEstateService, EstateService>();
             services.AddTransient<IBrokerService, BrokerService>();
             services.AddTransient<IHomeService, HomeService>();
+            services.AddTransient<ICommentService,CommentService>();
+
 
             services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
         }

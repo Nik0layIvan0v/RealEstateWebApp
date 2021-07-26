@@ -95,5 +95,10 @@ namespace RealEstate.Common
         public const string BrokerPhoneNumberRegularExpression = @"[0-9]+";
 
         #endregion
+
+        #region Comment
+        public const int MaxCommentLength = 500;
+        public const int MinCommentLength = 5;
+        #endregion
     }
 }
