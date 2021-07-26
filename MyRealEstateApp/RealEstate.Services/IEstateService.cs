@@ -10,6 +10,8 @@ namespace RealEstate.Services
 
         Task<string> CreateEstateAsync(EstateModel model);
 
+        Task<bool> EditEstateAsync(string estateId, EstateModel model);
+
         Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id);
 
         Task<IEnumerable<NeighborhoodModel>> GetNeighborhoodsByCityIdAsync(int id);
@@ -20,13 +22,13 @@ namespace RealEstate.Services
 
         Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
 
+        Task<EstateModel> GetEstateFormModelById(string id);
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetBySearchAsync();
 
         //void DeleteEstate(string id);
-
-        //void EditEstate(string ids);
 
         //void ArchiveEstate(string id);
     }

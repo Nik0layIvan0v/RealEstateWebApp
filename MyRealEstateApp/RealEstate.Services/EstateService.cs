@@ -21,13 +21,13 @@ namespace RealEstate.Services
 
         public async Task<CreateEstateDropDownModel> GetDropDownDataAsync()
         {
-          IEnumerable<AreaModel> areaModels =  await this.Context.Areas
-                .Select(x => new AreaModel
-                {
-                    Id = x.Id,
-                    Area = x.AreaName
-                })
-                .ToArrayAsync();
+            IEnumerable<AreaModel> areaModels = await this.Context.Areas
+                  .Select(x => new AreaModel
+                  {
+                      Id = x.Id,
+                      Area = x.AreaName
+                  })
+                  .ToArrayAsync();
 
             IEnumerable<EstateTypeModel> estateTypeModels = await this.Context.EstateTypes
                 .Select(x => new EstateTypeModel
@@ -206,6 +206,91 @@ namespace RealEstate.Services
                     Description = x.Description,
                     FutureModels = x.Features.Where(ef => ef.EstateId == x.Id).Select(f => f.Feature.FutureDescription).ToList(),
                     ImageFiles = x.Images
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> EditEstateAsync(string estateId, EstateModel model)
+        {
+            Estate estate = await this.Context.Estates.FindAsync(model);
+
+            if (estate == null)
+            {
+                return false;
+            }
+
+            if (estate.BrokerId != model.BrokerId)
+            {
+                return false;
+            }
+
+            if (model.Images != null && model.Images.Count != 0)
+            {
+                List<Image> estateImages = new List<Image>();
+
+                foreach (var image in model.Images)
+                {
+                    estateImages.Add(new Image
+                    {
+                        EstateId = estateId,
+                        ImageContentBytes = image
+                    });
+                }
+
+                estate.Images = estateImages;
+            }
+
+            if (model.SelectedFutures != null && model.SelectedFutures.Count != 0)
+            {
+                estate.Features = model.SelectedFutures.Select(x => new EstateFeature
+                {
+                    EstateId = estateId,
+                    FeatureId = x.Id,
+                }).ToList();
+            }
+
+            estate.Squaring = model.Squaring;
+            estate.EditedOn = DateTime.UtcNow;
+            estate.Floor = model.Floor;
+            estate.Price = model.Price;
+            estate.Description = model.Description;
+            estate.CurrencyId = model.CurrencyId;
+            estate.EstateTypeId = model.EstateTypeId;
+            estate.TradeTypeId = model.TypeOfTradeId;
+            estate.AreaId = model.AreaId;
+            estate.CityId = model.CityId;
+            estate.NeighborhoodId = model.NeighborhoodId;
+
+            await this.Context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<EstateModel> GetEstateFormModelById(string id)
+        {
+            return await this.Context.Estates
+                .Where(x=> x.Id == id)
+                .Select(x => new EstateModel
+                {
+                    BrokerId = x.BrokerId,
+                    Squaring = x.Squaring,
+                    Floor = x.Floor,
+                    Price = x.Price,
+                    CurrencyId = x.CurrencyId,
+                    EstateTypeId = x.EstateTypeId,
+                    AreaId = x.AreaId,
+                    CityId = x.CityId,
+                    NeighborhoodId = x.NeighborhoodId,
+                    Description = x.Description,
+                    TypeOfTradeId = x.EstateTypeId,
+                    SelectedFutures = x.Features.Select(x=> new FutureModel
+                    {
+                        Id = x.FeatureId,
+                        FutureDescription = x.Feature.FutureDescription,
+                        IsChecked = true
+
+                    }).ToList(),
+                    Images = x.Images.Select(x => x.ImageContentBytes).ToList(),
                 })
                 .FirstOrDefaultAsync();
         }

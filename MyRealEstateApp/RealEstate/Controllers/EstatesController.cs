@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using RealEstate.Models;
 
 namespace RealEstate.Controllers
 {
@@ -33,8 +34,6 @@ namespace RealEstate.Controllers
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            var dropdownData = await this.EstateService.GetDropDownDataAsync();
-
             EstateFormModel model = await this.LoadEstateFormModel();
 
             return this.View(model);
@@ -52,7 +51,7 @@ namespace RealEstate.Controllers
 
             int brokerId = await this.BrokerService.GetBrokerIdAsync(loggedUserId);
 
-            model.FutureModels.RemoveAll(x => x.IsChecked == false);
+            model.FutureModels.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 
             if (!ModelState.IsValid)
             {
@@ -118,15 +117,75 @@ namespace RealEstate.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            var model = this.LoadEstateFormModel();
+            string userId = this.User.GetLoggedInUserId();
 
-            return this.View(model);
+            if (await this.BrokerService.IsUserAlreadyBrokerAsync(userId) == false && User.IsAdmin() == false)
+            {
+                return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
+            }
+
+            EstateModel estateDb = await this.EstateService.GetEstateFormModelById(id);
+
+            if (estateDb.BrokerId != await BrokerService.GetBrokerIdAsync(userId))
+            {
+                return Unauthorized();
+            }
+
+            var dropdownData = await this.LoadEstateFormModel();
+
+            EstateFormModel formModel = new EstateFormModel
+            {
+                Squaring = estateDb.Squaring,
+                Floor = estateDb.Floor,
+                Price = estateDb.Price,
+                CurrencyId = estateDb.CurrencyId,
+                EstateTypeId = estateDb.EstateTypeId,
+                AreaId = estateDb.AreaId,
+                CityId = estateDb.CityId,
+                NeighborhoodId = estateDb.NeighborhoodId,
+                Description = estateDb.Description,
+                TypeOfTradeId = estateDb.TypeOfTradeId,
+                EstateTypeViewModels = dropdownData.EstateTypeViewModels,
+                TypeOfDeals = dropdownData.TypeOfDeals,
+                CurrencyViewModels = dropdownData.CurrencyViewModels,
+                AreasViewModels = dropdownData.AreasViewModels,
+                FutureModels = dropdownData.FutureModels,
+                ImageFiles = dropdownData.ImageFiles
+            };
+
+            return this.View(formModel);
         }
 
         [HttpPost]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(string id, EstateFormModel model)
         {
-            return this.RedirectToAction(nameof(Details), "Estates");
+            int brokerId = await BrokerService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
+
+            EstateModel estateModel = new EstateModel
+            {
+                BrokerId = brokerId,
+                Squaring = 0,
+                Floor = 0,
+                Price = 0,
+                CurrencyId = null,
+                EstateTypeId = null,
+                AreaId = 0,
+                CityId = 0,
+                NeighborhoodId = 0,
+                Description = null,
+                TypeOfTradeId = null,
+                SelectedFutures = null,
+                Images = null
+            };
+
+            bool isEdited = await this.EstateService.EditEstateAsync(id, estateModel);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return this.RedirectToAction(nameof(BrokersController.MyEstateOffers), "Brokers");
         }
 
         [HttpPost]
