@@ -18,11 +18,13 @@ namespace RealEstate.Controllers
     {
         private readonly IEstateService EstateService;
         private readonly IBrokerService BrokerService;
+        private readonly ICommentService CommentService;
 
-        public EstatesController(IEstateService estateService, IBrokerService brokerService)
+        public EstatesController(IEstateService estateService, IBrokerService brokerService, ICommentService commentService)
         {
             this.EstateService = estateService;
             this.BrokerService = brokerService;
+            this.CommentService = commentService;
         }
 
         public async Task<IActionResult> Create()
@@ -111,6 +113,13 @@ namespace RealEstate.Controllers
         public async Task<ActionResult<EstateDetailsModel>> Details(string id)
         {
             EstateDetailsModel estateInfo = await this.EstateService.GetEstateDetailsAsync(id);
+
+            var estateComments = await this.CommentService.GetCommentsByEstateId(id);
+
+            foreach (var comment in estateComments)
+            {
+                estateInfo.Comments.Add(comment);
+            }
 
             return this.View(estateInfo);
         }

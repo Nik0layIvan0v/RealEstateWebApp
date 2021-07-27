@@ -1,5 +1,12 @@
-﻿@{
+﻿@using RealEstate.Models.Comments
+@model CommentFormModel
+
+@{
     this.ViewData["Title"] = "Create Comment";
 }
 
-<h1>Create Comment:</h1>
+<partial name="_CommentFormPartial" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

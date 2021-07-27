@@ -205,7 +205,8 @@ namespace RealEstate.Services
                     Neighborhood = x.Neighborhood.Name,
                     Description = x.Description,
                     FutureModels = x.Features.Where(ef => ef.EstateId == x.Id).Select(f => f.Feature.FutureDescription).ToList(),
-                    ImageFiles = x.Images
+                    ImageFiles = x.Images,
+                    Comments = new List<CommentServiceModel>()
                 })
                 .FirstOrDefaultAsync();
         }

@@ -49,8 +49,10 @@ namespace RealEstate.Services.Models
         [Display(Name = "Description:")]
         public string Description { get; set; }
 
-        public IEnumerable<string> FutureModels { get; set; }
+        public ICollection<CommentServiceModel> Comments { get; init; }
 
-        public IEnumerable<Image> ImageFiles { get; set; }
+        public IEnumerable<string> FutureModels { get; init; }
+
+        public IEnumerable<Image> ImageFiles { get; init; }
     }
 }

@@ -92,16 +92,25 @@
         Property Comments:
         <hr class="mt-2 mb-3" />
     </h3>
-    <ul class="list-unstyled">
-        <li class="media">
-            <i class="fas fa-comments" with="65" height="65"></i>
-            <div class="media-body">
-                <h5 class="mt-0 mb-1">List-based media object</h5>
-                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-            </div>
-        </li>
-    </ul>
-    
+    @if (!Model.Comments.Any())
+    {
+        <h4 class="text-center">THere is no comments for this estate offer!</h4>
+    }
+    else
+    {
+        <ul class="list-unstyled">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="media">
+                    <i class="fas fa-comments" with="65" height="65"></i>
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">@comment.CreatorName</h5>
+                        @comment.CommentContent
+                    </div>
+                </li>
+            }
+        </ul>
+    }
     <div class="container text-center">
         <a href="/Comments/CreateCommnet?estateId=@Model.Id" class="btn btn-primary">Add Comment</a>
     </div>

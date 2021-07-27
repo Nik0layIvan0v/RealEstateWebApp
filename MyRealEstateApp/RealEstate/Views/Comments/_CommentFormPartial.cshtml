@@ -1,1 +1,22 @@
-﻿
+﻿@using RealEstate.Models.Comments
+@model CommentFormModel
+
+<div class="container-fluid">
+    <div class="row container pb-3">
+        <h1 class="text-left">@ViewData["Title"]: </h1>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="EstateId" class="form-control" value="@Model.EstateId">
+        <div class="form-group col-sm">
+            <label asp-for="Content"></label>
+            <textarea type="text" asp-for="Content" class="form-control" rows="10"></textarea>
+            <span asp-validation-for="Content" class="small text-danger"></span>
+        </div>
+
+        <div class="container-fluid text-center pb-4">
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Post Comment" />
+            </div>
+        </div>
+    </form>
+</div>

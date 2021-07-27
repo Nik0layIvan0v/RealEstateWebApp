@@ -1,50 +1,64 @@
 ﻿namespace RealEstate.Controllers
 {
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using RealEstate.Services;
     using System;
     using RealEstate.Infrastructure;
+    using RealEstate.Models.Comments;
+    using RealEstate.Models;
+    using Microsoft.AspNetCore.Authorization;
 
+    [Authorize]
     public class CommentsController : Controller
     {
-        private readonly ICommentService commentService;
+        private readonly ICommentService CommentService;
 
         public CommentsController(ICommentService commentService)
         {
-            this.commentService = commentService;
+            this.CommentService = commentService;
         }
 
-        // GET: CommentsController/Details/5
-        public ActionResult Details(string estateId)
-        {
-            return View();
-        }
-
-        // GET: CommentsController/Create
         public ActionResult CreateCommnet([FromQuery] string estateId)
         {
-            return this.View();
+            CommentFormModel formModel = new()
+            {
+                EstateId = estateId
+            };
+
+            return this.View(formModel);
         }
 
-        // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCommnet(IFormCollection collection)
+        public ActionResult CreateCommnet(CommentFormModel formModel)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return CreateCommnet(formModel);
+            }
+
+            var userId = this.User.GetLoggedInUserId();
+
+            Comment comment = new()
+            {
+                UserId = userId,
+                EstateId = formModel.EstateId,
+                CommentContent = formModel.Content
+            };
+
+            this.CommentService.AddComment(comment);
+
+            return RedirectToAction(nameof(EstatesController.Details), "Estates", new { Id = comment.EstateId });
         }
 
-        // GET: CommentsController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: CommentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(CommentFormModel formModel)
         {
             try
             {
@@ -56,7 +70,6 @@
             }
         }
 
-        // POST: CommentsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string estateId)
@@ -65,7 +78,7 @@
 
             try
             {
-                this.commentService.DeleteComment(estateId, userId);
+                this.CommentService.DeleteComment(estateId, userId);
 
                 return RedirectToAction(nameof(EstatesController.Details), "Estates", new { id = estateId });
             }
