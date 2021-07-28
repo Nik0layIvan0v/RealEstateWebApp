@@ -7,12 +7,16 @@
 
     public interface ICommentService
     {
-        bool AddComment(Comment comment);
+        Task<bool> AddComment(Comment comment);
 
-        bool EditComment(string estateId, Comment comment);
+        Task<bool> EditComment(Comment comment);
 
-        bool DeleteComment(string estateId, string commentId);
+        Task<bool> DeleteComment(string commentId);
 
         Task<IEnumerable<CommentServiceModel>> GetCommentsByEstateId(string estateId);
+
+        Task<CommentServiceModel> GetCommentById(string commentId);
+
+        Task<bool> IsUserOwnCommentAsync(string estateId, string userId);
     }
 }

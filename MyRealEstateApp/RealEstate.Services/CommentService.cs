@@ -18,11 +18,16 @@
             this.Context = context;
         }
 
-        public bool AddComment(Comment comment)
+        public async Task<bool> AddComment(Comment comment)
         {
+            if (comment == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this.Context.Comments.Add(comment);
 
-            int countOfChanges = this.Context.SaveChanges();
+            int countOfChanges = await this.Context.SaveChangesAsync();
 
             if (countOfChanges == 0)
             {
@@ -32,14 +37,20 @@
             return true;
         }
 
-        public bool DeleteComment(string estateId, string commentId)
+        public async Task<bool> EditComment(Comment comment)
         {
-            throw new NotImplementedException();
-        }
+            var dbComment = await this.Context.Comments.FirstOrDefaultAsync(x => x.EstateId == comment.EstateId && x.UserId == comment.UserId);
 
-        public bool EditComment(string estateId, Comment comment)
-        {
-            throw new NotImplementedException();
+            if (dbComment == null)
+            {
+                return false;
+            }
+
+            dbComment.CommentContent = comment.CommentContent;
+
+            await this.Context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<IEnumerable<CommentServiceModel>> GetCommentsByEstateId(string estateId)
@@ -51,11 +62,51 @@
                      CommentId = x.Id,
                      CommentContent = x.CommentContent,
                      EstateId = x.EstateId,
-                     CreatorName = Context.Users.FirstOrDefault(ui => ui.Id == x.UserId).Email
+                     CreatorName = this.Context.Users.FirstOrDefault(ui => ui.Id == x.UserId).Email
                  })
                  .ToArrayAsync();
 
             return dbcomments;
+        }
+
+        public async Task<CommentServiceModel> GetCommentById(string commentId)
+        {
+            return await this.Context
+                .Comments
+                .Select(comment => new CommentServiceModel
+                {
+                    CommentId = comment.Id,
+                    CommentContent = comment.CommentContent,
+                    CreatorName = this.Context.Users.FirstOrDefault(ui => ui.Id == comment.UserId).Email,
+                    EstateId = comment.EstateId
+                })
+                .FirstAsync(c => c.CommentId == commentId);
+        }
+
+        public async Task<bool> IsUserOwnCommentAsync(string commentId, string userId)
+        {
+            return await this.Context.Comments.AnyAsync(c => c.Id == commentId && c.UserId == userId);
+        }
+
+        public async Task<bool> DeleteComment(string commentId)
+        {
+            Comment comment = await this.Context.Comments.FindAsync(commentId);
+
+            if (comment == null)
+            {
+                return false;
+            }
+
+            this.Context.Comments.Remove(comment);
+
+            int removedItem = await this.Context.SaveChangesAsync();
+
+            if (removedItem == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

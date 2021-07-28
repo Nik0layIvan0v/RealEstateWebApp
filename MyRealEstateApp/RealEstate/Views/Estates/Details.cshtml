@@ -46,8 +46,8 @@
 <div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
     <h3 class="text-left">
         Property Description:
-        <hr class="mt-2 mb-3" />
     </h3>
+    <hr class="mt-2 mb-3" />
     <p>@Model.Description</p>
 </div>
 
@@ -55,8 +55,8 @@
 <div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
     <h3 class="text-left">
         Property Features:
-        <hr class="mt-2 mb-3" />
     </h3>
+    <hr class="mt-2 mb-3" />
     <ul>
         @foreach (var detail in Model.FutureModels)
         {
@@ -69,8 +69,8 @@
 <div class="container rounded bg-secondary pt-3 pb-4 mt-3 mb-3 text-white">
     <h3 class="text-left">
         Property Details:
-        <hr class="mt-2 mb-3 text-white-50" />
     </h3>
+    <hr class="mt-2 mb-3 text-white-50" />
     <p>Тип на имота: @Model.EstateType</p>
     <p>Квадратура: @Model.Squaring кв/м</p>
     <p>Етаж: @Model.Floor</p>
@@ -90,29 +90,35 @@
 <div class="container rounded bg-secondary pt-3 pb-3 mt-3 mb-3 text-white">
     <h3 class="text-left">
         Property Comments:
-        <hr class="mt-2 mb-3" />
     </h3>
+    <hr class="mt-2 mb-3" />
     @if (!Model.Comments.Any())
     {
         <h4 class="text-center">THere is no comments for this estate offer!</h4>
     }
     else
     {
-        <ul class="list-unstyled">
-            @foreach (var comment in Model.Comments)
-            {
-                <li class="media">
-                    <i class="fas fa-comments" with="65" height="65"></i>
-                    <div class="media-body">
-                        <h5 class="mt-0 mb-1">@comment.CreatorName</h5>
-                        @comment.CommentContent
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="comment-widgets">
+                <!-- Comment Row -->
+                <div class="d-flex flex-row comment-row m-t-0">
+                    <div class="p-2"><img src="https://i.imgur.com/Ur43esv.jpg" alt="user" width="50" class="rounded-circle"></div>
+                    <div class="comment-text w-100">
+                        <h6 class="font-medium">@comment.CreatorName</h6> <span class="m-b-15 d-block">@comment.CommentContent</span>
+                        <div class="comment-footer float-left">
+                            @*<span class="text-muted float-right">April 14, 2019</span>*@
+                            <a type="button" class="btn btn-warning btn-sm text-left" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.CommentId">Edit</a>
+
+                            <a type="button" class="btn btn-danger btn-sm" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.CommentId">Delete</a>
+                        </div>
                     </div>
-                </li>
-            }
-        </ul>
+                </div> <!-- Comment Row -->
+            </div> <!-- Card -->
+        }
     }
     <div class="container text-center">
-        <a href="/Comments/CreateCommnet?estateId=@Model.Id" class="btn btn-primary">Add Comment</a>
+        <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Add Comment</a>
     </div>
 </div>
 

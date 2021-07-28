@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using RealEstate.Services;
-    using System;
+    using System.Threading.Tasks;
     using RealEstate.Infrastructure;
     using RealEstate.Models.Comments;
     using RealEstate.Models;
@@ -18,11 +18,11 @@
             this.CommentService = commentService;
         }
 
-        public ActionResult CreateCommnet([FromQuery] string estateId)
+        public ActionResult Create(string Id)
         {
-            CommentFormModel formModel = new()
+            CommentFormModel formModel = new CommentFormModel()
             {
-                EstateId = estateId
+                EstateId = Id
             };
 
             return this.View(formModel);
@@ -30,11 +30,11 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCommnet(CommentFormModel formModel)
+        public async Task<ActionResult> Create(CommentFormModel formModel)
         {
             if (!ModelState.IsValid)
             {
-                return CreateCommnet(formModel);
+                return await Create(formModel);
             }
 
             var userId = this.User.GetLoggedInUserId();
@@ -46,46 +46,94 @@
                 CommentContent = formModel.Content
             };
 
-            this.CommentService.AddComment(comment);
+            bool isAdded = await this.CommentService.AddComment(comment);
 
-            return RedirectToAction(nameof(EstatesController.Details), "Estates", new { Id = comment.EstateId });
-        }
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(CommentFormModel formModel)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(string estateId)
-        {
-            string userId = this.User.GetLoggedInUserId();
-
-            try
-            {
-                this.CommentService.DeleteComment(estateId, userId);
-
-                return RedirectToAction(nameof(EstatesController.Details), "Estates", new { id = estateId });
-            }
-            catch
+            if (!isAdded)
             {
                 return BadRequest();
             }
+
+            return RedirectToAction(nameof(EstatesController.Details), "Estates", new { Id = formModel.EstateId });
+        }
+
+        public async Task<ActionResult> Edit(string id)
+        {
+            var userId = this.User.GetLoggedInUserId();
+
+            bool isCommentOwnedByUser = await this.CommentService.IsUserOwnCommentAsync(id, userId);
+
+            if (!isCommentOwnedByUser)
+            {
+                return Unauthorized();
+            }
+
+            var commentData = await this.CommentService.GetCommentById(id);
+
+            CommentFormModel model = new()
+            {
+                Content = commentData.CommentContent,
+                EstateId = commentData.EstateId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(string id, CommentFormModel formModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return await Edit(id, formModel);
+            }
+
+            var userId = this.User.GetLoggedInUserId();
+
+            bool isCommentOwnedByUser = await this.CommentService.IsUserOwnCommentAsync(id, userId);
+
+            if (!isCommentOwnedByUser)
+            {
+                return Unauthorized();
+            }
+
+            Comment comment = new()
+            {
+                EstateId = formModel.EstateId,
+                CommentContent = formModel.Content,
+                UserId = userId
+            };
+
+            await this.CommentService.EditComment(comment);
+
+            return RedirectToAction(nameof(EstatesController.Details), "Estates", new { Id = formModel.EstateId });
+        }
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            string userId = this.User.GetLoggedInUserId();
+
+            if (userId == null)
+            {
+                return BadRequest();
+            }
+
+            var comment = await this.CommentService.GetCommentById(id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            bool isUserOwnComment = await this.CommentService.IsUserOwnCommentAsync(userId, comment.EstateId);
+
+            bool isDeleted = await this.CommentService.DeleteComment(id);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(EstatesController.Details), "Estates", new { id = comment.EstateId });
         }
     }
 }
