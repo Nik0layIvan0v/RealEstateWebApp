@@ -196,7 +196,7 @@ namespace RealEstate.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(string estateId)
+        public IActionResult Delete(string id)
         {
             return this.Ok();
         }

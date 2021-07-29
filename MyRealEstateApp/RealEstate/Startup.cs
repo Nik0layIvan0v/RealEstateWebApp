@@ -12,6 +12,7 @@ namespace RealEstate
     using Microsoft.Extensions.Hosting;
     using Infrastructure;
     using Data;
+    using RealEstate.Models;
 
     public class Startup
     {
@@ -31,7 +32,7 @@ namespace RealEstate
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(
+                .AddDefaultIdentity<User>(
                     options =>
                     {
                         options.SignIn.RequireConfirmedAccount = false;
@@ -41,6 +42,7 @@ namespace RealEstate
                         options.Password.RequireUppercase = false;
                         options.Password.RequiredLength = 3;
                     })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<RealEstateDbContext>();
 
             services.AddTransient<IEstateService, EstateService>();

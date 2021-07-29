@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace RealEstate.Data
+﻿namespace RealEstate.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Models;
 
-    public class RealEstateDbContext : IdentityDbContext
+    public class RealEstateDbContext : IdentityDbContext<User>
     {
         public RealEstateDbContext(DbContextOptions<RealEstateDbContext> options)
             : base(options)
@@ -48,7 +46,7 @@ namespace RealEstate.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Broker>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Broker>(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

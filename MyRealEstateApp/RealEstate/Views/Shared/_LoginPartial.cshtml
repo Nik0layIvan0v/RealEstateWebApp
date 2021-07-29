@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using RealEstate.Models 
 @using RealEstate.Services
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject IBrokerService BrokerService
 
 <ul class="navbar-nav">
