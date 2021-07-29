@@ -100,5 +100,10 @@ namespace RealEstate.Common
         public const int MaxCommentLength = 500;
         public const int MinCommentLength = 5;
         #endregion
+
+        #region User
+        public const int MinUserPassword = 6;
+        public const int MaxUserPassword = 100;
+        #endregion
     }
 }

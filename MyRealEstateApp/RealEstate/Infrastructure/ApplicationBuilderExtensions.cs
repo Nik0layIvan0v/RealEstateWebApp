@@ -5,6 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Seeder;
+    using System;
 
     public static class ApplicationBuilderExtensions
     {
@@ -12,14 +13,18 @@
         {
             using IServiceScope scopedServices = app.ApplicationServices.CreateScope();
 
-            var database = scopedServices.ServiceProvider.GetService<RealEstateDbContext>();
+            IServiceProvider serviceProvider = scopedServices.ServiceProvider;
+
+            RealEstateDbContext database = serviceProvider.GetRequiredService<RealEstateDbContext>();
 
             //database.Database.EnsureDeleted();
             database.Database.Migrate();
 
-            ISeedDatabase seedDatabase = new RealEstateDbContextSeeder(database);
+            var databaseSeeder = new RealEstateConstantsSeeder();
 
-            seedDatabase.Seed();
+            databaseSeeder.SeedConstantData(database);
+
+            databaseSeeder.SeedAdministrator(serviceProvider);
 
             return app;
         }

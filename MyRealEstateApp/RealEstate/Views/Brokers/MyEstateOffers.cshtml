@@ -22,9 +22,6 @@
                     <h5 class="card-body"> Created on: @myEstate.CreatedOn - @myEstate.City (Area: @myEstate.Area)</h5>
                     <a asp-controller="Estates" asp-action="Details" asp-route-id="@myEstate.Id" class="btn btn-primary">View</a>
                     <a asp-controller="Estates" asp-action="Edit" asp-route-id="@myEstate.Id" class="btn btn-warning">Edit</a>
-                    @*@if (User.GetLoggedInUserId() == "")
-                    {
-                    }*@
                     @if (User.IsAdmin())
                     {
                         <a asp-controller="Estates" asp-action="Delete" asp-route-id="@myEstate.Id" class="btn btn-danger">Delete</a>

@@ -4,8 +4,10 @@
     {
         public const string AdministratorRoleName = "Administrator";
 
+        public const string AdministratorRoleNormalizedName = "ADMINISTRATOR";
+
         public const string BrokerRoleName = "Broker";
 
-        public const string ClientRoleName = "Administrator";
+        public const string ClientRoleName = "Client";
     }
 }

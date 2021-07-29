@@ -1,13 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using RealEstate.Data;
 using RealEstate.Models;
 
+using static RealEstate.Common.WebConstants;
+
 namespace RealEstate.Seeder
 {
-    public class RealEstateDbContextSeeder : ISeedDatabase
+    public class RealEstateConstantsSeeder : ISeedDatabase
     {
-        private readonly RealEstateDbContext Context;
+        private const string AdministratorEmail = "Admin@RealEstate.com";
+
+        private const string AdministratorPassword = "admin123";
+
+        private const string AdministratorUsername = "Admin@admin.com";
 
         private readonly List<string> PropertyTypeData = new List<string>
         {
@@ -131,23 +141,18 @@ namespace RealEstate.Seeder
             },
         };
 
-        public RealEstateDbContextSeeder(RealEstateDbContext context)
+        public void SeedConstantData(RealEstateDbContext context)
         {
-            this.Context = context;
+            this.InsertPropertyTypes(context);
+            this.InsertCurrencyTypes(context);
+            this.InsertFutures(context);
+            this.InsertTradeTypes(context);
+            this.InsertRegions(context);
         }
 
-        public void Seed()
+        private void InsertPropertyTypes(RealEstateDbContext context)
         {
-            this.InsertPropertyTypes();
-            this.InsertCurrencyTypes();
-            this.InsertFutures();
-            this.InsertTradeTypes();
-            this.InsertRegions();
-        }
-
-        private void InsertPropertyTypes()
-        {
-            if (this.Context.EstateTypes.Any())
+            if (context.EstateTypes.Any())
             {
                 return;
             }
@@ -162,67 +167,67 @@ namespace RealEstate.Seeder
                 });
             }
 
-            this.Context.EstateTypes.AddRange(entityTypes);
-            this.Context.SaveChanges();
+            context.EstateTypes.AddRange(entityTypes);
+            context.SaveChanges();
         }
 
-        private void InsertCurrencyTypes()
+        private void InsertCurrencyTypes(RealEstateDbContext context)
         {
-            if (this.Context.Currencies.Any())
+            if (context.Currencies.Any())
             {
                 return;
             }
 
             foreach (var currency in CurrenciesData)
             {
-                this.Context.Currencies.Add(new Currency
+                context.Currencies.Add(new Currency
                 {
                     CurrencyCode = currency,
                 });
             }
 
-            this.Context.SaveChanges();
+            context.SaveChanges();
         }
 
-        private void InsertFutures()
+        private void InsertFutures(RealEstateDbContext context)
         {
-            if (Context.Features.Any())
+            if (context.Features.Any())
             {
                 return;
             }
 
             foreach (var future in FuturesData)
             {
-                this.Context.Features.Add(new Feature
+                context.Features.Add(new Feature
                 {
                     FutureDescription = future,
                 });
             }
 
-            this.Context.SaveChanges();
+            context.SaveChanges();
         }
 
-        private void InsertTradeTypes()
+        private void InsertTradeTypes(RealEstateDbContext context)
         {
-            if (this.Context.TradeTypes.Any())
+            if (context.TradeTypes.Any())
             {
                 return;
             }
 
             foreach (var tradeType in TradeTypeData)
             {
-                this.Context.TradeTypes.Add(new TradeType
+                context.TradeTypes.Add(new TradeType
                 {
                     TypeOfTransaction = tradeType,
                 });
             }
 
-            this.Context.SaveChanges();
+            context.SaveChanges();
         }
 
-        private void InsertRegions()
+        private void InsertRegions(RealEstateDbContext context)
         {
-            if (this.Context.Areas.Any() && this.Context.Cities.Any() && this.Context.Neighborhoods.Any())
+            if (context.Areas.Any() && context.Cities.Any() && context.Neighborhoods.Any())
             {
                 return;
             }
@@ -234,7 +239,7 @@ namespace RealEstate.Seeder
                     AreaName = area.Key
                 };
 
-                this.Context.Areas.Add(dbArea);
+                context.Areas.Add(dbArea);
 
                 foreach (var city in area.Value)
                 {
@@ -244,7 +249,7 @@ namespace RealEstate.Seeder
                         Area = dbArea,
                     };
 
-                    this.Context.Cities.Add(dbCity);
+                    context.Cities.Add(dbCity);
 
                     foreach (var cityRegion in this.RegionsData)
                     {
@@ -254,12 +259,44 @@ namespace RealEstate.Seeder
                             City = dbCity
                         };
 
-                        this.Context.Neighborhoods.Add(region);
+                        context.Neighborhoods.Add(region);
                     }
                 }
             }
 
-            this.Context.SaveChanges();
+            context.SaveChanges();
+        }
+
+        public void SeedAdministrator(IServiceProvider serviceProvider)
+        {
+            UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                {
+                    return;
+                }
+
+                IdentityRole adminRole = new IdentityRole { Name = AdministratorRoleName, NormalizedName = AdministratorRoleNormalizedName };
+
+                await roleManager.CreateAsync(adminRole);
+
+                User administrator = new User
+                {
+                    Email = AdministratorEmail,
+                    UserName = AdministratorUsername,
+                    LockoutEnabled = false,
+                };
+
+                await userManager.CreateAsync(administrator, AdministratorPassword);
+
+                await userManager.AddToRoleAsync(administrator, adminRole.Name);
+            })
+            .GetAwaiter()
+            .GetResult();
         }
     }
 }

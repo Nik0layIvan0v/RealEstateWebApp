@@ -303,5 +303,14 @@ namespace RealEstate.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<int> GetEstateBrokerId(string estateId)
+        {
+            return await this.Context
+                .Estates
+                .Where(x => x.Id == estateId)
+                .Select(x => x.BrokerId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

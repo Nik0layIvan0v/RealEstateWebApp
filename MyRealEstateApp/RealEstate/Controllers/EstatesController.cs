@@ -135,7 +135,7 @@ namespace RealEstate.Controllers
 
             EstateModel estateDb = await this.EstateService.GetEstateFormModelById(id);
 
-            if (estateDb.BrokerId != await BrokerService.GetBrokerIdAsync(userId))
+            if (estateDb.BrokerId != await BrokerService.GetBrokerIdAsync(userId) && User.IsAdmin() == false)
             {
                 return Unauthorized();
             }
@@ -149,6 +149,18 @@ namespace RealEstate.Controllers
         public async Task<IActionResult> Edit(string id, EstateFormModel formModel)
         {
             int brokerId = await BrokerService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
+
+            if (brokerId == 0 && User.IsAdmin() == false)
+            {
+                return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
+            }
+
+            int estateBrokerId = await this.EstateService.GetEstateBrokerId(id);
+
+            if (brokerId != estateBrokerId && !User.IsAdmin())
+            {
+                return this.Unauthorized();
+            }
 
             formModel.FutureModels.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 

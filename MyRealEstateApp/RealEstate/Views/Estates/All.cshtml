@@ -29,11 +29,16 @@ else
                     <div class="card-group">
                         <div class="card mb-3">
                             <img class="card-img-top" height="286px" width="180px" src="data:image/jpeg;base64,@Convert.ToBase64String(estate.Image.ImageContentBytes)" alt="Card image cap"> @*Picture*@
-                            <div class="card-body">
-                                <h5 class="card-title">@estate.Title</h5> @*Title*@
-                                <p class="card-text">@estate.Description</p> @*Description*@
-                                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
-                            </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@estate.Title</h5> @*Title*@
+                            <p class="card-text">@estate.Description</p> @*Description*@
+                            <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
+                            @if (User.IsAdmin())
+                            {
+                                <a asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
+                                <a asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
+                            }
+                        </div>
                         </div>
                     </div>
                 </div>

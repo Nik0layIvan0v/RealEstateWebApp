@@ -1,9 +1,12 @@
 ﻿using RealEstate.Data;
+using System;
 
 namespace RealEstate.Seeder
 {
     public interface ISeedDatabase
     {
-        void Seed();
+        void SeedConstantData(RealEstateDbContext Context);
+
+        void SeedAdministrator(IServiceProvider serviceProvider);
     }
 }

@@ -24,6 +24,8 @@ namespace RealEstate.Services
 
         Task<EstateModel> GetEstateFormModelById(string id);
 
+        Task<int> GetEstateBrokerId(string estateId);
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetBySearchAsync();
