@@ -13,15 +13,15 @@
 
 @if (!Model.EstateListingViewModels.Any())
 {
-<div class="jumbotron-fluid">
-    <h2 class="display-4"> Currently there is no estates in out database. <a href="favicon.ico">Register</a> as broker and add one.</h2>
-    <hr class="my-4">
-</div>
+    <div class="jumbotron-fluid">
+        <h2 class="display-4"> Currently there is no estates in out database. <a href="favicon.ico">Register</a> as broker and add one.</h2>
+        <hr class="my-4">
+    </div>
 }
 else
 {
     <div class="container">
-        <h3 class="pb-3">All Properties: </h3>
+        <h1 class="pb-3">All Properties: </h1>
         <div class="row">
             @foreach (var estate in Model.EstateListingViewModels)
             {
@@ -29,16 +29,24 @@ else
                     <div class="card-group">
                         <div class="card mb-3">
                             <img class="card-img-top" height="286px" width="180px" src="data:image/jpeg;base64,@Convert.ToBase64String(estate.Image.ImageContentBytes)" alt="Card image cap"> @*Picture*@
-                        <div class="card-body">
-                            <h5 class="card-title">@estate.Title</h5> @*Title*@
-                            <p class="card-text">@estate.Description</p> @*Description*@
-                            <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
-                            @if (User.IsAdmin())
-                            {
-                                <a asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
-                                <a asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
-                            }
-                        </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@estate.Title</h5> @*Title*@
+                                <p class="card-text">@estate.Description</p> @*Description*@
+                                @if (User.IsAdmin())
+                                {
+                                    <div class="container text-center">
+                                        <div class="btn-group text-center" role="group" aria-label="Basic example">
+                                            <a type="button" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details</a>
+                                            <a type="button" asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
+                                            <a type="button" asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,18 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using RealEstate.Services;
-
 namespace RealEstate
 {
+    using Data;
+    using Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Infrastructure;
-    using Data;
-    using RealEstate.Models;
+    using Models;
+    using Services;
 
     public class Startup
     {
@@ -48,8 +47,7 @@ namespace RealEstate
             services.AddTransient<IEstateService, EstateService>();
             services.AddTransient<IBrokerService, BrokerService>();
             services.AddTransient<IHomeService, HomeService>();
-            services.AddTransient<ICommentService,CommentService>();
-
+            services.AddTransient<ICommentService, CommentService>();
 
             services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
         }
@@ -79,6 +77,12 @@ namespace RealEstate
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute
+                (
+                    name: "Areas",
+                    pattern: "{area:exists}/{controller=home}/{action=index}/{id?}"
+                );
+
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
