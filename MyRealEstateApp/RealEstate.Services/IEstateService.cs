@@ -8,9 +8,9 @@ namespace RealEstate.Services
     {
         Task<CreateEstateDropDownModel> GetDropDownDataAsync();
 
-        Task<string> CreateEstateAsync(EstateModel model);
+        Task<string> CreateEstateAsync(EstateServiceModel model);
 
-        Task<bool> EditEstateAsync(string estateId, EstateModel model);
+        Task<bool> EditEstateAsync(string estateId, EstateServiceModel model);
 
         Task<IEnumerable<CityModel>> GetCitiesByAreaIdAsync(int id);
 
@@ -22,7 +22,7 @@ namespace RealEstate.Services
 
         Task<EstateDetailsModel> GetEstateDetailsAsync(string id);
 
-        Task<EstateModel> GetEstateFormModelById(string id);
+        Task<EstateServiceModel> GetEstateFormModelById(string id);
 
         Task<int> GetEstateBrokerId(string estateId);
 

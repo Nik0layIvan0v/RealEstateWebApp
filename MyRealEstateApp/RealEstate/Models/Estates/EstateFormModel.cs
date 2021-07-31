@@ -59,7 +59,7 @@ namespace RealEstate.Models.Estates
 
         public IEnumerable<AreaModel> AreasViewModels { get; set; }
 
-        public List<FutureModel> FutureModels { get; set; }
+        public List<FutureModel> SelectedFutures { get; set; }
 
         public List<IFormFile> ImageFiles { get; set; }
     }

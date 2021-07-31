@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RealEstate.Services.Models
 {
-    public class EstateModel
+    public class EstateServiceModel
     {
         public int BrokerId { get; set; }
 

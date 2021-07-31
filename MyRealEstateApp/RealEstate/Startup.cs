@@ -22,7 +22,6 @@ namespace RealEstate
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<RealEstateDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -44,45 +43,53 @@ namespace RealEstate
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<RealEstateDbContext>();
 
-            services.AddTransient<IEstateService, EstateService>();
-            services.AddTransient<IBrokerService, BrokerService>();
-            services.AddTransient<IHomeService, HomeService>();
-            services.AddTransient<ICommentService, CommentService>();
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllersWithViews(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+            services.AddControllersWithViews(options => 
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
+            );
+
+            services.AddTransient<IHomeService, HomeService>();
+
+            services.AddTransient<IEstateService, EstateService>();
+
+            services.AddTransient<IBrokerService, BrokerService>();
+
+            services.AddTransient<ICommentService, CommentService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.PrepareDatabase();
 
+            app.UseStatusCodePages(); //TODO: Change with custom pages
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
                 app.UseMigrationsEndPoint();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute
-                (
-                    name: "Areas",
-                    pattern: "{area:exists}/{controller=home}/{action=index}/{id?}"
-                );
-
+                endpoints.MapDefaultAreaRoute();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });

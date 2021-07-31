@@ -73,7 +73,7 @@ namespace RealEstate.Services
             return dropDownElements;
         }
 
-        public async Task<string> CreateEstateAsync(EstateModel model)
+        public async Task<string> CreateEstateAsync(EstateServiceModel model)
         {
             Estate estate = new Estate
             {
@@ -211,7 +211,7 @@ namespace RealEstate.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> EditEstateAsync(string estateId, EstateModel formModel)
+        public async Task<bool> EditEstateAsync(string estateId, EstateServiceModel formModel)
         {
             Estate estate = await this.Context.Estates.FirstOrDefaultAsync(x => x.Id == estateId);
 
@@ -275,11 +275,11 @@ namespace RealEstate.Services
             return true;
         }
 
-        public async Task<EstateModel> GetEstateFormModelById(string id)
+        public async Task<EstateServiceModel> GetEstateFormModelById(string id)
         {
             return await this.Context.Estates
                 .Where(x => x.Id == id)
-                .Select(x => new EstateModel
+                .Select(x => new EstateServiceModel
                 {
                     BrokerId = x.BrokerId,
                     Squaring = x.Squaring,
@@ -306,11 +306,7 @@ namespace RealEstate.Services
 
         public async Task<int> GetEstateBrokerId(string estateId)
         {
-            return await this.Context
-                .Estates
-                .Where(x => x.Id == estateId)
-                .Select(x => x.BrokerId)
-                .FirstOrDefaultAsync();
+            return await this.Context.Estates.Where(x => x.Id == estateId).Select(x => x.BrokerId).FirstOrDefaultAsync();
         }
     }
 }

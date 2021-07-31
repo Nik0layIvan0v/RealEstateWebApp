@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Infrastructure;
@@ -19,12 +20,18 @@ namespace RealEstate.Controllers
         private readonly IEstateService EstateService;
         private readonly IBrokerService BrokerService;
         private readonly ICommentService CommentService;
+        private readonly IMapper AutoMapper;
 
-        public EstatesController(IEstateService estateService, IBrokerService brokerService, ICommentService commentService)
+        public EstatesController(
+            IEstateService estateService,
+            IBrokerService brokerService,
+            ICommentService commentService,
+            IMapper mapper)
         {
             this.EstateService = estateService;
             this.BrokerService = brokerService;
             this.CommentService = commentService;
+            this.AutoMapper = mapper;
         }
 
         public async Task<IActionResult> Create()
@@ -46,14 +53,14 @@ namespace RealEstate.Controllers
         {
             string loggedUserId = User.GetLoggedInUserId();
 
-            if (await this.BrokerService.IsUserAlreadyBrokerAsync(loggedUserId) == false)
+            int brokerId = await this.BrokerService.GetBrokerIdAsync(loggedUserId);
+
+            if (brokerId == 0)
             {
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            int brokerId = await this.BrokerService.GetBrokerIdAsync(loggedUserId);
-
-            model.FutureModels.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
+            model.SelectedFutures.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 
             if (!ModelState.IsValid)
             {
@@ -62,38 +69,11 @@ namespace RealEstate.Controllers
                 return await this.Create();
             };
 
-            EstateModel estate = new EstateModel
-            {
-                Squaring = model.Squaring,
-                Floor = model.Floor,
-                Price = model.Price,
-                CurrencyId = model.CurrencyId,
-                EstateTypeId = model.EstateTypeId,
-                AreaId = model.AreaId,
-                CityId = model.CityId,
-                NeighborhoodId = model.NeighborhoodId,
-                Description = model.Description,
-                TypeOfTradeId = model.TypeOfTradeId,
-                SelectedFutures = model.FutureModels,
-                Images = new List<byte[]>(),
-                BrokerId = brokerId,
-            };
+            EstateServiceModel estate = this.AutoMapper.Map<EstateServiceModel>(model);
 
-            if (model.ImageFiles != null)
-            {
-                foreach (var imageFile in model.ImageFiles)
-                {
-                    await using Stream temp = imageFile.OpenReadStream();
+            estate.BrokerId = brokerId;
 
-                    await using MemoryStream memoryStream = new MemoryStream();
-
-                    await temp.CopyToAsync(memoryStream);
-
-                    byte[] readedBytes = memoryStream.ToArray();
-
-                    estate.Images.Add(readedBytes);
-                }
-            }
+            estate.Images = await this.GetEstateImages(model.ImageFiles);
 
             string estateId = await this.EstateService.CreateEstateAsync(estate);
 
@@ -133,7 +113,7 @@ namespace RealEstate.Controllers
                 return RedirectToAction(nameof(BrokersController.CreateBroker), "Brokers");
             }
 
-            EstateModel estateDb = await this.EstateService.GetEstateFormModelById(id);
+            EstateServiceModel estateDb = await this.EstateService.GetEstateFormModelById(id);
 
             if (estateDb.BrokerId != await BrokerService.GetBrokerIdAsync(userId) && User.IsAdmin() == false)
             {
@@ -162,40 +142,27 @@ namespace RealEstate.Controllers
                 return this.Unauthorized();
             }
 
-            formModel.FutureModels.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
+            formModel.SelectedFutures.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 
-            EstateModel estateModel = new EstateModel
-            {
-                BrokerId = brokerId,
-                Squaring = formModel.Squaring,
-                Floor = formModel.Floor,
-                Price = formModel.Price,
-                CurrencyId = formModel.CurrencyId,
-                EstateTypeId = formModel.EstateTypeId,
-                AreaId = formModel.AreaId,
-                CityId = formModel.CityId,
-                NeighborhoodId = formModel.NeighborhoodId,
-                Description = formModel.Description,
-                TypeOfTradeId = formModel.TypeOfTradeId,
-                SelectedFutures = formModel.FutureModels,
-                Images = new List<byte[]>()
-            };
+            EstateServiceModel estateModel = this.AutoMapper.Map<EstateServiceModel>(formModel);
+            estateModel.BrokerId = brokerId;
+            estateModel.Images = await this.GetEstateImages(formModel.ImageFiles);
 
-            if (formModel.ImageFiles != null)
-            {
-                foreach (var imageFile in formModel.ImageFiles)
-                {
-                    await using Stream temp = imageFile.OpenReadStream();
+            //if (formModel.ImageFiles != null)
+            //{
+            //    foreach (var imageFile in formModel.ImageFiles)
+            //    {
+            //        await using Stream temp = imageFile.OpenReadStream();
 
-                    await using MemoryStream memoryStream = new MemoryStream();
+            //        await using MemoryStream memoryStream = new MemoryStream();
 
-                    await temp.CopyToAsync(memoryStream);
+            //        await temp.CopyToAsync(memoryStream);
 
-                    byte[] readedBytes = memoryStream.ToArray();
+            //        byte[] readedBytes = memoryStream.ToArray();
 
-                    estateModel.Images.Add(readedBytes);
-                }
-            }
+            //        estateModel.Images.Add(readedBytes);
+            //    }
+            //}
 
             bool isEdited = await this.EstateService.EditEstateAsync(id, estateModel);
 
@@ -213,7 +180,7 @@ namespace RealEstate.Controllers
             return this.Ok();
         }
 
-        private async Task<EstateFormModel> LoadEstateFormModel(EstateModel estateModel = null)
+        private async Task<EstateFormModel> LoadEstateFormModel(EstateServiceModel estateModel = null)
         {
             var dropdownData = await this.EstateService.GetDropDownDataAsync();
 
@@ -223,7 +190,7 @@ namespace RealEstate.Controllers
                 CurrencyViewModels = dropdownData.CurrencyModels,
                 AreasViewModels = dropdownData.Areas,
                 TypeOfDeals = dropdownData.TradeTypeModels,
-                FutureModels = dropdownData.FutureModels.ToList(),
+                SelectedFutures = dropdownData.FutureModels.ToList(),
             };
 
             if (estateModel != null)
@@ -252,6 +219,31 @@ namespace RealEstate.Controllers
             }
 
             return model;
+        }
+
+        private async Task<List<byte[]>> GetEstateImages(List<IFormFile> inputImages)
+        {
+            List<byte[]> result = new List<byte[]>();
+
+            if (inputImages == null)
+            {
+                return result;
+            }
+
+            foreach (var imageFile in inputImages)
+            {
+                await using Stream temp = imageFile.OpenReadStream();
+
+                await using MemoryStream memoryStream = new MemoryStream();
+
+                await temp.CopyToAsync(memoryStream);
+
+                byte[] readedBytes = memoryStream.ToArray();
+
+                result.Add(readedBytes);
+            }
+
+            return result;
         }
     }
 }
