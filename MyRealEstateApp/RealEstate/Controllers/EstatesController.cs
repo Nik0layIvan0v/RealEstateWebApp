@@ -145,24 +145,10 @@ namespace RealEstate.Controllers
             formModel.SelectedFutures.RemoveAll(x => x.IsChecked == false); //Removes all unchecked boxes
 
             EstateServiceModel estateModel = this.AutoMapper.Map<EstateServiceModel>(formModel);
+
             estateModel.BrokerId = brokerId;
+
             estateModel.Images = await this.GetEstateImages(formModel.ImageFiles);
-
-            //if (formModel.ImageFiles != null)
-            //{
-            //    foreach (var imageFile in formModel.ImageFiles)
-            //    {
-            //        await using Stream temp = imageFile.OpenReadStream();
-
-            //        await using MemoryStream memoryStream = new MemoryStream();
-
-            //        await temp.CopyToAsync(memoryStream);
-
-            //        byte[] readedBytes = memoryStream.ToArray();
-
-            //        estateModel.Images.Add(readedBytes);
-            //    }
-            //}
 
             bool isEdited = await this.EstateService.EditEstateAsync(id, estateModel);
 

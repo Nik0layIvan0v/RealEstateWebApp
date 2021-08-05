@@ -70,7 +70,7 @@ namespace RealEstate.Common
 
         #region Image
 
-        public static byte[] DefaultEstateImage = File.ReadAllBytes(@"..\RealEstate\wwwroot\Img\RealEstateLogo.png");
+        public static string LogoImagePath = @"..\RealEstate\wwwroot\Img\RealEstateLogo.png";
 
         #endregion
 

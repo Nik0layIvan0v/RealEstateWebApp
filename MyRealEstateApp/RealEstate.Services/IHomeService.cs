@@ -9,5 +9,7 @@ namespace RealEstate.Services
         Task<IEnumerable<LastAddedEstateModel>> GetLastAddedEstatesAsync(int count);
 
         Task<StatisticModel> GetStatistics();
+
+        Task<byte[]> GetCompanyLogoAsync();
     }
 }

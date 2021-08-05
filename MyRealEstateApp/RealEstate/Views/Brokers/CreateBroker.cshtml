@@ -4,8 +4,11 @@
 }
 
 <div class="container-fluid">
-    <div class="row container pb-3">
-        <h1 class="text-left">@ViewData["Title"]: </h1>
+    <div class="container text-center">
+        <div class="col-xs-12">
+            <h2 class="text-uppercase">@ViewData["Title"]</h2>
+            <hr class="bg-dark" />
+        </div>
     </div>
     <form method="post" asp-controller="Brokers" asp-action="CreateBroker" enctype="multipart/form-data">
         <div class="form-group col-sm">

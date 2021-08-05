@@ -1,0 +1,46 @@
+﻿@model byte[]
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container text-center">
+    <div class="col-xs-12">
+        <h2 class="text-uppercase">@ViewData["Title"]</h2>
+        <hr class="bg-dark" />
+    </div>
+</div>
+
+<div class="container text-center">
+    <img class="card-img-top" height="350" width="300" src="data:image/jpeg;base64,@Convert.ToBase64String(Model)" alt="Company logo"> @*Picture*@
+</div>
+
+<div class="container">
+    <h3>COMPANY OVERVIEW</h3>
+    <p>Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally.Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally.Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally.or desires to obtain Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain desires to obtain pain of itself.</p>
+</div>
+<br />
+<div class="container">
+    <h3>OUR MISSION</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        
+    <ul>
+            <li>Ut enim ad minim veniam, quis nostrud exercitation</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit,</li>
+            <li>Ut enim ad minim veniam, quis nostrud exercitation</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit,</li>
+        </ul>
+    </p>
+</div>
+
+<div class="container">
+    <h3>Contact Us</h3>
+    <div class="d-flex flex-row">
+        <div class="p-2">Flex item 1</div>
+        <div class="p-2">Flex item 2</div>
+        <div class="p-2">Flex item 3</div>
+    </div>
+</div>
+
+
+
+

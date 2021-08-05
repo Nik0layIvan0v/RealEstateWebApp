@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Services;
 using RealEstate.Services.Models;
@@ -8,8 +9,7 @@ namespace RealEstate.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-
-
+    [Authorize]
     public class NeighborhoodsController : ControllerBase
     {
         private protected readonly IEstateService Service;

@@ -29,6 +29,12 @@ namespace RealEstate.Controllers
             return View(estates);
         }
 
+        public async Task<IActionResult> About()
+        {
+            byte[] comapanyLogo = await this.Service.GetCompanyLogoAsync();
+            return View(comapanyLogo);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

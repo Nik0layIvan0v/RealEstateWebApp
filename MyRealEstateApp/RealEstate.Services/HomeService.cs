@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Services.Models;
+using static RealEstate.Common.GlobalConstants;
 
 namespace RealEstate.Services
 {
@@ -44,6 +45,11 @@ namespace RealEstate.Services
                 TotalEstates = await this.Context.Estates.CountAsync(),
                 TotalUsers = await this.Context.Users.CountAsync()
             };
+        }
+
+        public async Task<byte[]> GetCompanyLogoAsync()
+        {
+            return await System.IO.File.ReadAllBytesAsync(LogoImagePath);
         }
     }
 }

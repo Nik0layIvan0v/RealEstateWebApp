@@ -6,17 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static RealEstate.Common.GlobalConstants;
 
 namespace RealEstate.Services
 {
     public class EstateService : IEstateService
     {
         private readonly RealEstateDbContext Context;
+        private readonly IHomeService HomeService;
 
-        public EstateService(RealEstateDbContext context)
+        public EstateService(RealEstateDbContext context, IHomeService homeService)
         {
             this.Context = context;
+            this.HomeService = homeService;
         }
 
         public async Task<CreateEstateDropDownModel> GetDropDownDataAsync()
@@ -101,7 +102,7 @@ namespace RealEstate.Services
             {
                 estate.Images.Add(new Image
                 {
-                    ImageContentBytes = DefaultEstateImage,
+                    ImageContentBytes = await this.HomeService.GetCompanyLogoAsync(),
                     EstateId = estate.Id,
                 });
             }
