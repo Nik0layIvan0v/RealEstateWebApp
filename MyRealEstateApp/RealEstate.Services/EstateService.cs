@@ -309,5 +309,30 @@ namespace RealEstate.Services
         {
             return await this.Context.Estates.Where(x => x.Id == estateId).Select(x => x.BrokerId).FirstOrDefaultAsync();
         }
+
+        public async Task<bool> DeleteEstateAsync(string id)
+        {
+            Estate estate = await this.Context.Estates.FirstOrDefaultAsync(x => x.Id == id);
+
+            IEnumerable<EstateFeature> estateFeatures = await this.Context.EstateFeatures.Where(x => x.EstateId == id).ToArrayAsync();
+
+            if (estate == null)
+            {
+                return false;
+            }
+
+            this.Context.RemoveRange(estateFeatures);
+
+            this.Context.Remove(estate);
+
+            int removedCount = await this.Context.SaveChangesAsync();
+
+            if (removedCount <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

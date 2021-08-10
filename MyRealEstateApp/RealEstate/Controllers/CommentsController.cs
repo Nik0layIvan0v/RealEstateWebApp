@@ -29,7 +29,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CommentFormModel formModel)
         {
             if (!ModelState.IsValid)
@@ -79,7 +78,6 @@
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(string id, CommentFormModel formModel)
         {
             if (!ModelState.IsValid)
@@ -125,6 +123,11 @@
             }
 
             bool isUserOwnComment = await this.CommentService.IsUserOwnCommentAsync(userId, comment.EstateId);
+
+            if (!isUserOwnComment && !User.IsAdmin())
+            {
+                return this.Unauthorized();
+            }
 
             bool isDeleted = await this.CommentService.DeleteComment(id);
 

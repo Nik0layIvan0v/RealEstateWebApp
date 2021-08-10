@@ -160,10 +160,30 @@ namespace RealEstate.Controllers
             return this.RedirectToAction(nameof(BrokersController.MyEstateOffers), "Brokers");
         }
 
-        [HttpPost]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            return this.Ok();
+            int brokerId = await BrokerService.GetBrokerIdAsync(this.User.GetLoggedInUserId());
+
+            if (brokerId == 0 && User.IsAdmin() == false)
+            {
+                return this.Unauthorized();
+            }
+
+            int estateBrokerId = await this.EstateService.GetEstateBrokerId(id);
+
+            if (brokerId != estateBrokerId && !User.IsAdmin())
+            {
+                return this.Unauthorized();
+            }
+
+            bool isDeleted = await this.EstateService.DeleteEstateAsync(id);
+
+            if (!isDeleted)
+            {
+                return this.BadRequest();
+            }
+
+            return RedirectToAction("All");
         }
 
         private async Task<EstateFormModel> LoadEstateFormModel(EstateServiceModel estateModel = null)

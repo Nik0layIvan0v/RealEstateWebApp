@@ -26,11 +26,11 @@ namespace RealEstate.Services
 
         Task<int> GetEstateBrokerId(string estateId);
 
+        Task<bool> DeleteEstateAsync(string id);
+
         //IEnumerable<string> GetByCategory();
 
         //IEnumerable<string> GetBySearchAsync();
-
-        //void DeleteEstate(string id);
 
         //void ArchiveEstate(string id);
     }
