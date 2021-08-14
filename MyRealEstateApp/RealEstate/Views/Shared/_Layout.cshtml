@@ -1,10 +1,13 @@
 ﻿@using RealEstate.Infrastructure
 @using RealEstate.Services
+@using RealEstate.Common
+
 @inject IBrokerService BrokerService
 @{
     string userId = User.GetLoggedInUserId();
     bool isUserBroker = await BrokerService.IsUserAlreadyBrokerAsync(userId);
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +52,14 @@
     </header>
 
     <div class="container pb-3">
+
+        @if (TempData.ContainsKey(GlobalConstants.GloblalMessages.GlobalTempMessageKey))
+        {
+            <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                @TempData[GlobalConstants.GloblalMessages.GlobalTempMessageKey]
+            </div>
+        }
         <main role="main" class="pb-6">
             @RenderBody()
         </main>

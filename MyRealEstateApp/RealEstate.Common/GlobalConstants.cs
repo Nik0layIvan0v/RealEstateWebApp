@@ -105,5 +105,12 @@ namespace RealEstate.Common
         public const int MinUserPassword = 6;
         public const int MaxUserPassword = 100;
         #endregion
+
+        public class GloblalMessages
+        {
+            public const string GlobalTempMessageKey = "Message";
+
+            public const string SuccsesfullEstateCreation = "Congratulations! You Succsesfully add Estate offer!";
+        }
     }
 }

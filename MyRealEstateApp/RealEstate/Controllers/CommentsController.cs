@@ -122,7 +122,7 @@
                 return NotFound();
             }
 
-            bool isUserOwnComment = await this.CommentService.IsUserOwnCommentAsync(userId, comment.EstateId);
+            bool isUserOwnComment = await this.CommentService.IsUserOwnCommentAsync(comment.CommentId, userId);
 
             if (!isUserOwnComment && !User.IsAdmin())
             {

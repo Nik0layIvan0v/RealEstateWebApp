@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static RealEstate.Common.GlobalConstants.GloblalMessages;
 
 namespace RealEstate.Controllers
 {
@@ -76,6 +77,8 @@ namespace RealEstate.Controllers
             estate.Images = await this.GetEstateImages(model.ImageFiles);
 
             string estateId = await this.EstateService.CreateEstateAsync(estate);
+
+            this.TempData[GlobalTempMessageKey] = SuccsesfullEstateCreation;
 
             return this.RedirectToAction(nameof(Details), "Estates", new { Id = estateId });
         }

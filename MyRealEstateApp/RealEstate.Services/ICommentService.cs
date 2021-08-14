@@ -17,6 +17,6 @@
 
         Task<CommentServiceModel> GetCommentById(string commentId);
 
-        Task<bool> IsUserOwnCommentAsync(string estateId, string userId);
+        Task<bool> IsUserOwnCommentAsync(string commentId, string userId);
     }
 }
