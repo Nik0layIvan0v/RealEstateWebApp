@@ -14,50 +14,75 @@
 @if (!Model.EstateListingViewModels.Any())
 {
     <div class="jumbotron-fluid">
-        <h2 class="display-4"> Currently there is no estates in out database. <a href="favicon.ico">Register</a> as broker and add one.</h2>
+        <h2 class="display-4"> Currently there is no estates in our database. <a href="favicon.ico">Register</a> as broker and add one.</h2>
         <hr class="my-4">
     </div>
 }
 else
 {
-<div class="container">
-    <div class="container text-center">
-        <div class="col-xs-12">
-            <h2 class="text-uppercase">All Properties</h2>
-            <hr class="bg-dark" />
+    <div class="container">
+        <div class="container text-center">
+            <div class="col-xs-12">
+                <h2 class="text-uppercase">Find property</h2>
+                <hr class="bg-dark" />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        @foreach (var estate in Model.EstateListingViewModels)
-        {
-            <div class="col-md-4 col-sm-6">
-                <div class="card-group">
-                    <div class="card mb-3">
-                        <img class="card-img-top" height="286" width="180" src="data:image/jpeg;base64,@Convert.ToBase64String(estate.Image.ImageContentBytes)" alt="Card image cap"> @*Picture*@
-                        <div class="card-body">
-                            <h5 class="card-title">@estate.Title</h5> @*Title*@
-                            <p class="card-text">@estate.Description</p> @*Description*@
-                            @if (User.IsAdmin())
-                            {
-                                <div class="container text-center">
-                                    <div class="btn-group text-center" role="group" aria-label="Basic example">
-                                        <a type="button" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details</a>
-                                        <a type="button" asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
-                                        <a type="button" asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
+
+        <div class="container pb-3">
+            <form method="get">
+                <div class="row">
+                    <div class="form-group col-sm">
+                        <label asp-for="SearchTerm"></label>
+                        <input asp-for="SearchTerm" class="form-control">
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <p>other search option</p>
+                </div>
+                <div class="text-center">
+                    <input class="btn btn-primary" type="submit" value="Search" />
+                </div>
+            </form>
+        </div>
+
+        <div class="container text-center">
+            <div class="col-xs-12">
+                <h2 class="text-uppercase">All Properties</h2>
+                <hr class="bg-dark" />
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var estate in Model.EstateListingViewModels)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <div class="card-group">
+                        <div class="card mb-3">
+                            <img class="card-img-top" height="286" width="180" src="data:image/jpeg;base64,@Convert.ToBase64String(estate.Image.ImageContentBytes)" alt="Card image cap"> @*Picture*@
+                            <div class="card-body">
+                                <h5 class="card-title">@estate.Title</h5> @*Title*@
+                                <p class="card-text">@estate.Description</p> @*Description*@
+                                @if (User.IsAdmin())
+                                {
+                                    <div class="container text-center">
+                                        <div class="btn-group text-center" role="group" aria-label="Basic example">
+                                            <a type="button" asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details</a>
+                                            <a type="button" asp-controller="Estates" asp-action="Edit" asp-route-id="@estate.Id" class="btn btn-warning">Edit</a>
+                                            <a type="button" asp-controller="Estates" asp-action="Delete" asp-route-id="@estate.Id" class="btn btn-danger">Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
-                            }
+                                }
+                                else
+                                {
+                                    <a asp-controller="Estates" asp-action="Details" asp-route-id="@estate.Id" class="btn btn-primary">Details for property</a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
     <div class="container pb-3">
         <div class="row pt-3 pb-2">

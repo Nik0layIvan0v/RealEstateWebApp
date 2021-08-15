@@ -162,14 +162,23 @@ namespace RealEstate.Services
                  .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage)
+        public async Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage, string searchTerm)
         {
             if (!this.Context.Estates.Any())
             {
                 return new EstateListingViewModel[0];
             }
 
-            return await this.Context.Estates
+            var estatesQuery = this.Context.Estates.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                estatesQuery = estatesQuery.Where(estate =>
+                                estate.Description.ToLower()
+                                    .Contains(searchTerm.ToLower()));
+            }
+
+            return await estatesQuery
                 .Skip((currentPage - 1) * estatesPerPage)
                 .Take(estatesPerPage)
                 .Select(x => new EstateListingViewModel
@@ -179,7 +188,7 @@ namespace RealEstate.Services
                     Title = x.TradeType.TypeOfTransaction,
                     Description = x.Description.Length < 30 ? x.Description : x.Description.Substring(0, 30) + "..."
                 })
-                .ToArrayAsync();
+                .ToListAsync();
         }
 
         public async Task<int> GetCountOfAllEstatesAsync()

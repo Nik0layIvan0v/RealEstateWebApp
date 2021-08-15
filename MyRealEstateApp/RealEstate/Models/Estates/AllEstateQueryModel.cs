@@ -5,6 +5,12 @@ namespace RealEstate.Models.Estates
 {
     public class AllEstateQueryModel
     {
+        public IEnumerable<string> DealTypes { get; set; }
+
+        public string SearchTerm { get; set; }
+
+        public EstateSorting EstateSorting { get; set; }
+
         public int EstatesPerPage { get; set; } = 6;
 
         public int CurrentPage { get; set; } = 1;

@@ -16,7 +16,7 @@ namespace RealEstate.Services
 
         Task<IEnumerable<NeighborhoodModel>> GetNeighborhoodsByCityIdAsync(int id);
 
-        Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage);
+        Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage, string searchTerm);
 
         Task<int> GetCountOfAllEstatesAsync();
 
