@@ -84,20 +84,24 @@ namespace RealEstate.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> All(AllEstateQueryModel queryEstateModel)
+        public async Task<IActionResult> All([FromQuery] AllEstateQueryModel queryEstateModel)
         {
+            var dealTypes = await this.EstateService.GetDealTypesAsync();
+
+            queryEstateModel.DealTypes = dealTypes;
+
             queryEstateModel.EstateListingViewModels = await EstateService
                 .GetAllEstatesAsync(queryEstateModel.CurrentPage,
                                     queryEstateModel.EstatesPerPage,
-                                    queryEstateModel.SearchTerm);
+                                    queryEstateModel.SearchTerm,
+                                    queryEstateModel.DealType,
+                                    queryEstateModel.EstateSorting.ToString());
 
-            queryEstateModel.TotalEstates = await this.EstateService.GetCountOfAllEstatesAsync();
+            queryEstateModel.SearchTerm = queryEstateModel.SearchTerm;
 
-            return this.View(new AllEstateQueryModel
-            {
-                SearchTerm = queryEstateModel.SearchTerm,
-                EstateListingViewModels = queryEstateModel.EstateListingViewModels
-            });
+            queryEstateModel.TotalEstates = queryEstateModel.EstateListingViewModels.Count();
+
+            return this.View(queryEstateModel);
         }
 
         public async Task<ActionResult<EstateDetailsModel>> Details(string id)

@@ -35,10 +35,28 @@ else
                         <label asp-for="SearchTerm"></label>
                         <input asp-for="SearchTerm" class="form-control">
                     </div>
-                   
+                    <div class="form-group col-sm">
+                        <label asp-for="DealType"></label>
+                        <select asp-for="DealType" class="form-control">
+                            <option value="">Всички</option>
+                            @foreach (var deal in Model.DealTypes)
+                            {
+                                <option value="@deal">@deal</option>
+                            }
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
-                    <p>other search option</p>
+                    <div class="form-group col-sm">
+                        <label asp-for="EstateSorting"></label>
+                        <select asp-for="EstateSorting" class="form-control">
+                            <option value="0" selected>Date Created</option>
+                            <option value="1">Price</option>
+                            <option value="2">Squaring</option>
+                            <option value="3">Floor</option>
+                            <option value="4">EstateType</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="text-center">
                     <input class="btn btn-primary" type="submit" value="Search" />
