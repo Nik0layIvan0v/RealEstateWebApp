@@ -162,7 +162,7 @@ namespace RealEstate.Services
                  .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage, string searchTerm)
+        public async Task<IEnumerable<EstateListingViewModel>> GetAllEstatesAsync(int currentPage, int estatesPerPage, string searchTerm, string dealType, string sortingValue)
         {
             if (!this.Context.Estates.Any())
             {
@@ -177,6 +177,20 @@ namespace RealEstate.Services
                                 estate.Description.ToLower()
                                     .Contains(searchTerm.ToLower()));
             }
+
+            if (!string.IsNullOrWhiteSpace(dealType))
+            {
+                estatesQuery = estatesQuery.Where(e => e.TradeType.TypeOfTransaction == dealType);
+            }
+
+            estatesQuery = sortingValue switch
+            {
+                "TypeOfTransaction" => estatesQuery.OrderByDescending(c => c.TradeType.TypeOfTransaction),
+                "Floor" => estatesQuery.OrderByDescending(c => c.Floor),
+                "Squaring" => estatesQuery.OrderByDescending(c => c.Squaring),
+                "Price" => estatesQuery.OrderByDescending(c => c.Price),
+                "DateCreated" or _ => estatesQuery.OrderByDescending(c => c.CreatedOn),
+            };
 
             return await estatesQuery
                 .Skip((currentPage - 1) * estatesPerPage)
@@ -342,6 +356,11 @@ namespace RealEstate.Services
             }
 
             return true;
+        }
+
+        public async Task<IEnumerable<string>> GetDealTypesAsync()
+        {
+            return await this.Context.TradeTypes.Select(dt => dt.TypeOfTransaction).ToListAsync();
         }
     }
 }

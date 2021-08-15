@@ -6,6 +6,6 @@
         Price = 1,
         Squaring = 2,
         Floor = 3,
-        EstateType = 4
+        TypeOfTransaction = 4
     }
 }

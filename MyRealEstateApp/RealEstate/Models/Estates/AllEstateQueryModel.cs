@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using RealEstate.Services.Models;
 
 namespace RealEstate.Models.Estates
@@ -7,6 +8,9 @@ namespace RealEstate.Models.Estates
     {
         public IEnumerable<string> DealTypes { get; set; }
 
+        public string DealType { get; set; }
+
+        [Display(Name = "Search by Description: ")]
         public string SearchTerm { get; set; }
 
         public EstateSorting EstateSorting { get; set; }
