@@ -97,21 +97,10 @@ namespace RealEstate.Controllers
                                     queryEstateModel.DealType,
                                     queryEstateModel.EstateSorting.ToString());
 
-<<<<<<< .mine
             queryEstateModel.TotalEstates = queryEstateModel.EstateListingViewModels.Count();
-=======
             queryEstateModel.SearchTerm = queryEstateModel.SearchTerm;
->>>>>>> .theirs
-
-<<<<<<< .mine
-            return this.View(queryEstateModel);
-
-
-=======
-            queryEstateModel.TotalEstates = queryEstateModel.EstateListingViewModels.Count();
 
             return this.View(queryEstateModel);
->>>>>>> .theirs
         }
 
         public async Task<ActionResult<EstateDetailsModel>> Details(string id)
