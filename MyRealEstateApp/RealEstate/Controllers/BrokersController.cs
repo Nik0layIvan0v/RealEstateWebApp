@@ -51,7 +51,7 @@ namespace RealEstate.Controllers
 
             await this.Service.CreateBrokerAsync(broker);
 
-            return this.RedirectToAction(nameof(EstatesController.Create), "Estates");
+            return this.RedirectToAction(nameof(EstatesController.Create), nameof(EstatesController));
         }
 
         public async Task<IActionResult> MyEstateOffers()
