@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\NewFolder\" />
     <Folder Include="Models\Users\" />
   </ItemGroup>
 

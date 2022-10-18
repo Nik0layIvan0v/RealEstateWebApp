@@ -1,4 +1,7 @@
-﻿<h1>Welcome Admin!</h1>
+﻿@model System.Collections.Generic.List<Estate>
+@{int rowNumber = 0;}
+
+<h1>Welcome Admin!</h1>
 <h3>You can:</h3>
 <ul>
     <li>Aprove estate offers</li>
@@ -25,23 +28,28 @@
                 <th scope="col">Count of Reports</th>
                 <th scope="col">Count of Comments</th>
                 <th scope="col">Count of Notes</th>
-                <th scope="col">Is Aproved</th>
+                <th scope="col">Is Archived</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-                <td>Mark</td>
-            </tr>
+
+            @foreach (Estate estate in Model)
+            {
+                <tr>
+                    <th scope="row">@(rowNumber += 1)</th>
+                    <td>@estate.Id</td>
+                    <td>@estate.Broker.Name</td>
+                    <td>@estate.CreatedOn</td>
+                    <td>@estate.EditedOn</td>
+                    <td>@estate.ArchivedOn</td>
+                    <td>@estate.BannedOn</td>
+                    <td>@estate.Comments.Count</td>
+                    <td>@estate.Reports.Count</td>
+                    <td>@estate.Notes.Count</td>
+                    <td>@estate.IsArchived</td>
+                </tr>
+            }
+
         </tbody>
     </table>
 </div>
